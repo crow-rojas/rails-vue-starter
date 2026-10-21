@@ -20,8 +20,15 @@ default: &default
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 
-development:
+local: &local
   <<: *default
+  host: localhost
+  port: <%= ENV.fetch("DB_PORT", 5432) %>
+  username: postgres
+  password: postgres
+
+development:
+  <<: *local
   database: rails_vue_starter_development
 
   # The specified database role being used to connect to PostgreSQL.
@@ -55,7 +62,7 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
+  <<: *local
   database: rails_vue_starter_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
