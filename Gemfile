@@ -1,4 +1,5 @@
-source "https://rubygems.org"
+# Resolve only gem versions published at least 7 days ago; `bundle update --cooldown=0 <gem>` for urgent fixes.
+source "https://rubygems.org", cooldown: 7
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.4"
