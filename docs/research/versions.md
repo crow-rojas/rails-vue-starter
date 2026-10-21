@@ -26,7 +26,7 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | vue | 3.5.44 | |
 | typescript / vue-tsc | 6.0.3 / 3.3.13 | `vue-tsc` does not run on TypeScript 7 yet. `typescript-native-bridge` (6.0.3-bridge.18.tsgo.7.0.2) aliases `typescript` and runs the check on tsgo. Not adopted: the check takes about 3 s today. [vuejs/language-tools#5381](https://github.com/vuejs/language-tools/issues/5381) |
 | tailwindcss | 4.3.3 | `@tailwindcss/typography` was removed: unused, and it pulled a vulnerable `postcss-selector-parser`. |
-| @lucide/vue | 1.60.0 | Same floor adjustment as vite (1.61.0 was hours old). The generator also installs the deprecated `lucide-vue-next`, which the pages still import. |
+| @lucide/vue | 1.60.0 | Same floor adjustment as vite (1.61.0 was hours old). The generator also installed the deprecated `lucide-vue-next`; the pages now import `@lucide/vue` and it is removed. |
 | eslint / eslint-plugin-vue / prettier | 9.39.5 / 10.11.1 / 3.9.10 | ESLint 9 is out of support. Biome is not used yet because its Vue support is experimental. [Biome language support](https://biomejs.dev/internals/language-support) |
 | typelizer / alba / alba-inertia | 0.14.0 / 4.0.1 / 0.1.4 | |
 | authentication-zero | 4.0.3 | Generates the auth code into the app; no release since 2024-12. |
@@ -38,6 +38,17 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | Library | Locked | Why |
 |---|---|---|
 | dotenv | 3.2.0 | Loads `.env` (written by `bin/setup`) in development and test, so Rails and docker compose read the same database port. |
+| strong_migrations | 2.8.0 | Fails migrations that would lock tables; `safe_by_default` and `target_version = 18`. [GitHub](https://github.com/ankane/strong_migrations) |
+| prosopite / pg_query | 2.2.0 / 6.2.5 | Raises on N+1 queries in tests; finds more than bullet, including non-association lookups. [GitHub](https://github.com/charkost/prosopite) |
+| database_consistency | 3.0.16 | Compares validations with constraints. 3.1.0 is newer but younger than the 7-day cooldown. [GitHub](https://github.com/djezzzl/database_consistency) |
+| lefthook | 2.2.2 | Git hooks from a gem, so contributors need no extra install. [lefthook.dev](https://lefthook.dev) |
+| gitleaks | 8.30.1 (image `ghcr.io/gitleaks/gitleaks`) | Secret scanning; `bin/gitleaks` uses an installed binary first. [Releases](https://github.com/gitleaks/gitleaks/releases) |
+
+## Kept as generated, on purpose
+
+| Item | Why it stays |
+|---|---|
+| ESLint 9.39.5 | ESLint 9 is out of support, but `eslint-plugin-import` does not support ESLint 10 yet; moving means replacing it with `eslint-plugin-import-x`. Follow the generator when it moves. |
 
 ## Audit exceptions
 
