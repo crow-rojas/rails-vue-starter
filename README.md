@@ -2,7 +2,7 @@
 
 A starter for new Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, set up so coding agents can do most of the work without a human reading every line.
 
-> **Status:** early. The skeleton runs locally with authentication, the agent harness, a security baseline and English/Spanish support. A reference feature and the Kamal setup are coming in that order.
+> **Status:** early. The skeleton runs locally with authentication, the agent harness, a security baseline, English/Spanish support and a reference resource (projects) to copy. The Kamal setup is next.
 
 ## Stack
 
