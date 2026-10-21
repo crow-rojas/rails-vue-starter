@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Link, usePage } from "@inertiajs/vue3"
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from "@lucide/vue"
+import {
+  BookOpen,
+  Folder,
+  FolderKanban,
+  LayoutGrid,
+  Menu,
+  Search,
+} from "@lucide/vue"
 import { computed } from "vue"
 
 import AppLogo from "@/components/AppLogo.vue"
@@ -35,7 +42,7 @@ import {
 } from "@/components/ui/tooltip"
 import { useI18n } from "@/composables/useI18n"
 import { getInitials } from "@/composables/useInitials"
-import { dashboard } from "@/routes"
+import { dashboard, projects } from "@/routes"
 import type { BreadcrumbItem, NavItem } from "@/types"
 
 interface Props {
@@ -63,15 +70,20 @@ const activeItemStyles = computed(
 const mainNavItems = computed<NavItem[]>(() => [
   {
     title: t("ui.nav.dashboard"),
-    href: "/dashboard",
+    href: dashboard.index().url,
     icon: LayoutGrid,
+  },
+  {
+    title: t("ui.nav.projects"),
+    href: projects.index().url,
+    icon: FolderKanban,
   },
 ])
 
 const rightNavItems = computed<NavItem[]>(() => [
   {
     title: t("ui.nav.repository"),
-    href: "https://github.com/inertia-rails/vue-starter-kit",
+    href: "https://github.com/crow-rojas/rails-vue-starter",
     icon: Folder,
   },
   {

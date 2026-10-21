@@ -12,6 +12,10 @@ es:
       invalid: Ese enlace para restablecer la contraseña no es válido
       requested: Si ese correo pertenece a una cuenta verificada, recibirás las instrucciones
       reset: Tu contraseña se restableció. Inicia sesión
+  projects:
+    created: Proyecto creado
+    destroyed: Proyecto eliminado
+    updated: Proyecto actualizado
   sessions:
     already_signed_in: Ya iniciaste sesión
     invalid: El correo o la contraseña no son correctos
@@ -94,8 +98,28 @@ es:
       log_out: Cerrar sesión
       navigation_menu: Menú de navegación
       platform: Plataforma
+      projects: Proyectos
       repository: Repositorio
       settings: Configuración
+    projects:
+      edit:
+        title: Editar proyecto
+      form:
+        cancel: Cancelar
+        name: Nombre
+        name_placeholder: Rediseño del sitio web
+        save: Guardar
+      index:
+        empty: Todavía no hay proyectos. Crea uno para empezar.
+        new: Nuevo proyecto
+        title: Proyectos
+      new:
+        title: Nuevo proyecto
+      show:
+        confirm_delete: "¿Eliminar este proyecto? No se puede deshacer."
+        created_at: Creado el %{date}
+        delete: Eliminar
+        edit: Editar
     sessions:
       new:
         description: Ingresa tu correo y contraseña para iniciar sesión
