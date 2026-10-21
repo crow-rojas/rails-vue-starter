@@ -16,7 +16,7 @@ defineProps<Props>()
   <a
     :href="href"
     target="_blank"
-    class="inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
+    class="inline-flex items-center space-x-1 font-medium text-[#D30001] underline underline-offset-4 dark:text-[#FF4433]"
     rel="noreferrer"
   >
     <span>{{ text }}</span>
