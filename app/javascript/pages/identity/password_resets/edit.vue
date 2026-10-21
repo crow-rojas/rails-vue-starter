@@ -13,13 +13,9 @@ import { Input } from "@/components/ui/input"
 import { useI18n } from "@/composables/useI18n"
 import AuthLayout from "@/layouts/AuthLayout.vue"
 import { identityPasswordResets } from "@/routes"
+import type { IdentityPasswordResetsEdit } from "@/types"
 
-interface Props {
-  sid: string
-  email: string
-}
-
-const props = defineProps<Props>()
+const props = defineProps<IdentityPasswordResetsEdit>()
 
 const { t } = useI18n()
 </script>
