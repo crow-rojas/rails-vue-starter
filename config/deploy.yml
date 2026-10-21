@@ -6,6 +6,9 @@
 #   ADMIN_EMAILS    comma-separated; these signed-in users see /admin/errors and /admin/jobs,
 #                   and get an email for every new error
 #   BACKUP_S3_ENDPOINT, BACKUP_S3_REGION, BACKUP_S3_BUCKET       S3-compatible storage for backups
+#                   Give it a key scoped to that one bucket and lock the bucket for exactly BACKUP_KEEP_DAYS
+#                   (R2 bucket lock; S3 or B2 Object Lock in compliance mode), so whoever owns the server
+#                   cannot delete the backups along with the database (ADR-006).
 # Secrets are listed in .kamal/secrets.
 service: rails-vue-starter
 image: rails-vue-starter

@@ -16,6 +16,7 @@ A new app should reach production in an afternoon on one rented server, without 
 - Backups: the `ardakilic/postgres-backup-s3:18` accessory dumps the primary database daily, encrypted with `PASSPHRASE`, to any S3-compatible bucket (R2, B2, S3), keeping 14 days. Cache, queue and cable are rebuildable and not backed up.
   - `bin/kamal backup` takes one now.
   - `bin/kamal backup-drill` restores the latest into a scratch database next to production, reports its tables and users, and drops it (`script/backup_drill.sh`, uploaded into the accessory).
+  - The server cannot delete them: its key is scoped to the one bucket, and the bucket is locked for exactly `BACKUP_KEEP_DAYS` ([R2 bucket lock](https://developers.cloudflare.com/r2/buckets/bucket-locks/), or [Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) in compliance mode on S3 and B2), so someone who takes the server cannot wipe the database and its backups together. Not longer: the image prunes each backup as soon as it is `BACKUP_KEEP_DAYS` old, and on R2 a locked object makes that prune fail. On S3 and B2 Object Lock needs versioning, so the prune only hides old backups; add a lifecycle rule that expires noncurrent versions.
   - `bin/kamal restore` is the real thing: the image's `restore.sh` runs `pg_restore --clean` **over the live database**, and it can only target that database. Never use it to test a backup.
 - Configuration from the environment: `config/deploy.yml` reads the host, domain, email and backup settings with `ENV.fetch`, and `.kamal/secrets` reads the secrets from the environment. Production reads `APP_HOST`, `DB_HOST`, `POSTGRES_PASSWORD`, SMTP and `SECRET_KEY_BASE`; there is no credentials file. A missing variable fails the boot, except during `assets:precompile` in the image build.
 - CI builds the image on every pull request.
@@ -30,7 +31,7 @@ Deployed with `bin/kamal setup` to a Hetzner CX23 that already ran another Kamal
 
 Two things learned there: the DNS record must not go through Cloudflare's proxy (orange cloud) for the first certificate, and `KAMAL_HOST` can be an SSH config alias, which is how Kamal finds the right key. The first build of the amd64 image from an arm Mac took about nine minutes.
 
-**On every new deploy**, check: the certificate, one email delivered, and `bin/kamal backup` followed by `bin/kamal backup-drill`.
+**On every new deploy**, check: the certificate, one email delivered, `bin/kamal backup` followed by `bin/kamal backup-drill`, and that deleting that fresh backup (on S3 and B2, its version) with the server's key is refused.
 
 ## Consequences
 
