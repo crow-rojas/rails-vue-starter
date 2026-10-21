@@ -48,6 +48,21 @@ es:
       password: Contraseña
       title: Eliminar cuenta
       warning: Advertencia
+    errors:
+      show:
+        home: Ir al inicio
+        not_found:
+          description: La página que buscas no existe o se movió.
+          title: Página no encontrada
+        other:
+          description: Lo sentimos, algo salió mal.
+          title: Error %{status}
+        server_error:
+          description: No pudimos completar tu solicitud. Inténtalo de nuevo más tarde.
+          title: Algo salió mal
+        unavailable:
+          description: Estamos haciendo mantenimiento. Vuelve pronto.
+          title: En mantenimiento
     home:
       dashboard: Panel
       learn_more: Más información
