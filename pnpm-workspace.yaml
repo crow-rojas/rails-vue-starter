@@ -1,0 +1,11 @@
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200
+
+allowBuilds:
+  unrs-resolver: false
+
+auditConfig:
+  ignoreGhsas:
+    # braces DoS on deeply nested globs: unpatched, reached only through the
+    # ESLint config, and every glob it expands is written in this repo.
+    - GHSA-vfj7-8cjw-p6xm
