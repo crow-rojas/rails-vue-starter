@@ -42,6 +42,9 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | prosopite / pg_query | 2.2.0 / 6.2.5 | Raises on N+1 queries in tests; finds more than bullet, including non-association lookups. [GitHub](https://github.com/charkost/prosopite) |
 | database_consistency | 3.0.16 | Compares validations with constraints. 3.1.0 is newer but younger than the 7-day cooldown. [GitHub](https://github.com/djezzzl/database_consistency) |
 | lefthook | 2.2.2 | Git hooks from a gem, so contributors need no extra install. [lefthook.dev](https://lefthook.dev) |
+| rails-i18n | 8.1.0 | Framework strings (validation messages, dates) for Spanish. [GitHub](https://github.com/svenfuchs/rails-i18n) |
+| i18n-tasks | 1.1.2 | Missing and unused keys across Ruby, ERB and Vue. [GitHub](https://github.com/glebm/i18n-tasks) |
+| i18n-js | 4.5.4 | Reads Rails translations in Vue with Rails semantics. [GitHub](https://github.com/fnando/i18n) |
 | gitleaks | 8.30.1 (image `ghcr.io/gitleaks/gitleaks`) | Secret scanning; `bin/gitleaks` uses an installed binary first. [Releases](https://github.com/gitleaks/gitleaks/releases) |
 
 ## Kept as generated, on purpose
