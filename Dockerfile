@@ -10,9 +10,11 @@
 # Set to "true" to build and ship the SSR runtime; flip and rebuild to toggle.
 ARG SSR_ENABLED=false
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=4.0.7
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+# Base images are pinned by tag and digest, so a rebuild gets the same bytes; Dependabot bumps both.
+# Keep the versions in step with .node-version and .ruby-version.
+FROM docker.io/library/node:24.22.0-trixie-slim@sha256:a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c AS node
+
+FROM docker.io/library/ruby:4.0.7-slim@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9 AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -38,12 +40,11 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev node-gyp pkg-config python-is-python3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install Node.js (needed for builds; kept in runtime for SSR)
-ARG NODE_VERSION=24.22.0
+# Node.js and corepack from the official image (needed for builds; node is kept in runtime for SSR)
+COPY --from=node /usr/local/bin/node /usr/local/node/bin/node
+COPY --from=node /usr/local/lib/node_modules/corepack /usr/local/node/lib/node_modules/corepack
+RUN ln -s ../lib/node_modules/corepack/dist/corepack.js /usr/local/node/bin/corepack
 ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    rm -rf /tmp/node-build-master
 
 # Install application gems
 COPY vendor/* ./vendor/

@@ -12,6 +12,7 @@ A new app should reach production in an afternoon on one rented server, without 
 
 - Kamal 2 on one server: kamal-proxy terminates TLS with Let's Encrypt and gives zero-downtime deploys; Thruster serves assets; Solid Queue runs inside Puma (`SOLID_QUEUE_IN_PUMA`). Images go through Kamal's local registry, so no Docker Hub or GHCR account is needed.
 - Postgres 18.6 as a Kamal accessory on the same server, holding the four databases Rails expects (primary, cache, queue, cable); `db:prepare` creates them on first boot.
+- Images pinned by tag and digest, so a tag moved upstream changes nothing until a commit does: the Dockerfile's Ruby and Node bases (Dependabot bumps them) and both accessories, whose backup image holds the database password, the S3 keys and `PASSPHRASE` (bumped by hand: Dependabot does not read `config/deploy.yml`). Node is copied from its official image, not built by a script fetched from a branch.
 - Backups: the `ardakilic/postgres-backup-s3:18` accessory dumps the primary database daily, encrypted with `PASSPHRASE`, to any S3-compatible bucket (R2, B2, S3), keeping 14 days. Cache, queue and cable are rebuildable and not backed up.
   - `bin/kamal backup` takes one now.
   - `bin/kamal backup-drill` restores the latest into a scratch database next to production, reports its tables and users, and drops it (`script/backup_drill.sh`, uploaded into the accessory).

@@ -54,7 +54,7 @@ builder:
 
 accessories:
   db:
-    image: postgres:18.6
+    image: postgres:18.6@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6
     host: <%= ENV.fetch("KAMAL_HOST") %>
     env:
       clear:
@@ -69,7 +69,7 @@ accessories:
   # `bin/kamal backup-drill` proves the latest restores (into a scratch database), and
   # `bin/kamal restore` restores it over the live database. Cache, queue and cable are not backed up.
   backup:
-    image: ardakilic/postgres-backup-s3:18
+    image: ardakilic/postgres-backup-s3:18@sha256:b9adc8dfcdea4c85dd972920cacefe26e83ddddf8ce2cad1433a3a4eca3bf193
     host: <%= ENV.fetch("KAMAL_HOST") %>
     env:
       clear:
