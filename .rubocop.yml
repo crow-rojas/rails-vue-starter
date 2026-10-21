@@ -15,7 +15,3 @@ Performance:
 # Fix the code or propose an ADR; never silence a cop inline.
 Style/DisableCopsWithinSourceCodeDirective:
   Enabled: true
-
-# Turned on by the i18n baseline, which moves flash and mailer copy to locale files.
-Rails/I18nLocaleTexts:
-  Enabled: false
