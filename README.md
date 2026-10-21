@@ -112,6 +112,7 @@ The reasons behind the stack and the conventions live in [`docs/adr`](docs/adr),
 5. [Application shape](docs/adr/005-application-shape.md)
 6. [Deploy](docs/adr/006-deploy.md)
 7. [Progressive web app](docs/adr/007-pwa.md)
+8. [LLM features](docs/adr/008-llm-features.md)
 
 Every pinned version and its source is in [`docs/research/versions.md`](docs/research/versions.md).
 
