@@ -114,13 +114,15 @@ Every pinned version and its source is in [`docs/research/versions.md`](docs/res
 
 ## Keeping up with the template
 
-An app made with **Use this template** starts with its own history, so improvements here do not reach it on their own. [`CHANGELOG.md`](CHANGELOG.md) and the release notes say what changed and what to port by hand. To pull everything at once, add this repository as a remote and merge it; expect conflicts the first time:
+An app made with **Use this template** starts from one commit of its own, unrelated to this history, so merging the template conflicts on every file the app touched. Apply the changes between two releases instead. Write down the release you started from (the newest tag, also the top version in [`CHANGELOG.md`](CHANGELOG.md)), and to upgrade from it to a newer one, for example from v0.1.0 to v0.2.0:
 
 ```sh
 git remote add template https://github.com/crow-rojas/rails-vue-starter.git
-git fetch template
-git merge template/main --allow-unrelated-histories
+git fetch template --tags
+git diff --binary v0.1.0 v0.2.0 | git apply --3way
 ```
+
+Resolve any conflicts, record the new release, and commit. `CHANGELOG.md` says what each release changes and how to port it by hand. When an upgrade changes the harness (`bin/guard`, `config/ci.rb`, `lefthook.yml`, `.claude/`, the workflows or a linter config), `bin/guard` fails until a human adds a `Guard-Override: harness <reason>` trailer to the commit.
 
 ## Contributing and security
 
