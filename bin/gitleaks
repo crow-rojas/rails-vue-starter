@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # gitleaks from PATH, or its pinned image when it is not installed.
-# The image cannot follow a git worktree's .git file; install gitleaks to use worktrees.
+# The shared git dir is mounted too, so the image can follow a worktree's .git file.
 if command -v gitleaks >/dev/null 2>&1; then exec gitleaks "$@"; fi
-exec docker run --rm -v "$PWD:$PWD" -w "$PWD" ghcr.io/gitleaks/gitleaks:v8.30.1 "$@"
+c=$(git rev-parse --path-format=absolute --git-common-dir)
+exec docker run --rm -v "$PWD:$PWD" -v "$c:$c" -w "$PWD" ghcr.io/gitleaks/gitleaks:v8.30.1 "$@"

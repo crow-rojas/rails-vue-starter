@@ -40,5 +40,5 @@ The sensors, grouped by the failure they catch:
 
 - An agent cannot finish a turn with `bin/check` red without one visible retry, and cannot push with `bin/ci` red.
 - A legitimate test removal or migration fix needs a human to add a `Guard-Override:` trailer, which stays in the history.
-- gitleaks falls back to its Docker image when it is not installed, and that image cannot read a git worktree; worktree users install gitleaks.
+- gitleaks falls back to its pinned Docker image when it is not installed.
 - The checks have to stay fast. When `bin/check` passes 30 s, split the slow tests out or reopen this ADR.
