@@ -46,7 +46,7 @@ You need Ruby and Node at the versions in `.ruby-version` and `.node-version` (r
 
    `main` then accepts only signed commits, so [set up commit signing](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) before your first pull request.
 
-`bin/setup` installs gems, packages and git hooks, writes `.env` with free ports for Postgres and the app (so several checkouts can run at once), starts Postgres in Docker, prepares and seeds the databases and starts the app. Sign in as `demo@example.com` with the password `demo-password-123`. That account exists only in development, and it can open the admin dashboards.
+`bin/setup` installs gems, packages and git hooks, writes `.env` with free ports for Postgres and the app (so several checkouts can run at once), starts Postgres in Docker, prepares and seeds the databases and starts the app. With Postgres of your own, local or hosted, export `DATABASE_URL` without a database name (`postgres://user:password@host:5432`) and `bin/setup` skips Docker; each environment keeps its own database. Sign in as `demo@example.com` with the password `demo-password-123`. That account exists only in development, and it can open the admin dashboards.
 
 After renaming, replace this README with one for your app and update the copyright line in `LICENSE`.
 
