@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from "@inertiajs/vue3"
-import { LoaderCircle } from "lucide-vue-next"
+import { LoaderCircle } from "@lucide/vue"
 
 import { Button } from "@/components/ui/button"
 import {
