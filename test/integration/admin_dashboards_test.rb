@@ -15,6 +15,20 @@ class AdminDashboardsTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Mission Control swaps in an English-only I18n config for its requests. Translations that load
+  # lazily during one would keep English only for the rest of the process (rails/mission_control-jobs#351).
+  test "opening the jobs dashboard first keeps the app's other locales" do
+    sign_in users(:one)
+    loaded = I18n.backend
+    I18n.backend = I18n::Backend::Simple.new
+
+    get "/admin/jobs"
+
+    assert I18n.exists?("ui.pwa.offline.title", :es), "the Spanish translations did not load"
+  ensure
+    I18n.backend = loaded
+  end
+
   test "the dashboards do not exist for other users" do
     sign_in users(:two)
 

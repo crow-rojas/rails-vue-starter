@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
   private
 
   def switch_locale(&)
+    # Load translations under the app's config before Mission Control swaps in its English-only one,
+    # which would drop every other locale (rails/mission_control-jobs#351). A no-op once loaded.
+    I18n.eager_load!
     I18n.with_locale(current_locale, &)
   end
 
