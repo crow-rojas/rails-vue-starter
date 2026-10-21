@@ -53,6 +53,12 @@ gem "strong_migrations"
 # Framework translations (validation messages, dates) for every locale [https://github.com/svenfuchs/rails-i18n]
 gem "rails-i18n"
 
+# Stores unhandled errors in the database, with a dashboard at /admin/errors [https://github.com/fractaledmind/solid_errors]
+gem "solid_errors"
+
+# Dashboard for Solid Queue jobs at /admin/jobs [https://github.com/rails/mission_control-jobs]
+gem "mission_control-jobs"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

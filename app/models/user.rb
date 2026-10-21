@@ -21,6 +21,11 @@ class User < ApplicationRecord
 
   normalizes :email, with: -> { _1.strip.downcase }
 
+  # Admins are configured, not stored: a comma-separated ADMIN_EMAILS in the environment.
+  def admin?
+    ENV.fetch("ADMIN_EMAILS", "").split(",").map { it.strip.downcase }.include?(email)
+  end
+
   before_validation if: :email_changed?, on: :update do
     self.verified = false
   end
