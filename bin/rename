@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
 # Renames the template to your app after "Use this template". Shows the changes by default;
 # --apply writes them. Usage: bin/rename "Invoice Hub" [--apply]
+# Links to the template's repository point at origin's GitHub repository instead.
 # Docs and the README are left alone: rewrite them for your app.
 
 module Rename
+  TEMPLATE_REPO = "crow-rojas/rails-vue-starter"
+
   FORMS = {
     "RailsVueStarter" => ->(words) { words.map(&:capitalize).join },
     "rails_vue_starter" => ->(words) { words.join("_") },
@@ -14,8 +17,21 @@ module Rename
   FILES = %w[
     config/application.rb config/database.yml config/deploy.yml config/locales/en.yml config/locales/es.yml
     app/views/layouts/application.html.erb app/views/pwa/manifest.json.erb app/javascript/entrypoints/inertia.ts
-    package.json Dockerfile
+    package.json Dockerfile AGENTS.md SECURITY.md .github/ISSUE_TEMPLATE/config.yml
+    app/javascript/components/AppSidebar.vue
   ].freeze
+
+  CHECKLIST = <<~TEXT.freeze
+    Still yours to do by hand:
+      README.md, CONTRIBUTING.md and CHANGELOG.md: rewrite them for your app.
+      .github/ISSUE_TEMPLATE/bug_report.yml: it talks about the template.
+      docs/media/demo.gif: replace or delete it.
+      public/icon*.png and theme_color in app/views/pwa/manifest.json.erb: your app's icon and color.
+  TEXT
+
+  def self.repo_from(url)
+    url[%r{github\.com[:/]([^/]+/[^/]+?)(?:\.git)?/?\z}, 1]
+  end
 
   def self.replacements(name)
     words = name.scan(/[A-Za-z0-9]+/).map(&:downcase)
@@ -23,11 +39,13 @@ module Rename
     FORMS.to_h { |old, form| [ old, form.call(words) ] }
   end
 
-  def self.run(name, apply:)
-    replacements = replacements(name)
+  def self.run(name, apply:, repo:)
+    # The repository goes first so its URL is matched whole, before "rails-vue-starter" alone.
+    replacements = { TEMPLATE_REPO => repo || TEMPLATE_REPO }.merge(replacements(name))
+    pattern = Regexp.union(replacements.keys)
     changed = FILES.select { File.exist?(it) }.filter_map do |file|
       before = File.read(file)
-      after = replacements.reduce(before) { |text, (old, new)| text.gsub(old, new) }
+      after = before.gsub(pattern, replacements)
       next if before == after
 
       File.write(file, after) if apply
@@ -37,10 +55,14 @@ module Rename
     replacements.each { |old, new| puts "#{old} -> #{new}" }
     puts changed.empty? ? "Nothing to rename." : "#{apply ? "Renamed" : "Would rename"} in:\n  #{changed.join("\n  ")}"
     puts "Run again with --apply to write the changes." unless apply || changed.empty?
+    puts "\n#{CHECKLIST}" if apply
   end
 end
 
 if $PROGRAM_NAME == __FILE__
   name = ARGV.reject { it.start_with?("--") }.first or abort "usage: bin/rename \"Invoice Hub\" [--apply]"
-  Dir.chdir(File.expand_path("..", __dir__)) { Rename.run(name, apply: ARGV.include?("--apply")) }
+  Dir.chdir(File.expand_path("..", __dir__)) do
+    repo = Rename.repo_from(`git remote get-url origin 2>/dev/null`.strip)
+    Rename.run(name, apply: ARGV.include?("--apply"), repo:)
+  end
 end
