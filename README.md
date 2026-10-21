@@ -22,7 +22,7 @@ A starter for Rails apps with an Inertia + Vue frontend, written to be built mos
 
 ## Start an app from it
 
-You need Ruby and Node at the versions in `.ruby-version` and `.node-version` (any version manager that reads those files works) and Docker for the database. [gitleaks](https://github.com/gitleaks/gitleaks) is optional; without it the hooks use its Docker image.
+You need Ruby and Node at the versions in `.ruby-version` and `.node-version` (rbenv and nodenv read those files; mise reads them only after `mise settings add idiomatic_version_file_enable_tools ruby` and the same with `node`) and Docker for the database. [gitleaks](https://github.com/gitleaks/gitleaks) is optional; without it the hooks use its Docker image.
 
 1. Click **Use this template** on GitHub, or clone the repository.
 2. Rename it to your app. `bin/rename` shows what would change; add `--apply` to write it and list what is left to do by hand. Links to this repository point at your `origin` instead.
