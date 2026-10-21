@@ -39,3 +39,6 @@
 /ssr
 node_modules
 *.local
+
+# ESLint cache, written by the pre-commit hook.
+/.eslintcache
