@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+# Renames the template to your app after "Use this template". Shows the changes by default;
+# --apply writes them. Usage: bin/rename "Invoice Hub" [--apply]
+# Docs and the README are left alone: rewrite them for your app.
+
+module Rename
+  FORMS = {
+    "RailsVueStarter" => ->(words) { words.map(&:capitalize).join },
+    "rails_vue_starter" => ->(words) { words.join("_") },
+    "rails-vue-starter" => ->(words) { words.join("-") },
+    "Rails Vue Starter" => ->(words) { words.map(&:capitalize).join(" ") }
+  }.freeze
+
+  FILES = %w[
+    config/application.rb config/database.yml config/deploy.yml config/locales/en.yml config/locales/es.yml
+    app/views/layouts/application.html.erb app/views/pwa/manifest.json.erb app/javascript/entrypoints/inertia.ts
+    package.json Dockerfile
+  ].freeze
+
+  def self.replacements(name)
+    words = name.scan(/[A-Za-z0-9]+/).map(&:downcase)
+    abort "bin/rename: give the app a name with letters, like \"Invoice Hub\"" if words.empty? || words.first.match?(/\A\d/)
+    FORMS.to_h { |old, form| [ old, form.call(words) ] }
+  end
+
+  def self.run(name, apply:)
+    replacements = replacements(name)
+    changed = FILES.select { File.exist?(it) }.filter_map do |file|
+      before = File.read(file)
+      after = replacements.reduce(before) { |text, (old, new)| text.gsub(old, new) }
+      next if before == after
+
+      File.write(file, after) if apply
+      file
+    end
+
+    replacements.each { |old, new| puts "#{old} -> #{new}" }
+    puts changed.empty? ? "Nothing to rename." : "#{apply ? "Renamed" : "Would rename"} in:\n  #{changed.join("\n  ")}"
+    puts "Run again with --apply to write the changes." unless apply || changed.empty?
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  name = ARGV.reject { it.start_with?("--") }.first or abort "usage: bin/rename \"Invoice Hub\" [--apply]"
+  Dir.chdir(File.expand_path("..", __dir__)) { Rename.run(name, apply: ARGV.include?("--apply")) }
+end
