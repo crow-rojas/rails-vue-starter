@@ -26,6 +26,8 @@ local: &local
   port: <%= ENV.fetch("DB_PORT", 5432) %>
   username: postgres
   password: postgres
+  # libpq's GSSAPI probe crashes forked processes on macOS, which kills parallel tests.
+  gssencmode: disable
 
 development:
   <<: *local
