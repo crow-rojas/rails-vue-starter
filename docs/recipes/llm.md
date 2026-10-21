@@ -18,14 +18,14 @@ Before migrating, give the generated `create_chats` migration its owner, then ru
 t.references :user, null: false, foreign_key: true
 ```
 
-Replace the generated initializer. Check a model id with `RubyLLM.models.find("claude-haiku-4-5", provider: :anthropic)` before using it.
+Replace the generated initializer. Check a model id with `RubyLLM.models.find("claude-sonnet-5-5", provider: :anthropic)` before using it.
 
 ```ruby
 # config/initializers/ruby_llm.rb
 RubyLLM.configure do |config|
   # Production gets the key from Kamal; tests set their own in test_helper.rb.
   config.anthropic_api_key = ENV["ANTHROPIC_API_KEY"]
-  config.default_model = "claude-haiku-4-5"
+  config.default_model = "claude-sonnet-5-5"
 end
 ```
 
@@ -171,9 +171,9 @@ end
 _fixture:
   model_class: RubyLLM::ActiveRecord::Model
 
-haiku:
-  model_id: claude-haiku-4-5
-  name: Claude Haiku 4.5
+sonnet:
+  model_id: claude-sonnet-5-5
+  name: Claude Sonnet 5.5
   provider: anthropic
 ```
 
@@ -181,11 +181,11 @@ haiku:
 # test/fixtures/chats.yml
 one:
   user: one
-  model: haiku
+  model: sonnet
 
 two:
   user: two
-  model: haiku
+  model: sonnet
 ```
 
 ```ruby
@@ -201,7 +201,7 @@ end
 
 test "stops at the daily token cap" do
   chats(:one).ruby_llm_usages.create!(owner: users(:one), operation: "chat", provider: "anthropic",
-    model: "claude-haiku-4-5", status: "succeeded", input_tokens: User::DAILY_LLM_TOKENS)
+    model: "claude-sonnet-5-5", status: "succeeded", input_tokens: User::DAILY_LLM_TOKENS)
 
   assert_no_enqueued_jobs { post chat_messages_path(chats(:one)), params: { content: "Hello" } }
   assert_equal I18n.t("chats.budget_exhausted"), flash[:alert]
