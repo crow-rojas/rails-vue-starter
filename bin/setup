@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require "digest"
 require "fileutils"
 require "socket"
 
@@ -13,6 +14,14 @@ def port_taken?(port)
   true
 rescue Errno::ECONNREFUSED
   false
+end
+
+# Ports written in the other worktrees' .env files, so a stopped sibling keeps its ports.
+def sibling_ports
+  `git worktree list --porcelain 2>/dev/null`.scan(/^worktree (.+)$/).flatten.flat_map do |dir|
+    env = File.join(dir, ".env")
+    File.exist?(env) ? File.read(env).scan(/^(?:DB_)?PORT=(\d+)/).flatten.map(&:to_i) : []
+  end
 end
 
 FileUtils.chdir APP_ROOT do
@@ -33,10 +42,12 @@ FileUtils.chdir APP_ROOT do
 
   unless File.exist?(".env")
     puts "\n== Writing .env =="
-    db_port = (5432..5532).find { |p| !port_taken?(p) }
-    web_port = (3000..3100).find { |p| !port_taken?(p) }
+    reserved = sibling_ports
+    db_port = ((5432..5532).to_a - reserved).find { |p| !port_taken?(p) }
+    web_port = ((3000..3100).to_a - reserved).find { |p| !port_taken?(p) }
+    project = "#{File.basename(APP_ROOT).downcase.gsub(/[^a-z0-9_-]/, "-")}-#{Digest::SHA256.hexdigest(APP_ROOT)[0, 8]}"
     env = File.read(".env.example").sub(/^DB_PORT=.*/, "DB_PORT=#{db_port}").sub(/^PORT=.*/, "PORT=#{web_port}")
-    File.write(".env", env)
+    File.write(".env", "#{env}\n# Keeps this checkout's Postgres container and volume apart from checkouts with the same folder name.\nCOMPOSE_PROJECT_NAME=#{project}\n")
   end
 
   puts "\n== Starting Postgres =="

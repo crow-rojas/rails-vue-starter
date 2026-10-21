@@ -35,3 +35,6 @@ node_modules
 
 # ESLint cache, written by the pre-commit hook.
 /.eslintcache
+
+# Worktrees that Claude Code creates with --worktree.
+/.claude/worktrees/
