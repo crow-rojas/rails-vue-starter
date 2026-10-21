@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3"
-import { BookOpen, Folder, LayoutGrid } from "@lucide/vue"
+import { BookOpen, Folder, FolderKanban, LayoutGrid } from "@lucide/vue"
 import { computed } from "vue"
 
 import NavFooter from "@/components/NavFooter.vue"
@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useI18n } from "@/composables/useI18n"
-import { dashboard } from "@/routes"
+import { dashboard, projects } from "@/routes"
 import { type NavItem } from "@/types"
 
 import AppLogo from "./AppLogo.vue"
@@ -29,12 +29,17 @@ const mainNavItems = computed<NavItem[]>(() => [
     href: dashboard.index().url,
     icon: LayoutGrid,
   },
+  {
+    title: t("ui.nav.projects"),
+    href: projects.index().url,
+    icon: FolderKanban,
+  },
 ])
 
 const footerNavItems = computed<NavItem[]>(() => [
   {
     title: t("ui.nav.github_repo"),
-    href: "https://github.com/inertia-rails/vue-starter-kit",
+    href: "https://github.com/crow-rojas/rails-vue-starter",
     icon: Folder,
   },
   {
