@@ -14,7 +14,7 @@ class Identity::PasswordResetsController < InertiaController
   end
 
   def create
-    if @user = User.find_by(email: params[:email], verified: true)
+    if (@user = User.find_by(email: params[:email], verified: true))
       send_password_reset_email
       redirect_to sign_in_path, notice: "Check your email for reset instructions"
     else

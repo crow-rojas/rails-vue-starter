@@ -1,8 +1,21 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  NewCops: enable
+
+# Omakase turns off every department but style. These catch bugs, not taste.
+Lint:
+  Enabled: true
+Rails:
+  Enabled: true
+Performance:
+  Enabled: true
+
+# Fix the code or propose an ADR; never silence a cop inline.
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: true
+
+# Turned on by the i18n baseline, which moves flash and mailer copy to locale files.
+Rails/I18nLocaleTexts:
+  Enabled: false
