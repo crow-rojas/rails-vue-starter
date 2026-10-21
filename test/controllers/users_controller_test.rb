@@ -55,4 +55,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to settings_profile_path
   end
+
+  test "limits sign up attempts" do
+    Prosopite.pause { 10.times { post sign_up_path, params: { email: "taken" } } }
+
+    assert_no_difference "User.count" do
+      post sign_up_path, params: { name: "Ada", email: "ada@example.com", password: "Secret1*3*5*", password_confirmation: "Secret1*3*5*" }
+    end
+    assert_equal "Try again later", flash[:alert]
+  end
 end

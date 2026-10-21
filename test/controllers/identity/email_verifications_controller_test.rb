@@ -29,4 +29,14 @@ class Identity::EmailVerificationsControllerTest < ActionDispatch::IntegrationTe
     end
     assert_response :redirect
   end
+
+  test "limits verification email resends" do
+    sign_in users(:one)
+    10.times { post identity_email_verification_path }
+
+    assert_no_enqueued_emails do
+      post identity_email_verification_path
+    end
+    assert_equal "Try again later", flash[:alert]
+  end
 end

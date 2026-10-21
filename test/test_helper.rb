@@ -14,6 +14,7 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
+    setup { ActionController::Base.cache_store.clear }
     setup { Prosopite.scan }
     teardown { Prosopite.finish }
 
