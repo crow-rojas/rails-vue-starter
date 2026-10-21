@@ -5,13 +5,13 @@ CI.run do
 
   step "Style: Ruby", "bin/rubocop"
 
-  step "JavaScript: lint", "npm run lint"
-  step "JavaScript: format", "npm run format"
-  step "JavaScript: types check", "npm run check"
+  step "JavaScript: lint", "pnpm lint"
+  step "JavaScript: format", "pnpm format"
+  step "JavaScript: types check", "pnpm check"
   step "JavaScript: generated types are fresh", "bin/rails typelizer:generate:refresh && git diff --exit-code -- app/javascript/routes app/javascript/types/serializers && test -z \"$(git ls-files --others --exclude-standard -- app/javascript/routes app/javascript/types/serializers)\""
 
   step "Security: Gem audit", "bin/bundler-audit"
-  step "Security: NPM vulnerability audit", "npm audit"
+  step "Security: pnpm vulnerability audit", "pnpm audit"
   step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
 
   step "Tests: Rails", "bin/rails test"

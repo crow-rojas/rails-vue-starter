@@ -55,8 +55,8 @@ RUN bundle install && \
     bundle exec bootsnap precompile -j 1 --gemfile
 
 # Install node modules
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN corepack enable pnpm && pnpm install --frozen-lockfile
 
 # Copy application code
 COPY . .
@@ -70,7 +70,7 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Build SSR bundle when SSR_ENABLED=true, then discard node_modules
 ARG SSR_ENABLED
-RUN if [ "$SSR_ENABLED" = "true" ]; then npx vite build --ssr; fi && \
+RUN if [ "$SSR_ENABLED" = "true" ]; then pnpm exec vite build --ssr; fi && \
     rm -rf node_modules
 
 # Branch: SSR enabled — ship the JS runtime alongside the app
