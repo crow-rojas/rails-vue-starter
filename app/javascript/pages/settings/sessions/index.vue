@@ -9,7 +9,7 @@ import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { sessions as sessionsRoutes, settingsSessions } from "@/routes"
-import type { BreadcrumbItem, Session } from "@/types"
+import type { BreadcrumbItem, SettingsSessionsIndex } from "@/types"
 
 const { t, locale } = useI18n()
 
@@ -20,11 +20,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   },
 ])
 
-interface Props {
-  sessions: Session[]
-}
-
-defineProps<Props>()
+defineProps<SettingsSessionsIndex>()
 
 const { auth } = usePage().props
 </script>
