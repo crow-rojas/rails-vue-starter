@@ -10,6 +10,7 @@ CI.run do
   step "JavaScript: lint", "pnpm lint"
   step "JavaScript: format", "pnpm format"
   step "JavaScript: types check", "pnpm check"
+  step "JavaScript: dead code", "pnpm exec knip"
   # Regenerate and compare content hashes, so the step judges the files, not what happens to be staged.
   generated = "app/javascript/routes app/javascript/types/serializers"
   digest = "find #{generated} -type f | sort | xargs shasum | shasum"

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "app/javascript/entrypoints/*.{ts,css}",
+    "app/javascript/pages/**/*.vue",
+    // The vendored shadcn-vue kit and its `utils` alias (components.json): kept whole, used or not.
+    "app/javascript/components/ui/**/*.{ts,vue}",
+    "app/javascript/lib/utils.ts",
+  ],
+  "project": ["app/javascript/**/*.{ts,vue,css}"],
+  "ignore": ["app/javascript/routes/**", "app/javascript/types/serializers/**"],
+  // Dead code the quality branch deletes; drop these two lines when it lands.
+  "ignoreIssues": {
+    "app/javascript/composables/useInitials.ts": ["exports"],
+    "app/javascript/types/index.ts": ["types"],
+  },
+}
