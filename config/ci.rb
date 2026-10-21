@@ -22,7 +22,7 @@ CI.run do
     step "Security: Gem audit", "bin/bundler-audit"
     step "Security: pnpm vulnerability audit", "pnpm audit"
     step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
-    step "Security: secrets in git history", "docker run --rm -v \"$PWD:/repo\" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --redact --no-banner"
+    step "Security: secrets in git history", "bin/gitleaks git --redact --no-banner"
 
     step "Tests: System", "bin/rails test:system"
     step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
