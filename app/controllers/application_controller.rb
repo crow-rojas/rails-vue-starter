@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def perform_authentication
-    Current.session ||= Session.find_by_id(cookies.signed[:session_token])
+    Current.session ||= Session.find_by(id: cookies.signed[:session_token])
   end
 
   def set_current_request_details

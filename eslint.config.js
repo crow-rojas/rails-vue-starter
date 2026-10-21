@@ -57,5 +57,19 @@ export default defineConfigWithVueTs(
       "@typescript-eslint/consistent-type-imports": "error",
     },
   },
+  {
+    name: "app/no-suppressions",
+    linterOptions: { noInlineConfig: true },
+    rules: {
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        {
+          "ts-expect-error": true,
+          "ts-ignore": true,
+          "ts-nocheck": true,
+        },
+      ],
+    },
+  },
   skipFormatting,
 )
