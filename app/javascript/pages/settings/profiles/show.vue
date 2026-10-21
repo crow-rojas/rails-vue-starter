@@ -11,7 +11,13 @@ import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { settingsProfiles } from "@/routes"
-import { type BreadcrumbItem, type User } from "@/types"
+import {
+  type BreadcrumbItem,
+  type SettingsProfilesShow,
+  type User,
+} from "@/types"
+
+defineProps<SettingsProfilesShow>()
 
 const { t } = useI18n()
 
@@ -24,7 +30,6 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 
 const page = usePage()
 const user = computed(() => page.props.auth.user as User)
-const locales = ["en", "es"]
 </script>
 
 <template>

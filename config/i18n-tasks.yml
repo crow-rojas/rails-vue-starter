@@ -1,6 +1,5 @@
 # Missing and unused keys across Ruby, ERB and Vue. Run `bundle exec i18n-tasks health`.
 base_locale: en
-locales: [ en, es ]
 
 data:
   read:
