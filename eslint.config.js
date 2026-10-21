@@ -3,7 +3,7 @@ import {
   defineConfigWithVueTs,
   vueTsConfigs,
 } from "@vue/eslint-config-typescript"
-import importPlugin from "eslint-plugin-import"
+import importPlugin from "eslint-plugin-import-x"
 import pluginVue from "eslint-plugin-vue"
 
 export default defineConfigWithVueTs(
@@ -24,11 +24,11 @@ export default defineConfigWithVueTs(
   {
     ...importPlugin.flatConfigs.recommended,
     ...importPlugin.flatConfigs.typescript,
-    settings: { "import/resolver": { typescript: {} } },
+    settings: { "import-x/resolver": { typescript: {} } },
     rules: {
       "vue/multi-word-component-names": "off",
       "vue/no-bare-strings-in-template": "error",
-      "import/order": [
+      "import-x/order": [
         "error",
         {
           pathGroups: [
@@ -43,8 +43,8 @@ export default defineConfigWithVueTs(
           alphabetize: { order: "asc" },
         },
       ],
-      "import/first": "error",
-      "import/extensions": [
+      "import-x/first": "error",
+      "import-x/extensions": [
         "error",
         "always",
         {

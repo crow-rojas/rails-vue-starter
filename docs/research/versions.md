@@ -27,7 +27,7 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | typescript / vue-tsc | 6.0.3 / 3.3.13 | `vue-tsc` does not run on TypeScript 7 yet. `typescript-native-bridge` (6.0.3-bridge.18.tsgo.7.0.2) aliases `typescript` and runs the check on tsgo. Not adopted: the check takes about 3 s today. [vuejs/language-tools#5381](https://github.com/vuejs/language-tools/issues/5381) |
 | tailwindcss | 4.3.3 | `@tailwindcss/typography` was removed: unused, and it pulled a vulnerable `postcss-selector-parser`. |
 | @lucide/vue | 1.60.0 | Same floor adjustment as vite (1.61.0 was hours old). The generator also installed the deprecated `lucide-vue-next`; the pages now import `@lucide/vue` and it is removed. |
-| eslint / eslint-plugin-vue / prettier | 9.39.5 / 10.11.1 / 3.9.10 | ESLint 9 is out of support. Biome is not used yet because its Vue support is experimental. [Biome language support](https://biomejs.dev/internals/language-support) |
+| eslint / eslint-plugin-vue / prettier | 10.13.0 / 10.11.1 / 3.9.10 | Moved from the generator's ESLint 9, which is out of support; every plugin here accepts `^10` in its peer range (`@vue/eslint-config-typescript`, `eslint-plugin-vue`, `typescript-eslint`, `eslint-plugin-import-x`). Biome is not used yet because its Vue support is experimental. [ESLint version support](https://eslint.org/version-support/), [Biome language support](https://biomejs.dev/internals/language-support) |
 | typelizer / alba / alba-inertia | 0.14.0 / 4.0.1 / 0.1.4 | |
 | authentication-zero | 4.0.3 | Generates the auth code into the app; no release since 2024-12. |
 | solid_queue / solid_cache / solid_cable | 1.7.0 / 1.0.10 / 4.1.0 | |
@@ -46,14 +46,9 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | i18n-tasks | 1.1.2 | Missing and unused keys across Ruby, ERB and Vue. [GitHub](https://github.com/glebm/i18n-tasks) |
 | i18n-js | 4.5.4 | Reads Rails translations in Vue with Rails semantics. [GitHub](https://github.com/fnando/i18n) |
 | axe-core | 4.14.0 | Accessibility rules (WCAG 2 A and AA) that `assert_accessible` runs in system tests, injected from `node_modules`. No gem: `axe-core-capybara` is built for RSpec. [GitHub](https://github.com/dequelabs/axe-core), [API](https://github.com/dequelabs/axe-core/blob/develop/doc/API.md) |
+| eslint-plugin-import-x | 4.17.1 | Replaces the generator's `eslint-plugin-import`, which caps ESLint at `^9`; the same `order`, `first` and `extensions` rules under the `import-x/` prefix. [GitHub](https://github.com/un-ts/eslint-plugin-import-x) |
 | knip | 6.42.1 | Fails on unused files, exports and dependencies in `app/javascript`; the shadcn-vue kit counts as entry points, so unused kit parts stay. [knip.dev](https://knip.dev) |
 | gitleaks | 8.30.1 (image `ghcr.io/gitleaks/gitleaks`) | Secret scanning; `bin/gitleaks` uses an installed binary first. [Releases](https://github.com/gitleaks/gitleaks/releases) |
-
-## Kept as generated, on purpose
-
-| Item | Why it stays |
-|---|---|
-| ESLint 9.39.5 | ESLint 9 is out of support, but `eslint-plugin-import` does not support ESLint 10 yet; moving means replacing it with `eslint-plugin-import-x`. Follow the generator when it moves. |
 
 ## Audit exceptions
 
