@@ -16,7 +16,7 @@ You need Ruby and Node at the versions in `.ruby-version` and `.node-version` (a
 bin/setup
 ```
 
-It installs dependencies and git hooks, writes `.env` with free ports for Postgres and the app, starts the database, prepares it and runs the app.
+It installs dependencies and git hooks, writes `.env` with free ports for Postgres and the app, starts the database, prepares and seeds it, and runs the app. Sign in as `demo@example.com` / `demo-password-123` (development only); that user also sees the errors and jobs dashboards at `/admin/errors` and `/admin/jobs`.
 
 ## Checks
 
@@ -33,6 +33,7 @@ One server with Docker and SSH as root, a domain pointing at it, an SMTP account
 ```sh
 export KAMAL_HOST=203.0.113.10 APP_HOST=app.example.com
 export MAIL_FROM=hello@example.com SMTP_ADDRESS=smtp.example.com SMTP_USERNAME=apikey
+export ADMIN_EMAILS=you@example.com   # sees /admin/errors and /admin/jobs, gets new errors by email
 export BACKUP_S3_ENDPOINT=https://<account>.r2.cloudflarestorage.com BACKUP_S3_REGION=auto BACKUP_S3_BUCKET=my-app-backups
 export SECRET_KEY_BASE=$(bin/rails secret) POSTGRES_PASSWORD=... SMTP_PASSWORD=...
 export BACKUP_S3_ACCESS_KEY_ID=... BACKUP_S3_SECRET_ACCESS_KEY=... BACKUP_PASSPHRASE=...

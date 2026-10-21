@@ -36,6 +36,9 @@ module RailsVueStarter
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # The admin route constraint already guards Mission Control; its own basic auth would be a second password.
+    config.mission_control.jobs.http_basic_auth_enabled = false
+
     config.i18n.available_locales = %i[en es]
     config.i18n.default_locale = :en
 

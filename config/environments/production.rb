@@ -90,4 +90,11 @@ Rails.application.configure do
 
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Unhandled errors land in the database (dashboard at /admin/errors); each new one is emailed
+  # to the admins. Access to the dashboard is the ADMIN_EMAILS route constraint, not a password.
+  config.solid_errors.send_emails = ENV["ADMIN_EMAILS"].present?
+  config.solid_errors.email_from = ENV["MAIL_FROM"]
+  config.solid_errors.email_to = ENV["ADMIN_EMAILS"]
+  config.solid_errors.email_every_occurrence = false
 end
