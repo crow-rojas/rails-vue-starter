@@ -3,6 +3,7 @@ import type { HTMLAttributes } from "vue"
 import { PanelLeft } from "@lucide/vue"
 import { cn } from "cn"
 import { Button } from '@/components/ui/button'
+import { useI18n } from "@/composables/useI18n"
 import { useSidebar } from "./utils"
 
 const props = defineProps<{
@@ -10,6 +11,7 @@ const props = defineProps<{
 }>()
 
 const { toggleSidebar } = useSidebar()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -22,6 +24,6 @@ const { toggleSidebar } = useSidebar()
     @click="toggleSidebar"
   >
     <PanelLeft />
-    <span class="sr-only">Toggle Sidebar</span>
+    <span class="sr-only">{{ t("ui.a11y.toggle_sidebar") }}</span>
   </Button>
 </template>

@@ -40,7 +40,6 @@ const { t } = useI18n()
             type="email"
             required
             autofocus
-            :tabindex="1"
             autocomplete="email"
             :placeholder="t('ui.sessions.new.email_placeholder')"
           />
@@ -52,11 +51,7 @@ const { t } = useI18n()
             <FieldLabel for="password">{{
               t("ui.sessions.new.password")
             }}</FieldLabel>
-            <TextLink
-              :href="identityPasswordResets.new()"
-              class="text-sm"
-              :tabindex="5"
-            >
+            <TextLink :href="identityPasswordResets.new()" class="text-sm">
               {{ t("ui.sessions.new.forgot_password") }}
             </TextLink>
           </div>
@@ -65,19 +60,13 @@ const { t } = useI18n()
             name="password"
             type="password"
             required
-            :tabindex="2"
             autocomplete="current-password"
             :placeholder="t('ui.sessions.new.password')"
           />
           <FieldError :errors="errors.password" />
         </Field>
 
-        <Button
-          type="submit"
-          class="mt-4 w-full"
-          :tabindex="4"
-          :disabled="processing"
-        >
+        <Button type="submit" class="mt-4 w-full" :disabled="processing">
           <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
           {{ t("ui.sessions.new.log_in") }}
         </Button>
@@ -85,7 +74,7 @@ const { t } = useI18n()
 
       <div class="text-muted-foreground text-center text-sm">
         {{ t("ui.sessions.new.no_account") }}
-        <TextLink :href="users.new()" :tabindex="5">{{
+        <TextLink :href="users.new()">{{
           t("ui.sessions.new.sign_up")
         }}</TextLink>
       </div>

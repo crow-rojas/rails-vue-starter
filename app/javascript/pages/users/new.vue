@@ -41,7 +41,6 @@ const { t } = useI18n()
             type="text"
             required
             autofocus
-            :tabindex="1"
             autocomplete="name"
             :placeholder="t('ui.users.new.name_placeholder')"
           />
@@ -55,7 +54,6 @@ const { t } = useI18n()
             name="email"
             type="email"
             required
-            :tabindex="2"
             autocomplete="email"
             :placeholder="t('ui.users.new.email_placeholder')"
           />
@@ -71,7 +69,6 @@ const { t } = useI18n()
             name="password"
             type="password"
             required
-            :tabindex="3"
             autocomplete="new-password"
             :placeholder="t('ui.users.new.password')"
           />
@@ -87,19 +84,13 @@ const { t } = useI18n()
             name="password_confirmation"
             type="password"
             required
-            :tabindex="4"
             autocomplete="new-password"
             :placeholder="t('ui.users.new.confirm_password')"
           />
           <FieldError :errors="errors.password_confirmation" />
         </Field>
 
-        <Button
-          type="submit"
-          class="mt-2 w-full"
-          :tabindex="5"
-          :disabled="processing"
-        >
+        <Button type="submit" class="mt-2 w-full" :disabled="processing">
           <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
           {{ t("ui.users.new.submit") }}
         </Button>
@@ -107,12 +98,9 @@ const { t } = useI18n()
 
       <div class="text-muted-foreground text-center text-sm">
         {{ t("ui.users.new.have_account") }}
-        <TextLink
-          :href="sessions.new()"
-          class="underline underline-offset-4"
-          :tabindex="6"
-          >{{ t("ui.users.new.log_in") }}</TextLink
-        >
+        <TextLink :href="sessions.new()" class="underline underline-offset-4">{{
+          t("ui.users.new.log_in")
+        }}</TextLink>
       </div>
     </Form>
   </AuthBase>
