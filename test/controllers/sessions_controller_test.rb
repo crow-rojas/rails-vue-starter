@@ -33,4 +33,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     delete session_path(session_record)
     assert_redirected_to settings_sessions_path
   end
+
+  test "limits sign in attempts" do
+    10.times { post sign_in_path, params: { email: users(:one).email, password: "wrongpassword" } }
+    post sign_in_path, params: { email: users(:one).email, password: "Secret1*3*5*" }
+
+    assert_equal "Try again later", flash[:alert]
+    assert_predicate cookies[:session_token], :blank?
+  end
 end

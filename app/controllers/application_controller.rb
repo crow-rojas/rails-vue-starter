@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   before_action :set_current_request_details
   before_action :authenticate
 
+  def self.limit_attempts(**)
+    rate_limit(to: 10, within: 3.minutes, with: -> { redirect_back_or_to root_path, alert: "Try again later" }, **)
+  end
+
   private
 
   def authenticate
