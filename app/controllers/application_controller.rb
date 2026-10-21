@@ -43,7 +43,12 @@ class ApplicationController < ActionController::Base
   end
 
   def perform_authentication
-    Current.session ||= Session.find_by(id: cookies.signed[:session_token])
+    Current.session ||= Session.find_active(cookies.signed[:session_token])
+  end
+
+  def start_session_for(user)
+    session_record = user.sessions.create!
+    cookies.signed[:session_token] = { value: session_record.id, httponly: true, expires: Session::LIFETIME }
   end
 
   def set_current_request_details

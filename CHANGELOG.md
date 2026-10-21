@@ -8,6 +8,10 @@ Notable changes to the template are documented here. The format is based on [Kee
 
 - The Vue pages read translations with i18n-js again, instead of the 30-line `lib/translate.ts` and its Vitest setup. Apps made from v0.1.0 can keep either; to switch back, restore `app/javascript/composables/useI18n.ts` from this release and add `i18n-js`.
 
+### Security
+
+- Sessions expire 30 days after sign in; before, the cookie was permanent and any session row signed its user in forever. To port: `Session::LIFETIME`, `Session.find_active` and `.expired` in `app/models/session.rb`, `start_session_for` in `ApplicationController`, the lookup in the admin constraint in `config/routes.rb`, and `clear_expired_sessions` in `config/recurring.yml`.
+
 ### Removed
 
 - Active Storage, Action Mailbox, Action Text and jbuilder. The engines drew public routes such as `POST /rails/active_storage/direct_uploads` with no tables behind them. To port: delete their `require` lines in `config/application.rb`, the `active_storage.service` lines in `config/environments`, `config/storage.yml`, the storage volume in `config/deploy.yml` and the `jbuilder` gem.

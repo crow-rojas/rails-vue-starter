@@ -41,4 +41,20 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Try again later", flash[:alert]
     assert_predicate cookies[:session_token], :blank?
   end
+
+  test "the session cookie expires with the session" do
+    post sign_in_path, params: { email: users(:one).email, password: "Secret1*3*5*" }
+
+    cookie = Array(response.headers["Set-Cookie"]).join("\n")[/session_token=[^\n]*/]
+    assert_in_delta 30.days.from_now, Time.httpdate(cookie[/expires=([^;]+)/i, 1]), 1.minute
+  end
+
+  test "signs out a session older than 30 days" do
+    sign_in users(:one)
+
+    travel 30.days + 1.minute
+    get dashboard_path
+
+    assert_redirected_to sign_in_path
+  end
 end

@@ -11,6 +11,7 @@ The generated authentication was solid at its core: tokens that expire, sessions
 ## Decision
 
 - Rate limiting: `ApplicationController.limit_attempts` (10 requests per 3 minutes per IP, then a redirect with an alert) on sign in, sign up, password reset requests and verification resends. Any new endpoint that sends email or checks a secret uses it.
+- Sessions end 30 days after sign in, however active they are (`Session::LIFETIME`), an absolute timeout as the [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#absolute-timeout) recommends: the cookie expires then, both session lookups (`Session.find_active`) ignore older rows, and a daily job in `config/recurring.yml` deletes them.
 - No account enumeration: password reset requests get one answer for every email.
 - SSL: `assume_ssl` and `force_ssl` in production, with `/up` excluded for the health check.
 - Content security policy, enforced in every environment: scripts only from the app or the running Vite dev server, a per-request nonce for inline scripts, no objects, no framing, no foreign form targets. Styles allow `unsafe-inline` because Vue and reka-ui write style attributes.

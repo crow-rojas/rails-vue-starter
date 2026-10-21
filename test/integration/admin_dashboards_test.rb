@@ -50,4 +50,13 @@ class AdminDashboardsTest < ActionDispatch::IntegrationTest
     get "/admin/errors"
     assert_response :not_found
   end
+
+  test "an expired session cannot open the dashboards" do
+    sign_in users(:one)
+
+    travel 30.days + 1.minute
+    get "/admin/errors"
+
+    assert_response :not_found
+  end
 end
