@@ -42,7 +42,10 @@ aliases:
   shell: app exec --interactive --reuse "bash"
   logs: app logs -f
   dbc: app exec --interactive --reuse "bin/rails dbconsole --include-password"
-  restore: accessory exec backup "sh restore.sh"
+  backup: accessory exec backup --reuse "sh backup.sh"
+  backup-drill: accessory exec backup --reuse "sh /backup_drill.sh"
+  # Destructive: restores the latest backup OVER the live database. Run backup-drill first.
+  restore: accessory exec backup --reuse "sh restore.sh"
 
 volumes:
   - "rails_vue_starter_storage:/rails/storage"
@@ -65,8 +68,9 @@ accessories:
     directories:
       - data:/var/lib/postgresql
 
-  # Daily encrypted dump of the primary database; `bin/kamal restore` brings back the latest one.
-  # Cache, queue and cable databases are rebuildable and not backed up.
+  # Daily encrypted dump of the primary database. `bin/kamal backup` takes one now,
+  # `bin/kamal backup-drill` proves the latest restores (into a scratch database), and
+  # `bin/kamal restore` restores it over the live database. Cache, queue and cable are not backed up.
   backup:
     image: ardakilic/postgres-backup-s3:18
     host: <%= ENV.fetch("KAMAL_HOST") %>
@@ -86,3 +90,5 @@ accessories:
         - S3_ACCESS_KEY_ID
         - S3_SECRET_ACCESS_KEY
         - PASSPHRASE
+    files:
+      - script/backup_drill.sh:/backup_drill.sh

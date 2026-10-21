@@ -42,7 +42,9 @@ bin/kamal setup     # first time: server, accessories, app
 bin/kamal deploy    # every time after
 ```
 
-Keep the secrets in a password manager rather than your shell history; `.kamal/secrets` explains how. After the first deploy, check that an email arrives and restore one backup with `bin/kamal restore`.
+Keep the secrets in a password manager rather than your shell history; `.kamal/secrets` explains how. `KAMAL_HOST` can be an alias from `~/.ssh/config`. If the domain is on Cloudflare, keep the record **DNS only** until the first certificate is issued.
+
+After the first deploy, check that an email arrives, then prove the backups: `bin/kamal backup` takes one and `bin/kamal backup-drill` restores it into a scratch database. `bin/kamal restore` restores over the live database; it is for real recovery only.
 
 ## License
 
