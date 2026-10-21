@@ -8,13 +8,15 @@ Rails.application.configure do
     policy.form_action :self
     policy.frame_ancestors :none
     policy.object_src :none
-    policy.font_src :self, :data
-    policy.img_src :self, :data
+    # RailsVite.dev_server_csp_source is the running Vite dev server, resolved per request,
+    # and nothing when it is not running. Every directive that loads assets needs it.
+    vite = RailsVite.dev_server_csp_source
+    policy.font_src :self, :data, vite
+    policy.img_src :self, :data, vite
     # Vue and reka-ui set style attributes, and Vite injects <style> tags in development.
-    policy.style_src :self, :unsafe_inline
-    # The running Vite dev server, resolved per request; nothing when it is not running.
-    policy.script_src :self, RailsVite.dev_server_csp_source
-    policy.connect_src :self, RailsVite.dev_server_csp_source, RailsVite.dev_server_csp_source(websocket: true)
+    policy.style_src :self, :unsafe_inline, vite
+    policy.script_src :self, vite
+    policy.connect_src :self, vite, RailsVite.dev_server_csp_source(websocket: true)
   end
 
   # A fresh nonce per request for the few inline scripts (javascript_tag nonce: true).

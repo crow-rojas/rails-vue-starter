@@ -27,4 +27,16 @@ class SecurityHeadersTest < ActionDispatch::IntegrationTest
 
     assert_includes response.headers["Permissions-Policy"], "camera=()"
   end
+
+  test "every directive that loads assets allows the running Vite dev server" do
+    config = RailsVite.config
+    config.define_singleton_method(:dev_server_url) { "http://127.0.0.1:5173" }
+    policy = Rails.application.config.content_security_policy.build(Object.new)
+
+    %w[script-src style-src img-src font-src connect-src].each do |directive|
+      assert_match %r{#{directive} [^;]*http://127\.0\.0\.1:5173}, policy
+    end
+  ensure
+    config.singleton_class.remove_method(:dev_server_url)
+  end
 end
