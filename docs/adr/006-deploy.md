@@ -10,14 +10,14 @@ A new app should reach production in an afternoon on one rented server, without 
 
 ## Decision
 
-- **Kamal 2 on one server**: kamal-proxy terminates TLS with Let's Encrypt and gives zero-downtime deploys; Thruster serves assets; Solid Queue runs inside Puma (`SOLID_QUEUE_IN_PUMA`). Images go through Kamal's local registry, so no Docker Hub or GHCR account is needed.
-- **Postgres 18.6 as a Kamal accessory** on the same server, holding the four databases Rails expects (primary, cache, queue, cable); `db:prepare` creates them on first boot.
-- **Backups**: the `ardakilic/postgres-backup-s3:18` accessory dumps the primary database daily, encrypted with `PASSPHRASE`, to any S3-compatible bucket (R2, B2, S3), keeping 14 days. Cache, queue and cable are rebuildable and not backed up.
+- Kamal 2 on one server: kamal-proxy terminates TLS with Let's Encrypt and gives zero-downtime deploys; Thruster serves assets; Solid Queue runs inside Puma (`SOLID_QUEUE_IN_PUMA`). Images go through Kamal's local registry, so no Docker Hub or GHCR account is needed.
+- Postgres 18.6 as a Kamal accessory on the same server, holding the four databases Rails expects (primary, cache, queue, cable); `db:prepare` creates them on first boot.
+- Backups: the `ardakilic/postgres-backup-s3:18` accessory dumps the primary database daily, encrypted with `PASSPHRASE`, to any S3-compatible bucket (R2, B2, S3), keeping 14 days. Cache, queue and cable are rebuildable and not backed up.
   - `bin/kamal backup` takes one now.
   - `bin/kamal backup-drill` restores the latest into a scratch database next to production, reports its tables and users, and drops it (`script/backup_drill.sh`, uploaded into the accessory).
   - `bin/kamal restore` is the real thing: the image's `restore.sh` runs `pg_restore --clean` **over the live database**, and it can only target that database. Never use it to test a backup.
-- **Configuration from the environment**: `config/deploy.yml` reads the host, domain, email and backup settings with `ENV.fetch`, and `.kamal/secrets` reads the secrets from the environment. Production reads `APP_HOST`, `DB_HOST`, `POSTGRES_PASSWORD`, SMTP and `SECRET_KEY_BASE`; there is no credentials file. A missing variable fails the boot, except during `assets:precompile` in the image build.
-- **CI builds the image** on every pull request.
+- Configuration from the environment: `config/deploy.yml` reads the host, domain, email and backup settings with `ENV.fetch`, and `.kamal/secrets` reads the secrets from the environment. Production reads `APP_HOST`, `DB_HOST`, `POSTGRES_PASSWORD`, SMTP and `SECRET_KEY_BASE`; there is no credentials file. A missing variable fails the boot, except during `assets:precompile` in the image build.
+- CI builds the image on every pull request.
 
 ## Verified locally against the production image
 

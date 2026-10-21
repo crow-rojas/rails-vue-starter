@@ -6,7 +6,7 @@
 
 ## Context
 
-Agents copy what they find. A codebase with three ways to do the same thing gets a fourth, so the shape has to be one, visible in working code, and checked by tools where possible. Projects (`ProjectsController` and its pages, models, serializers and tests) is that working code.
+Agents copy what they find. A codebase with three ways to do the same thing gets a fourth, so there has to be one shape, visible in working code and checked by tools where possible. Projects (`ProjectsController` and its pages, models, serializers and tests) is that working code.
 
 ## Decision
 
@@ -30,7 +30,7 @@ Agents copy what they find. A codebase with three ways to do the same thing gets
 | Form object | A form does not map onto one model. | `ActiveModel::Model` with its own validations, in `app/models/`. |
 | Query object | A query is reused in several places and is more than a scope. | A scope first; a class only when a scope cannot express it. |
 
-The reference has none of these because it does not need them; an agent that adds one without the reason in its row is adding indirection, not structure.
+The reference has none of these because it does not need them; an agent that adds one without the reason in its row is only adding indirection.
 
 ## Consequences
 
