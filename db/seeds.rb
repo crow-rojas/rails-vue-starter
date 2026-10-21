@@ -1,9 +1,13 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Idempotent: safe to run again at any time. Production gets no demo data, so no account with a
+# published password can exist on a real server.
+if Rails.env.local?
+  demo = User.find_or_create_by!(email: "demo@example.com") do |user|
+    user.name = "Demo User"
+    user.password = "demo-password-123"
+    user.verified = true
+  end
+
+  [ "Website redesign", "Product launch" ].each do |name|
+    demo.projects.find_or_create_by!(name: name)
+  end
+end
