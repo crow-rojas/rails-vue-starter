@@ -1,0 +1,20 @@
+# Missing and unused keys across Ruby, ERB and Vue. Run `bundle exec i18n-tasks health`.
+base_locale: en
+locales: [ en, es ]
+
+data:
+  read:
+    - config/locales/%{locale}.yml
+
+search:
+  paths:
+    - app/
+  exclude:
+    - app/assets
+    - app/javascript/components/ui
+    - app/javascript/routes
+    - app/javascript/types
+
+ignore_unused:
+  # Read with a dynamic key in the language picker.
+  - "ui.locales.*"

@@ -13,6 +13,7 @@ CI.run do
   step "JavaScript: generated types are fresh", "bin/rails typelizer:generate:refresh && git diff --exit-code -- app/javascript/routes app/javascript/types/serializers && test -z \"$(git ls-files --others --exclude-standard -- app/javascript/routes app/javascript/types/serializers)\""
 
   step "Guard: tests and migrations", "bin/guard"
+  step "i18n: missing and unused keys", "bundle exec i18n-tasks health"
 
   step "Tests: Rails", "bin/rails test"
 
