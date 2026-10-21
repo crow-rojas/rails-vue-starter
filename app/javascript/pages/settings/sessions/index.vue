@@ -11,7 +11,7 @@ import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { sessions as sessionsRoutes, settingsSessions } from "@/routes"
 import type { BreadcrumbItem, Session } from "@/types"
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   {
@@ -63,7 +63,7 @@ const { auth } = usePage().props
                 <p class="text-muted-foreground text-sm">
                   {{
                     t("ui.settings.sessions.active_since", {
-                      time: new Date(session.created_at).toLocaleString(),
+                      time: new Date(session.created_at).toLocaleString(locale),
                     })
                   }}
                 </p>
