@@ -28,5 +28,6 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 4. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The `Guard-Override:` trailer is for humans only.
 5. **Write the failing test first** when fixing a bug, and run it to see it fail for the right reason.
 6. **No N+1 queries** (prosopite fails the test) and **no unsafe migrations** (strong_migrations fails the migration).
-7. **pnpm only**, and new dependencies need a reason in `docs/research/versions.md` with an official source. Gems resolve with a 7-day cooldown and packages with a 1-day minimum age.
-8. **If a rule gets in the way, propose an ADR.** Do not break it, weaken a check, or skip a hook.
+7. **Security defaults stay on** (ADR-003): an endpoint that sends email or checks a secret calls `limit_attempts`; an inline script uses `javascript_tag nonce: true`; a new external origin is added to the content security policy on purpose, never by loosening it.
+8. **pnpm only**, and new dependencies need a reason in `docs/research/versions.md` with an official source. Gems resolve with a 7-day cooldown and packages with a 1-day minimum age.
+9. **If a rule gets in the way, propose an ADR.** Do not break it, weaken a check, or skip a hook.
