@@ -8,6 +8,16 @@ Notable changes to the template are documented here. The format is based on [Kee
 
 - The Vue pages read translations with i18n-js again, instead of the 30-line `lib/translate.ts` and its Vitest setup. Apps made from v0.1.0 can keep either; to switch back, restore `app/javascript/composables/useI18n.ts` from this release and add `i18n-js`.
 
+### Added
+
+- `.github/rulesets/main.json`, the `main` ruleset, with the README steps to apply it and turn on private vulnerability reporting in a new app.
+- `bin/rename` points the links to this repository (`SECURITY.md`, the issue template config, the sidebar) at the app's `origin`, and lists what is left to do by hand.
+
+### Fixed
+
+- The gitleaks Docker fallback scanned nothing inside a git worktree. To port: mount the shared git dir in `bin/gitleaks`.
+- The README's upgrade recipe merged unrelated histories; it now applies the diff between two release tags.
+
 ### Security
 
 - Sessions expire 30 days after sign in; before, the cookie was permanent and any session row signed its user in forever. To port: `Session::LIFETIME`, `Session.find_active` and `.expired` in `app/models/session.rb`, `start_session_for` in `ApplicationController`, the lookup in the admin constraint in `config/routes.rb`, and `clear_expired_sessions` in `config/recurring.yml`.
