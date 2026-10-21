@@ -5,6 +5,7 @@ require "application_system_test_case"
 class PwaTest < ApplicationSystemTestCase
   test "the service worker takes over the whole app and keeps the offline page" do
     visit root_path
+    assert_accessible
 
     assert_equal "/", service_worker_scope
     offline_page = page.evaluate_async_script(<<~JS, pwa_offline_path)

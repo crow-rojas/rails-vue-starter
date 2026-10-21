@@ -45,6 +45,7 @@ The base comes from [inertia-rails/generator](https://github.com/inertia-rails/g
 | rails-i18n | 8.1.0 | Framework strings (validation messages, dates) for Spanish. [GitHub](https://github.com/svenfuchs/rails-i18n) |
 | i18n-tasks | 1.1.2 | Missing and unused keys across Ruby, ERB and Vue. [GitHub](https://github.com/glebm/i18n-tasks) |
 | i18n-js | 4.5.4 | Reads Rails translations in Vue with Rails semantics. [GitHub](https://github.com/fnando/i18n) |
+| axe-core | 4.14.0 | Accessibility rules (WCAG 2 A and AA) that `assert_accessible` runs in system tests, injected from `node_modules`. No gem: `axe-core-capybara` is built for RSpec. [GitHub](https://github.com/dequelabs/axe-core), [API](https://github.com/dequelabs/axe-core/blob/develop/doc/API.md) |
 | gitleaks | 8.30.1 (image `ghcr.io/gitleaks/gitleaks`) | Secret scanning; `bin/gitleaks` uses an installed binary first. [Releases](https://github.com/gitleaks/gitleaks/releases) |
 
 ## Kept as generated, on purpose

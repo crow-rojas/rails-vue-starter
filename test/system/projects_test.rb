@@ -5,14 +5,22 @@ class ProjectsTest < ApplicationSystemTestCase
 
   test "creating, renaming and deleting a project" do
     click_on "Projects"
+    assert_selector "h1", text: "Projects"
+    assert_accessible
+
     click_on "New project"
+    assert_selector "h1", text: "New project"
+    assert_accessible
     fill_in "Name", with: "Annual report"
     click_on "Save"
 
     assert_text "Project created"
     assert_selector "h1", text: "Annual report"
+    assert_accessible
 
     click_on "Edit"
+    assert_selector "h1", text: "Edit project"
+    assert_accessible
     fill_in "Name", with: "Annual report 2026"
     click_on "Save"
     assert_selector "h1", text: "Annual report 2026"
@@ -28,5 +36,6 @@ class ProjectsTest < ApplicationSystemTestCase
     click_on "Save"
 
     assert_text "has already been taken"
+    assert_accessible
   end
 end
