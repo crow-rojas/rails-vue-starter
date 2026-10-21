@@ -65,6 +65,8 @@ The hooks give fast feedback, but anyone determined can get past them. The real 
 
 Claude Code runs both agent hooks from `.claude/settings.json`. Codex runs the turn-end check from `.codex/hooks.json` once you trust the project's `.codex/` folder (`/hooks` reviews it). Copilot CLI, and Cursor through its third-party imports setting, also read `.claude/settings.json`, but neither is tested here, and Copilot treats the check's exit code 2 as a warning, so a failed check does not keep it working. Every agent reads the same `AGENTS.md` and hits the same git hooks and CI.
 
+For a cloud agent, the setup script (the environment's setup script in Claude Code on the web, `.github/workflows/copilot-setup-steps.yml` for Copilot's coding agent) should install the Ruby and Node versions in `.ruby-version` and `.node-version`, since base images can ship older ones (Claude's has Ruby 3.3 and Node 22 at most), and then run `bin/setup --skip-server`.
+
 ## Everyday commands
 
 | Command | Does |
