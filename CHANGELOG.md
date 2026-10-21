@@ -4,6 +4,10 @@ Notable changes to the template are documented here. The format is based on [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- The Vue pages read translations with i18n-js again, instead of the 30-line `lib/translate.ts` and its Vitest setup. Apps made from v0.1.0 can keep either; to switch back, restore `app/javascript/composables/useI18n.ts` from this release and add `i18n-js`.
+
 ## [0.1.0] - 2026-10-21
 
 The first release.

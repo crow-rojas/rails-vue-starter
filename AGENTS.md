@@ -9,7 +9,7 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 - `bin/check`: the fast gate (lint, types, generated types, `bin/guard`, Rails tests), about 11 s. The Stop hook runs it after each turn.
 - `bin/ci`: everything CI runs (`config/ci.rb`), about 40 s; `git push` runs it. **You are done only when it is green.**
 - `bin/rails test`, `bin/rails test:system`: Minitest unit, integration and browser tests.
-- `pnpm lint`, `pnpm format`, `pnpm check`, `pnpm test`: ESLint, Prettier, the Vue type check and Vitest unit tests.
+- `pnpm lint`, `pnpm format`, `pnpm check`: ESLint, Prettier and the Vue type check.
 - `bin/merge <pr>`: merge a pull request whose checks are green, as a fast-forward of main that keeps its signed commits. Never use GitHub's merge buttons.
 
 ## Map

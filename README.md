@@ -49,7 +49,7 @@ After renaming, replace this README with one for your app, update the copyright 
 |---|---|---|
 | After the agent edits a file | RuboCop, or ESLint and Prettier, on that file | about 1 s |
 | `git commit` | Linters on the staged files, a secret scan, Conventional Commits | about 1 s |
-| When the agent ends its turn | `bin/check`: lint, types, generated types, guards, unit and Rails tests | about 13 s |
+| When the agent ends its turn | `bin/check`: lint, types, generated types, guards, Rails tests | about 13 s |
 | `git push`, and CI on every pull request | `bin/ci`: everything above plus audits, Brakeman, secret scan of the history, system tests | about 40 s locally |
 
 The hooks give fast feedback, but anyone determined can get past them. The real gate is GitHub: `main` only moves through `bin/merge`, which fast-forwards it to a pull request whose checks passed and whose commits are signed. The design and its limits are in [ADR-002](docs/adr/002-agent-harness.md).
@@ -64,7 +64,7 @@ The hooks are wired for Claude Code (`.claude/settings.json`). Other agents read
 | `bin/check` | The fast check |
 | `bin/ci` | Every check CI runs |
 | `bin/rails test`, `bin/rails test:system` | Rails and browser tests |
-| `pnpm test`, `pnpm check`, `pnpm lint` | Vitest, the Vue type check, ESLint |
+| `pnpm check`, `pnpm lint` | The Vue type check, ESLint |
 | `bin/rename "New Name"` | Renames the template to your app |
 | `bin/merge <pr>` | Merges a green pull request into `main` |
 
