@@ -34,6 +34,8 @@ Two things learned there: the DNS record must not go through Cloudflare's proxy 
 
 **On every new deploy**, check: the certificate, one email delivered, `bin/kamal backup` followed by `bin/kamal backup-drill`, and that deleting that fresh backup (on S3 and B2, its version) with the server's key is refused.
 
+**Alerts that do not depend on the server**: an external uptime monitor on `https://APP_HOST/up` (not `/`, which `allow_browser` can answer with a 406 for a monitor's user agent), and, every month next to `bin/kamal backup-drill`, a look at the date of the newest object in the bucket: the daily backup runs on the server, so nothing reports when it stops.
+
 ## Consequences
 
 - One server is one point of failure; the backups are the recovery plan, which is why restoring one is part of the first deploy.
