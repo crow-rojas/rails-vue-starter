@@ -12,6 +12,10 @@ en:
       invalid: That password reset link is invalid
       requested: If that email belongs to a verified account, you will get reset instructions
       reset: Your password was reset successfully. Please sign in
+  projects:
+    created: Project created
+    destroyed: Project deleted
+    updated: Project updated
   sessions:
     already_signed_in: You are already signed in
     invalid: That email or password is incorrect
@@ -93,8 +97,28 @@ en:
       log_out: Log out
       navigation_menu: Navigation Menu
       platform: Platform
+      projects: Projects
       repository: Repository
       settings: Settings
+    projects:
+      edit:
+        title: Edit project
+      form:
+        cancel: Cancel
+        name: Name
+        name_placeholder: Website redesign
+        save: Save
+      index:
+        empty: No projects yet. Create one to get started.
+        new: New project
+        title: Projects
+      new:
+        title: New project
+      show:
+        confirm_delete: Delete this project? This cannot be undone.
+        created_at: Created %{date}
+        delete: Delete
+        edit: Edit
     sessions:
       new:
         description: Enter your email and password below to log in
