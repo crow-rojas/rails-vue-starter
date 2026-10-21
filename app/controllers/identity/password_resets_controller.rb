@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Identity::PasswordResetsController < InertiaController
+  limit_attempts only: :create
   skip_before_action :authenticate
 
   before_action :set_user, only: %i[edit update]
@@ -14,12 +15,11 @@ class Identity::PasswordResetsController < InertiaController
   end
 
   def create
+    # Same answer whether or not the account exists, so the form cannot be used to find accounts.
     if (@user = User.find_by(email: params[:email], verified: true))
       send_password_reset_email
-      redirect_to sign_in_path, notice: "Check your email for reset instructions"
-    else
-      redirect_to new_identity_password_reset_path, alert: "You can't reset your password until you verify your email"
     end
+    redirect_to sign_in_path, notice: "If that email belongs to a verified account, you will get reset instructions"
   end
 
   def update
