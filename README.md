@@ -63,7 +63,7 @@ After renaming, replace this README with one for your app and update the copyrig
 
 The hooks give fast feedback, but anyone determined can get past them. The real gate is GitHub, with the ruleset in [`.github/rulesets/main.json`](.github/rulesets/main.json): `main` only moves through `bin/merge`, which fast-forwards it to a pull request whose checks passed and whose commits are signed. The design and its limits are in [ADR-002](docs/adr/002-agent-harness.md).
 
-The hooks are wired for Claude Code (`.claude/settings.json`). Other agents read the same `AGENTS.md` and hit the same git hooks and CI.
+Claude Code runs both agent hooks from `.claude/settings.json`. Codex runs the turn-end check from `.codex/hooks.json` once you trust the project's `.codex/` folder (`/hooks` reviews it). Copilot CLI, and Cursor through its third-party imports setting, also read `.claude/settings.json`, but neither is tested here, and Copilot treats the check's exit code 2 as a warning, so a failed check does not keep it working. Every agent reads the same `AGENTS.md` and hits the same git hooks and CI.
 
 ## Everyday commands
 
