@@ -20,6 +20,7 @@ A new app should reach production in an afternoon on one rented server, without 
   - `bin/kamal restore` is the real thing: the image's `restore.sh` runs `pg_restore --clean` **over the live database**, and it can only target that database. Never use it to test a backup.
 - Configuration from the environment: `config/deploy.yml` reads the host, domain, email and backup settings with `ENV.fetch`, and `.kamal/secrets` reads the secrets from the environment. Production reads `APP_HOST`, `DB_HOST`, `POSTGRES_PASSWORD`, SMTP and `SECRET_KEY_BASE`; there is no credentials file. A missing variable fails the boot, except during `assets:precompile` in the image build.
 - CI builds the image on every pull request.
+- A deploy needs a commit CI passed: `.kamal/hooks/pre-deploy` asks `gh` for the checks on `KAMAL_VERSION` (the commit) and stops unless every one succeeded, so push and wait for CI first. `kamal rollback` runs the hook too and is let through; `--skip-hooks` is the emergency exit.
 
 ## Verified locally against the production image
 

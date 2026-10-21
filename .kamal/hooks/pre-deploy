@@ -1,0 +1,25 @@
+#!/bin/sh
+# Refuses to deploy a commit unless every GitHub check on it passed (ADR-006). Needs `gh auth login`.
+# `kamal rollback` runs this hook too and is let through: it boots an image that was already deployed.
+# An emergency deploy that cannot wait for CI: `bin/kamal deploy --skip-hooks`.
+set -eu
+
+[ "$KAMAL_COMMAND" = rollback ] && exit 0
+
+sha=$KAMAL_VERSION
+runs=$(gh api --paginate "repos/{owner}/{repo}/commits/$sha/check-runs" \
+  --jq '.check_runs[] | "\(.name): \(.conclusion // .status)"') || {
+  echo "Cannot read the checks of $sha. Is it pushed to GitHub, and is gh signed in?" >&2
+  exit 1
+}
+
+[ -n "$runs" ] || { echo "No checks have run on $sha yet." >&2; exit 1; }
+
+failed=$(printf '%s\n' "$runs" | grep -Ev ': (success|skipped|neutral)$' || true)
+if [ -n "$failed" ]; then
+  echo "Not deploying $sha; these checks have not passed:" >&2
+  printf '%s\n' "$failed" >&2
+  exit 1
+fi
+
+echo "Every check passed on $sha."
