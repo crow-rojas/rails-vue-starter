@@ -29,6 +29,7 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 - `config/deploy.yml`, `.kamal/secrets`: Kamal deploy, configured from the environment (ADR-006). Production reads variables, never a credentials file.
 - `app/views/pwa`, `PwaController`: the manifest, service worker and offline page (ADR-007). The worker only answers page loads; never let it cache Inertia responses.
 - `.claude/`: the agent hooks and deny rules (ADR-002). `.codex/hooks.json` runs the same Stop hook in Codex.
+- `docs/recipes/llm.md`: the steps for adding an LLM feature in the shape ADR-008 decides. Read it before adding RubyLLM.
 - `docs/adr`: decisions. `docs/research/versions.md`: pinned versions and their sources.
 
 ## Rules
