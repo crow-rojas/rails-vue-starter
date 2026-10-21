@@ -16,7 +16,10 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useI18n } from "@/composables/useI18n"
 import { users } from "@/routes"
+
+const { t } = useI18n()
 
 const passwordInput = ref<HTMLInputElement | null>(null)
 </script>
@@ -24,21 +27,21 @@ const passwordInput = ref<HTMLInputElement | null>(null)
 <template>
   <div class="space-y-6">
     <HeadingSmall
-      title="Delete account"
-      description="Delete your account and all of its resources"
+      :title="t('ui.delete_user.title')"
+      :description="t('ui.delete_user.description')"
     />
     <div
       class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
     >
       <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
-        <p class="font-medium">Warning</p>
+        <p class="font-medium">{{ t("ui.delete_user.warning") }}</p>
         <p class="text-sm">
-          Please proceed with caution, this cannot be undone.
+          {{ t("ui.delete_user.caution") }}
         </p>
       </div>
       <Dialog>
         <DialogTrigger as-child>
-          <Button variant="destructive">Delete account</Button>
+          <Button variant="destructive">{{ t("ui.delete_user.title") }}</Button>
         </DialogTrigger>
         <DialogContent>
           <Form
@@ -50,26 +53,22 @@ const passwordInput = ref<HTMLInputElement | null>(null)
             #default="{ resetAndClearErrors, processing, errors }"
           >
             <DialogHeader class="space-y-3">
-              <DialogTitle
-                >Are you sure you want to delete your account?</DialogTitle
-              >
+              <DialogTitle>{{ t("ui.delete_user.confirm_title") }}</DialogTitle>
               <DialogDescription>
-                Once your account is deleted, all of its resources and data will
-                also be permanently deleted. Please enter your password to
-                confirm you would like to permanently delete your account.
+                {{ t("ui.delete_user.confirm_description") }}
               </DialogDescription>
             </DialogHeader>
 
             <Field>
               <FieldLabel for="password_challenge" class="sr-only">
-                Password
+                {{ t("ui.delete_user.password") }}
               </FieldLabel>
               <Input
                 id="password_challenge"
                 type="password"
                 name="password_challenge"
                 ref="passwordInput"
-                placeholder="Password"
+                :placeholder="t('ui.delete_user.password')"
               />
               <FieldError :errors="errors.password_challenge" />
             </Field>
@@ -77,7 +76,7 @@ const passwordInput = ref<HTMLInputElement | null>(null)
             <DialogFooter class="gap-2">
               <DialogClose as-child>
                 <Button variant="secondary" @click="resetAndClearErrors">
-                  Cancel
+                  {{ t("ui.delete_user.cancel") }}
                 </Button>
               </DialogClose>
 
@@ -86,7 +85,7 @@ const passwordInput = ref<HTMLInputElement | null>(null)
                 variant="destructive"
                 :disabled="processing"
               >
-                Delete account
+                {{ t("ui.delete_user.title") }}
               </Button>
             </DialogFooter>
           </Form>

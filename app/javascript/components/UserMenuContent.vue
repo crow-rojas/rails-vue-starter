@@ -9,6 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import { useI18n } from "@/composables/useI18n"
 import { sessions, settingsProfiles } from "@/routes"
 import type { User } from "@/types"
 
@@ -20,6 +21,8 @@ interface Props {
     user: User
   }
 }
+
+const { t } = useI18n()
 
 const handleLogout = () => {
   router.flushAll()
@@ -44,7 +47,7 @@ defineProps<Props>()
         as="button"
       >
         <Settings class="mr-2 h-4 w-4" />
-        Settings
+        {{ t("ui.nav.settings") }}
       </Link>
     </DropdownMenuItem>
   </DropdownMenuGroup>
@@ -57,7 +60,7 @@ defineProps<Props>()
       as="button"
     >
       <LogOut class="mr-2 h-4 w-4" />
-      Log out
+      {{ t("ui.nav.log_out") }}
     </Link>
   </DropdownMenuItem>
 </template>

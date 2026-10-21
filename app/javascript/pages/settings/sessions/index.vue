@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { Head, Link, usePage } from "@inertiajs/vue3"
+import { computed } from "vue"
 
 import HeadingSmall from "@/components/HeadingSmall.vue"
 import { Button } from "@/components/ui/button"
+import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { sessions as sessionsRoutes, settingsSessions } from "@/routes"
 import type { BreadcrumbItem, Session } from "@/types"
 
-const breadcrumbs: BreadcrumbItem[] = [
+const { t } = useI18n()
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   {
-    title: "Sessions",
+    title: t("ui.settings.sessions.title"),
     href: settingsSessions.index().url,
   },
-]
+])
 
 interface Props {
   sessions: Session[]
@@ -31,8 +35,8 @@ const { auth } = usePage().props
     <SettingsLayout>
       <div class="space-y-6">
         <HeadingSmall
-          title="Sessions"
-          description="Manage your active sessions across devices"
+          :title="t('ui.settings.sessions.title')"
+          :description="t('ui.settings.sessions.description')"
         />
         <div class="space-y-4">
           <div
@@ -49,15 +53,18 @@ const { auth } = usePage().props
                     variant="secondary"
                     class="ml-2"
                   >
-                    Current
+                    {{ t("ui.settings.sessions.current") }}
                   </Badge>
                 </p>
                 <p class="text-muted-foreground text-sm">
-                  IP: {{ session.ip_address }}
+                  {{ t("ui.settings.sessions.ip", { ip: session.ip_address }) }}
                 </p>
                 <p class="text-muted-foreground text-sm">
-                  Active since:
-                  {{ new Date(session.created_at).toLocaleString() }}
+                  {{
+                    t("ui.settings.sessions.active_since", {
+                      time: new Date(session.created_at).toLocaleString(),
+                    })
+                  }}
                 </p>
               </div>
               <Button
@@ -66,7 +73,7 @@ const { auth } = usePage().props
                 asChild
               >
                 <Link :href="sessionsRoutes.destroy(session.id)" as="button">
-                  Log out
+                  {{ t("ui.settings.sessions.log_out") }}
                 </Link>
               </Button>
             </div>

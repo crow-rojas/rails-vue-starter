@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useI18n } from "@/composables/useI18n"
 import { type NavItem } from "@/types"
 
 defineProps<{
@@ -15,11 +16,12 @@ defineProps<{
 }>()
 
 const page = usePage()
+const { t } = useI18n()
 </script>
 
 <template>
   <SidebarGroup class="px-2 py-0">
-    <SidebarGroupLabel>Platform</SidebarGroupLabel>
+    <SidebarGroupLabel>{{ t("ui.nav.platform") }}</SidebarGroupLabel>
     <SidebarMenu>
       <SidebarMenuItem v-for="item in items" :key="item.title">
         <SidebarMenuButton

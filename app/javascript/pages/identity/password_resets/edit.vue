@@ -10,6 +10,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useI18n } from "@/composables/useI18n"
 import AuthLayout from "@/layouts/AuthLayout.vue"
 import { identityPasswordResets } from "@/routes"
 
@@ -19,14 +20,16 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const { t } = useI18n()
 </script>
 
 <template>
   <AuthLayout
-    title="Reset password"
-    description="Please enter your new password below"
+    :title="t('ui.identity.password_resets.edit.title')"
+    :description="t('ui.identity.password_resets.edit.description')"
   >
-    <Head title="Reset password" />
+    <Head :title="t('ui.identity.password_resets.edit.title')" />
 
     <Form
       :action="identityPasswordResets.update()"
@@ -36,7 +39,9 @@ const props = defineProps<Props>()
     >
       <FieldGroup>
         <Field>
-          <FieldLabel for="email">Email</FieldLabel>
+          <FieldLabel for="email">{{
+            t("ui.identity.password_resets.edit.email")
+          }}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -49,35 +54,39 @@ const props = defineProps<Props>()
         </Field>
 
         <Field>
-          <FieldLabel for="password">Password</FieldLabel>
+          <FieldLabel for="password">{{
+            t("ui.identity.password_resets.edit.password")
+          }}</FieldLabel>
           <Input
             id="password"
             name="password"
             type="password"
             autocomplete="new-password"
             autofocus
-            placeholder="Password"
+            :placeholder="t('ui.identity.password_resets.edit.password')"
           />
           <FieldError :errors="errors.password" />
         </Field>
 
         <Field>
           <FieldLabel for="password_confirmation">
-            Confirm Password
+            {{ t("ui.identity.password_resets.edit.confirm_password_label") }}
           </FieldLabel>
           <Input
             id="password_confirmation"
             name="password_confirmation"
             type="password"
             autocomplete="new-password"
-            placeholder="Confirm password"
+            :placeholder="
+              t('ui.identity.password_resets.edit.confirm_password_placeholder')
+            "
           />
           <FieldError :errors="errors.password_confirmation" />
         </Field>
 
         <Button type="submit" class="mt-4 w-full" :disabled="processing">
           <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-          Reset password
+          {{ t("ui.identity.password_resets.edit.title") }}
         </Button>
       </FieldGroup>
     </Form>
