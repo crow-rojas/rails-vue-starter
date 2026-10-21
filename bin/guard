@@ -3,6 +3,7 @@
 # that enforces both. A human can let one branch through with a commit trailer:
 #   Guard-Override: tests <reason> | migrations <reason> | harness <reason>
 # The test count is a heuristic: it catches deleted and skipped tests, not a gutted test body.
+require "json"
 
 def git(*args)
   output = IO.popen([ "git", *args ], err: File::NULL, &:read)
@@ -11,9 +12,12 @@ def git(*args)
 end
 
 TEST_PATTERN = /^\s*(test[\s(]+["']|def test_|it[\s(]+["'])/
+# package.json counts too, but only its scripts: see changed_harness below.
 HARNESS = %w[
-  bin/guard bin/check bin/ci bin/merge config/ci.rb lefthook.yml .claude .github/workflows
-  .rubocop.yml eslint.config.js pnpm-workspace.yaml .database_consistency.yml config/i18n-tasks.yml
+  bin/guard bin/check bin/ci bin/merge config/ci.rb lefthook.yml .claude .codex .github/workflows
+  .rubocop.yml eslint.config.js knip.jsonc .prettierrc .prettierignore tsconfig.json tsconfig.app.json tsconfig.node.json
+  pnpm-workspace.yaml .database_consistency.yml config/i18n-tasks.yml config/environments/test.rb
+  config/initializers/strong_migrations.rb test/test_helper.rb test/application_system_test_case.rb
 ]
 
 def test_count(ref = nil)
@@ -45,6 +49,8 @@ if changed_migrations.any? && !allow_migrations
 end
 
 changed_harness = git("diff", "--name-only", base, "--", *HARNESS).lines(chomp: true)
+scripts = ->(json) { JSON.parse(json)["scripts"] }
+changed_harness << "package.json (scripts)" if scripts.call(git("show", "#{base}:package.json")) != scripts.call(File.read("package.json"))
 if changed_harness.any? && !allow_harness
   failures << "the harness changed, which needs a human's Guard-Override: harness <reason>:\n#{changed_harness.join("\n")}"
 end

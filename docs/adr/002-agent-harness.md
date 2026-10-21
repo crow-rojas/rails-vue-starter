@@ -23,7 +23,7 @@ The sensors, grouped by the failure they catch:
 
 - Invented props and routes: Typelizer types from the serializers and routes, checked by `vue-tsc`, plus a freshness check on the generated files.
 - Silenced checks: RuboCop's `Style/DisableCopsWithinSourceCodeDirective`, ESLint's `noInlineConfig` and a full `ban-ts-comment`, and deny rules for `--no-verify`.
-- Weakened tests, rewritten migrations and an edited harness: `bin/guard` compares the branch with its merge-base on main and fails closed if git does. Changing the harness itself (`bin/guard`, `config/ci.rb`, `lefthook.yml`, `.claude/`, the workflows, the linter configs) needs a human's `Guard-Override: harness` trailer. The test count is a heuristic: it sees deleted and skipped tests, not a test whose body was gutted.
+- Weakened tests, rewritten migrations and an edited harness: `bin/guard` compares the branch with its merge-base on main and fails closed if git does. Changing the harness itself (`bin/guard`, `config/ci.rb`, `lefthook.yml`, `.claude/`, `.codex/`, the workflows, the linter, type and test configs, and the `package.json` scripts) needs a human's `Guard-Override: harness` trailer. The test count is a heuristic: it sees deleted and skipped tests, not a test whose body was gutted.
 - Bugs a style guide does not see: RuboCop's Lint, Rails and Performance departments, which the omakase config turns off.
 - Database mistakes: strong_migrations with `safe_by_default`, prosopite raising on N+1 queries in every test, and database_consistency comparing validations with constraints.
 - Supply chain: a 7-day gem cooldown, pnpm's 1-day minimum release age, unreviewed build scripts failing the install, `trustPolicy: no-downgrade`, the audits, Brakeman, and gitleaks over the whole history.
