@@ -35,5 +35,9 @@ module RailsVueStarter
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Rails' permissions_policy still emits the legacy Feature-Policy header, which browsers ignore.
+    config.action_dispatch.default_headers["Permissions-Policy"] =
+      "camera=(), microphone=(), geolocation=(), usb=(), payment=(), gyroscope=()"
   end
 end
