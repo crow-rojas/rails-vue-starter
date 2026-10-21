@@ -6,11 +6,18 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 
 - `bin/setup`: install gems, packages and git hooks, write `.env` with free ports, start Postgres in Docker, prepare the databases and run the app. `--skip-server` stops before the dev server.
 - `bin/dev`: run Rails and Vite on the `PORT` from `.env`.
-- `bin/check`: the fast gate (lint, types, generated types, `bin/guard`, Rails tests), about 11 s. The Stop hook runs it after each turn.
+- `bin/check`: the fast gate (lint, types, generated types, `bin/guard`, Rails tests), about 13 s. The Stop hook runs it after each turn.
 - `bin/ci`: everything CI runs (`config/ci.rb`), about 40 s; `git push` runs it. **You are done only when it is green.**
 - `bin/rails test`, `bin/rails test:system`: Minitest unit, integration and browser tests.
 - `pnpm lint`, `pnpm format`, `pnpm check`: ESLint, Prettier and the Vue type check.
 - `bin/merge <pr>`: merge a pull request whose checks are green, as a fast-forward of main that keeps its signed commits. Never use GitHub's merge buttons.
+
+## Seeing your change
+
+- `bin/dev` prints the URL. Sign in as `demo@example.com` with `demo-password-123` (development only; it can open the admin dashboards).
+- To look at a page, call `take_screenshot` in a system test and read the PNG under `tmp/screenshots` (a failing system test saves one too).
+- Errors are in `log/test.log`, `log/development.log` and `/admin/errors`.
+- When a test fails intermittently, re-run it once with the `--seed` it printed before changing code, then fix the cause.
 
 ## Map
 
