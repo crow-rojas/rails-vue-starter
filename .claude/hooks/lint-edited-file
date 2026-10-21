@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# PostToolUse: autocorrect the file the agent just wrote and report what is left (exit 2).
+require "json"
+require "open3"
+
+Dir.chdir(IO.popen(%w[git rev-parse --show-toplevel], &:read).strip)
+
+file = JSON.parse($stdin.read).dig("tool_input", "file_path").to_s
+exit 0 unless File.file?(file)
+
+commands =
+  case file
+  when /\.(rb|rake|ru)\z/, %r{(\A|/)Gemfile\z}
+    [ %W[bin/rubocop --server --force-exclusion --autocorrect --format quiet #{file}] ]
+  when /\.(js|mjs|ts|vue)\z/
+    [ %W[pnpm exec eslint --cache --fix --max-warnings 0 --no-warn-ignored #{file}],
+      %W[pnpm exec prettier --write --log-level warn #{file}] ]
+  else
+    []
+  end
+
+commands.each do |command|
+  output, status = Open3.capture2e(*command)
+  next if status.success?
+
+  warn output
+  exit 2
+end

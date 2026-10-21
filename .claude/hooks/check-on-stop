@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# Stop: keep the agent working until bin/check is green (exit 2 sends the failure back).
+# Skips trees that already passed, and lets the agent stop on a second failed attempt.
+require "digest"
+require "json"
+require "open3"
+
+Dir.chdir(IO.popen(%w[git rev-parse --show-toplevel], &:read).strip)
+
+exit 0 if JSON.parse($stdin.read)["stop_hook_active"]
+
+marker = "tmp/agent-check-passed"
+untracked = IO.popen(%w[git ls-files --others --exclude-standard], &:read).lines(chomp: true)
+tree = Digest::SHA256.hexdigest(
+  [ IO.popen(%w[git rev-parse HEAD], &:read), IO.popen(%w[git diff HEAD], &:read), *untracked, *untracked.map { File.read(it) } ].join
+)
+exit 0 if File.exist?(marker) && File.read(marker) == tree
+
+output, status = Open3.capture2e("bin/check")
+if status.success?
+  File.write(marker, tree)
+  exit 0
+end
+
+warn "bin/check failed. Fix the cause; do not weaken the check.\n\n#{output.lines.last(60).join}"
+exit 2
