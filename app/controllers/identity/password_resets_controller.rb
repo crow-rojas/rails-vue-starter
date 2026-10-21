@@ -19,12 +19,12 @@ class Identity::PasswordResetsController < InertiaController
     if (@user = User.find_by(email: params[:email], verified: true))
       send_password_reset_email
     end
-    redirect_to sign_in_path, notice: "If that email belongs to a verified account, you will get reset instructions"
+    redirect_to sign_in_path, notice: t("identity.password_resets.requested")
   end
 
   def update
     if @user.update(user_params)
-      redirect_to sign_in_path, notice: "Your password was reset successfully. Please sign in"
+      redirect_to sign_in_path, notice: t("identity.password_resets.reset")
     else
       redirect_to edit_identity_password_reset_path(sid: params[:sid]), inertia: { errors: @user.errors }
     end
@@ -35,7 +35,7 @@ class Identity::PasswordResetsController < InertiaController
   def set_user
     @user = User.find_by_token_for!(:password_reset, params[:sid])
   rescue StandardError
-    redirect_to new_identity_password_reset_path, alert: "That password reset link is invalid"
+    redirect_to new_identity_password_reset_path, alert: t("identity.password_resets.invalid")
   end
 
   def user_params

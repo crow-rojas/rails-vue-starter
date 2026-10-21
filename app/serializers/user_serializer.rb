@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserSerializer < ApplicationSerializer
-  attributes :id, :name, :email, :verified, :created_at, :updated_at
+  attributes :id, :name, :email, :verified, :locale, :created_at, :updated_at
 
   typelize :string?
   attribute :avatar do |_user|

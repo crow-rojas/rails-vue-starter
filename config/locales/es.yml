@@ -1,0 +1,64 @@
+---
+es:
+  errors:
+    page_expired: La página expiró. Inténtalo de nuevo
+    rate_limited: Inténtalo de nuevo más tarde
+  identity:
+    email_verifications:
+      invalid: Ese enlace de verificación no es válido
+      sent: Te enviamos un correo de verificación
+      verified: Gracias por verificar tu correo
+    password_resets:
+      invalid: Ese enlace para restablecer la contraseña no es válido
+      requested: Si ese correo pertenece a una cuenta verificada, recibirás las instrucciones
+      reset: Tu contraseña se restableció. Inicia sesión
+  sessions:
+    already_signed_in: Ya iniciaste sesión
+    invalid: El correo o la contraseña no son correctos
+    signed_in: Iniciaste sesión
+    signed_out: Se cerró esa sesión
+  settings:
+    emails:
+      changed: Tu correo se actualizó
+    passwords:
+      changed: Tu contraseña se actualizó
+    profiles:
+      updated: Tu perfil se actualizó
+  ui:
+    locales:
+      en: English
+      es: Español
+    settings:
+      profile:
+        breadcrumb: Perfil
+        description: Actualiza tu nombre e idioma
+        language: Idioma
+        name: Nombre
+        name_placeholder: Nombre completo
+        save: Guardar
+        saved: Guardado.
+        title: Información del perfil
+  user_mailer:
+    email_verification:
+      action: Sí, usar este correo en mi cuenta
+      body: Este correo confirma que %{email} es el que quieres usar en tu cuenta.
+        Si alguna vez olvidas tu contraseña, te enviaremos ahí el enlace para restablecerla.
+      greeting: Hola,
+      instruction: Haz clic en el enlace de abajo para confirmar que recibiste este
+        correo.
+      subject: Verifica tu correo
+    help: "¿Tienes preguntas o necesitas ayuda? Responde este correo y nuestro equipo
+      de soporte te ayudará."
+    password_reset:
+      action: Restablecer mi contraseña
+      expiry: Si no pediste restablecer tu contraseña, puedes ignorar este correo;
+        el enlace vence en 20 minutos. Solo quien tenga acceso a este correo puede
+        restablecerla.
+      greeting: Hola,
+      intro_html: "¿No recuerdas tu contraseña de <strong>%{email}</strong>? No pasa
+        nada. Haz clic en el enlace de abajo para crear una nueva."
+      subject: Restablece tu contraseña
+  users:
+    deleted: Tu cuenta se eliminó
+    password_challenge_invalid: La contraseña actual no es correcta
+    welcome: "¡Bienvenido! Tu cuenta está lista"
