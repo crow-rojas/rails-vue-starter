@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePage } from "@inertiajs/vue3"
 import { ChevronsUpDown } from "@lucide/vue"
+import { computed } from "vue"
 
 import UserInfo from "@/components/UserInfo.vue"
 import {
@@ -14,12 +15,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { type User } from "@/types"
 
 import UserMenuContent from "./UserMenuContent.vue"
 
 const page = usePage()
-const auth = page.props.auth as { user: User; session: { id: number } }
+const auth = computed(() => page.props.auth)
 const { isMobile, state } = useSidebar()
 </script>
 

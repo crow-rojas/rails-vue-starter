@@ -15,7 +15,7 @@ import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { identityEmailVerifications, settingsEmails } from "@/routes"
-import type { BreadcrumbItem, User } from "@/types"
+import type { BreadcrumbItem } from "@/types"
 
 const { t } = useI18n()
 
@@ -27,7 +27,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 ])
 
 const page = usePage()
-const user = page.props.auth.user as User
+const user = computed(() => page.props.auth.user)
 </script>
 
 <template>
@@ -89,7 +89,6 @@ const user = page.props.auth.user as User
               <Input
                 id="password_challenge"
                 name="password_challenge"
-                ref="currentPasswordInput"
                 type="password"
                 autocomplete="current-password"
                 :placeholder="t('ui.settings.emails.current_password')"

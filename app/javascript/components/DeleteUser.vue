@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Form } from "@inertiajs/vue3"
-import { ref } from "vue"
 
 import HeadingSmall from "@/components/HeadingSmall.vue"
 import { Button } from "@/components/ui/button"
@@ -21,7 +20,9 @@ import { users } from "@/routes"
 
 const { t } = useI18n()
 
-const passwordInput = ref<HTMLInputElement | null>(null)
+// The shadcn Input exposes no focus(), so reach the element by id.
+const focusPassword = () =>
+  document.getElementById("password_challenge")?.focus()
 </script>
 
 <template>
@@ -47,7 +48,7 @@ const passwordInput = ref<HTMLInputElement | null>(null)
           <Form
             :action="users.destroy()"
             :options="{ preserveScroll: true }"
-            :onError="() => passwordInput?.focus()"
+            :onError="focusPassword"
             resetOnSuccess
             className="space-y-6"
             #default="{ resetAndClearErrors, processing, errors }"
@@ -67,7 +68,6 @@ const passwordInput = ref<HTMLInputElement | null>(null)
                 id="password_challenge"
                 type="password"
                 name="password_challenge"
-                ref="passwordInput"
                 :placeholder="t('ui.delete_user.password')"
               />
               <FieldError :errors="errors.password_challenge" />
