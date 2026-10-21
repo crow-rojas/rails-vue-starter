@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Identity::EmailVerificationsController < InertiaController
+  limit_attempts only: :create
   skip_before_action :authenticate, only: :show
 
   before_action :set_user, only: :show
