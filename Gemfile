@@ -47,6 +47,9 @@ gem "authentication-zero"
 # Brings Rails named routes to javascript
 gem "typelizer"
 
+# Catches unsafe migrations before they run [https://github.com/ankane/strong_migrations]
+gem "strong_migrations"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -59,6 +62,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Finds model validations without a matching database constraint [https://github.com/djezzzl/database_consistency]
+  gem "database_consistency", require: false
 
   # Loads .env, written by bin/setup, in development and test [https://github.com/bkeepers/dotenv]
   gem "dotenv"
@@ -78,6 +84,10 @@ group :test do
   # Synchronize Capybara commands with application JavaScript and AJAX requests
   gem "capybara-lockstep"
   gem "selenium-webdriver"
+
+  # Fails a test that runs N+1 queries [https://github.com/charkost/prosopite]
+  gem "prosopite"
+  gem "pg_query"
 end
 gem "alba"
 gem "alba-inertia"
