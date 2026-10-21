@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# The fast subset of bin/ci: lint, types, guard and tests. Agents run it after every turn.
+CI_FAST=1 exec bin/ci "$@"
