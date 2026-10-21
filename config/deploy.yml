@@ -3,6 +3,8 @@
 #   KAMAL_HOST      server IP or hostname, reachable over SSH as root
 #   APP_HOST        public domain, already pointing at KAMAL_HOST (kamal-proxy gets its certificate)
 #   MAIL_FROM, SMTP_ADDRESS, SMTP_USERNAME                       outgoing email
+#   ADMIN_EMAILS    comma-separated; these signed-in users see /admin/errors and /admin/jobs,
+#                   and get an email for every new error
 #   BACKUP_S3_ENDPOINT, BACKUP_S3_REGION, BACKUP_S3_BUCKET       S3-compatible storage for backups
 # Secrets are listed in .kamal/secrets.
 service: rails-vue-starter
@@ -27,6 +29,7 @@ env:
     - SMTP_PASSWORD
   clear:
     APP_HOST: <%= ENV.fetch("APP_HOST") %>
+    ADMIN_EMAILS: <%= ENV.fetch("ADMIN_EMAILS") %>
     DB_HOST: rails-vue-starter-db
     MAIL_FROM: <%= ENV.fetch("MAIL_FROM") %>
     SMTP_ADDRESS: <%= ENV.fetch("SMTP_ADDRESS") %>
