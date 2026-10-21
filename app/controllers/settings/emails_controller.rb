@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Settings::EmailsController < InertiaController
+  limit_attempts only: :update
   before_action :set_user
 
   def show

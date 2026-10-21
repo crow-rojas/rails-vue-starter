@@ -64,4 +64,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal "Try again later", flash[:alert]
   end
+
+  test "limits password guesses when deleting the account" do
+    sign_in users(:one)
+    10.times { delete users_path, params: { password_challenge: "wrongpassword" } }
+
+    assert_no_difference "User.count" do
+      delete users_path, params: { password_challenge: "Secret1*3*5*" }
+    end
+    assert_equal "Try again later", flash[:alert]
+  end
 end

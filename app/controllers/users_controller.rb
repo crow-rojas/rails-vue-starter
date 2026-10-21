@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < InertiaController
-  limit_attempts only: :create
+  limit_attempts only: %i[create destroy]
   skip_before_action :authenticate, only: %i[new create]
   before_action :require_no_authentication, only: %i[new create]
 

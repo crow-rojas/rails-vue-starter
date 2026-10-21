@@ -31,4 +31,12 @@ class Settings::EmailsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to settings_email_path
     assert_equal "one@example.com", users(:one).reload.email
   end
+
+  test "limits current password guesses" do
+    Prosopite.pause { 10.times { patch settings_email_path, params: { email: "x@example.com", password_challenge: "wrongpassword" } } }
+    patch settings_email_path, params: { email: "x@example.com", password_challenge: "Secret1*3*5*" }
+
+    assert_equal "Try again later", flash[:alert]
+    assert_equal "one@example.com", users(:one).reload.email
+  end
 end

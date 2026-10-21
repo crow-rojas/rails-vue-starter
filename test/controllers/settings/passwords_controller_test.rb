@@ -31,4 +31,19 @@ class Settings::PasswordsControllerTest < ActionDispatch::IntegrationTest
     }
     assert_redirected_to settings_password_path
   end
+
+  test "limits current password guesses" do
+    10.times { patch settings_password_path, params: { password_challenge: "wrongpassword", password: "NewPassword1*3*", password_confirmation: "NewPassword1*3*" } }
+    patch settings_password_path, params: { password_challenge: "Secret1*3*5*", password: "NewPassword1*3*", password_confirmation: "NewPassword1*3*" }
+
+    assert_equal "Try again later", flash[:alert]
+  end
+
+  test "rejects a blank new password instead of reporting success" do
+    digest = users(:one).password_digest
+    patch settings_password_path, params: { password_challenge: "Secret1*3*5*", password: "", password_confirmation: "" }
+
+    assert_nil flash[:notice]
+    assert_equal digest, users(:one).reload.password_digest
+  end
 end

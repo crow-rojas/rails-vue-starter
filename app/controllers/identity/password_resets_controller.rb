@@ -23,7 +23,8 @@ class Identity::PasswordResetsController < InertiaController
   end
 
   def update
-    if @user.update(user_params)
+    @user.assign_attributes(user_params)
+    if @user.save(context: :password_change)
       redirect_to sign_in_path, notice: t("identity.password_resets.reset")
     else
       redirect_to edit_identity_password_reset_path(sid: params[:sid]), inertia: { errors: @user.errors }

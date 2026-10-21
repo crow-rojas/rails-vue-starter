@@ -71,4 +71,13 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
     }
     assert_redirected_to edit_identity_password_reset_path(sid: sid)
   end
+
+  test "rejects a blank password instead of reporting success" do
+    sid = users(:one).generate_token_for(:password_reset)
+    digest = users(:one).password_digest
+    patch identity_password_reset_path(sid: sid), params: { password: "", password_confirmation: "" }
+
+    assert_redirected_to edit_identity_password_reset_path(sid: sid)
+    assert_equal digest, users(:one).reload.password_digest
+  end
 end
