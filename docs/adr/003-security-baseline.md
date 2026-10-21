@@ -19,6 +19,7 @@ The generated authentication was solid at its core: tokens that expire, sessions
 - CSRF: an expired token redirects back with an alert instead of a 422.
 - Unused frameworks are not loaded: Active Storage, Action Mailbox and Action Text, whose engines draw public routes such as `POST /rails/active_storage/direct_uploads` even with no tables behind them.
 - Dependencies: Dependabot with a 7-day cooldown and grouped minor and patch updates, on top of the gem cooldown and pnpm's policies (ADR-001).
+- GitHub Actions: pinned by full commit SHA with the version in a comment, kept current by Dependabot, and checked out with `persist-credentials: false`. The repository owner should also turn on GitHub's policy that requires SHA pinning ([changelog](https://github.blog/changelog/2025-08-15-github-actions-policy-now-supports-blocking-and-sha-pinning-actions/)) and CodeQL default setup.
 
 ## Not included, and when to add it
 
