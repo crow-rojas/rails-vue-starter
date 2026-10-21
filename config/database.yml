@@ -93,22 +93,29 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+server: &server
+  <<: *default
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  username: rails_vue_starter
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+
 production:
-  primary: &primary_production
-    <<: *default
+  primary:
+    <<: *server
     database: rails_vue_starter_production
-    host: <%= ENV.fetch("DB_HOST", "localhost") %>
-    username: rails_vue_starter
-    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    # Cancels a runaway query instead of letting it hold a connection. Migrations set their own
+    # timeouts (config/initializers/strong_migrations.rb); Solid Queue, Cache and Cable keep none.
+    variables:
+      statement_timeout: 15s
   cache:
-    <<: *primary_production
+    <<: *server
     database: rails_vue_starter_production_cache
     migrations_paths: db/cache_migrate
   queue:
-    <<: *primary_production
+    <<: *server
     database: rails_vue_starter_production_queue
     migrations_paths: db/queue_migrate
   cable:
-    <<: *primary_production
+    <<: *server
     database: rails_vue_starter_production_cable
     migrations_paths: db/cable_migrate
