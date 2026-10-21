@@ -3,6 +3,7 @@ import { Head, Link, usePage } from "@inertiajs/vue3"
 import { computed } from "vue"
 
 import HeadingSmall from "@/components/HeadingSmall.vue"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"

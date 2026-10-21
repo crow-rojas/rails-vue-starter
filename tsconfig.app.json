@@ -26,5 +26,13 @@
     }
   },
 
-  "include": ["app/javascript/**/*.ts", "app/javascript/**/*.tsx", "app/javascript/**/*.vue"]
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
+  },
+
+  "include": [
+    "app/javascript/**/*.ts",
+    "app/javascript/**/*.tsx",
+    "app/javascript/**/*.vue"
+  ]
 }
