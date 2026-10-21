@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3"
+import { computed } from "vue"
 
+import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import { dashboard } from "@/routes"
 import { type BreadcrumbItem } from "@/types"
 
 import PlaceholderPattern from "../../components/PlaceholderPattern.vue"
 
-const breadcrumbs: BreadcrumbItem[] = [
+const { t } = useI18n()
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   {
-    title: "Dashboard",
+    title: t("ui.dashboard.title"),
     href: dashboard.index().url,
   },
-]
+])
 </script>
 
 <template>

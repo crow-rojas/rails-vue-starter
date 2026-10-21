@@ -11,16 +11,19 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useI18n } from "@/composables/useI18n"
 import AuthBase from "@/layouts/AuthLayout.vue"
 import { identityPasswordResets, sessions, users } from "@/routes"
+
+const { t } = useI18n()
 </script>
 
 <template>
   <AuthBase
-    title="Log in to your account"
-    description="Enter your email and password below to log in"
+    :title="t('ui.sessions.new.title')"
+    :description="t('ui.sessions.new.description')"
   >
-    <Head title="Log in" />
+    <Head :title="t('ui.sessions.new.log_in')" />
 
     <Form
       :action="sessions.create()"
@@ -30,7 +33,7 @@ import { identityPasswordResets, sessions, users } from "@/routes"
     >
       <FieldGroup>
         <Field>
-          <FieldLabel for="email">Email address</FieldLabel>
+          <FieldLabel for="email">{{ t("ui.sessions.new.email") }}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -39,20 +42,22 @@ import { identityPasswordResets, sessions, users } from "@/routes"
             autofocus
             :tabindex="1"
             autocomplete="email"
-            placeholder="email@example.com"
+            :placeholder="t('ui.sessions.new.email_placeholder')"
           />
           <FieldError :errors="errors.email" />
         </Field>
 
         <Field>
           <div class="flex items-center justify-between">
-            <FieldLabel for="password">Password</FieldLabel>
+            <FieldLabel for="password">{{
+              t("ui.sessions.new.password")
+            }}</FieldLabel>
             <TextLink
               :href="identityPasswordResets.new()"
               class="text-sm"
               :tabindex="5"
             >
-              Forgot password?
+              {{ t("ui.sessions.new.forgot_password") }}
             </TextLink>
           </div>
           <Input
@@ -62,7 +67,7 @@ import { identityPasswordResets, sessions, users } from "@/routes"
             required
             :tabindex="2"
             autocomplete="current-password"
-            placeholder="Password"
+            :placeholder="t('ui.sessions.new.password')"
           />
           <FieldError :errors="errors.password" />
         </Field>
@@ -74,13 +79,15 @@ import { identityPasswordResets, sessions, users } from "@/routes"
           :disabled="processing"
         >
           <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-          Log in
+          {{ t("ui.sessions.new.log_in") }}
         </Button>
       </FieldGroup>
 
       <div class="text-muted-foreground text-center text-sm">
-        Don't have an account?
-        <TextLink :href="users.new()" :tabindex="5">Sign up</TextLink>
+        {{ t("ui.sessions.new.no_account") }}
+        <TextLink :href="users.new()" :tabindex="5">{{
+          t("ui.sessions.new.sign_up")
+        }}</TextLink>
       </div>
     </Form>
   </AuthBase>

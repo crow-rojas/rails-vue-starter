@@ -27,6 +27,7 @@ export default defineConfigWithVueTs(
     settings: { "import/resolver": { typescript: {} } },
     rules: {
       "vue/multi-word-component-names": "off",
+      "vue/no-bare-strings-in-template": "error",
       "import/order": [
         "error",
         {

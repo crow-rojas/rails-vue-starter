@@ -11,16 +11,19 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useI18n } from "@/composables/useI18n"
 import AuthBase from "@/layouts/AuthLayout.vue"
 import { sessions, users } from "@/routes"
+
+const { t } = useI18n()
 </script>
 
 <template>
   <AuthBase
-    title="Create an account"
-    description="Enter your details below to create your account"
+    :title="t('ui.users.new.title')"
+    :description="t('ui.users.new.description')"
   >
-    <Head title="Register" />
+    <Head :title="t('ui.users.new.register')" />
 
     <Form
       :action="users.create()"
@@ -31,7 +34,7 @@ import { sessions, users } from "@/routes"
     >
       <FieldGroup>
         <Field>
-          <FieldLabel for="name">Name</FieldLabel>
+          <FieldLabel for="name">{{ t("ui.users.new.name") }}</FieldLabel>
           <Input
             id="name"
             name="name"
@@ -40,13 +43,13 @@ import { sessions, users } from "@/routes"
             autofocus
             :tabindex="1"
             autocomplete="name"
-            placeholder="Full name"
+            :placeholder="t('ui.users.new.name_placeholder')"
           />
           <FieldError :errors="errors.name" />
         </Field>
 
         <Field>
-          <FieldLabel for="email">Email address</FieldLabel>
+          <FieldLabel for="email">{{ t("ui.users.new.email") }}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -54,13 +57,15 @@ import { sessions, users } from "@/routes"
             required
             :tabindex="2"
             autocomplete="email"
-            placeholder="email@example.com"
+            :placeholder="t('ui.users.new.email_placeholder')"
           />
           <FieldError :errors="errors.email" />
         </Field>
 
         <Field>
-          <FieldLabel for="password">Password</FieldLabel>
+          <FieldLabel for="password">{{
+            t("ui.users.new.password")
+          }}</FieldLabel>
           <Input
             id="password"
             name="password"
@@ -68,13 +73,15 @@ import { sessions, users } from "@/routes"
             required
             :tabindex="3"
             autocomplete="new-password"
-            placeholder="Password"
+            :placeholder="t('ui.users.new.password')"
           />
           <FieldError :errors="errors.password" />
         </Field>
 
         <Field>
-          <FieldLabel for="password_confirmation">Confirm password</FieldLabel>
+          <FieldLabel for="password_confirmation">{{
+            t("ui.users.new.confirm_password")
+          }}</FieldLabel>
           <Input
             id="password_confirmation"
             name="password_confirmation"
@@ -82,7 +89,7 @@ import { sessions, users } from "@/routes"
             required
             :tabindex="4"
             autocomplete="new-password"
-            placeholder="Confirm password"
+            :placeholder="t('ui.users.new.confirm_password')"
           />
           <FieldError :errors="errors.password_confirmation" />
         </Field>
@@ -94,17 +101,17 @@ import { sessions, users } from "@/routes"
           :disabled="processing"
         >
           <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-          Create account
+          {{ t("ui.users.new.submit") }}
         </Button>
       </FieldGroup>
 
       <div class="text-muted-foreground text-center text-sm">
-        Already have an account?
+        {{ t("ui.users.new.have_account") }}
         <TextLink
           :href="sessions.new()"
           class="underline underline-offset-4"
           :tabindex="6"
-          >Log in</TextLink
+          >{{ t("ui.users.new.log_in") }}</TextLink
         >
       </div>
     </Form>
