@@ -23,7 +23,7 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 ## Rules
 
 1. **English for everything in the repo**: code, docs, commits, PRs, logs and errors. Conversations with agents can be in any language.
-2. **No literal user-facing copy** (ADR-004). It goes in `config/locales/en.yml` and `es.yml` together; Vue reads it with `useI18n()` and the full key, `t("ui.page.thing")`. `i18n-tasks health` and RuboCop fail on a missing key, an unused key or a literal flash.
+2. **No literal user-facing copy** (ADR-004). It goes in `config/locales/en.yml` and `es.yml` together; Vue reads it with `useI18n()` and the full key, `t("ui.page.thing")`. `i18n-tasks health`, ESLint and RuboCop fail on a missing key, an unused key or literal copy. Dates and numbers format with the app's `locale` from `useI18n()`, never the browser's.
 3. **Conventional Commits**, one concern each, with no AI co-author trailers (the `commit-msg` hook rejects both).
 4. **Never silence a check.** No `rubocop:disable`, `eslint-disable`, `@ts-ignore` or `@ts-expect-error` (the linters reject them), no `--no-verify`, no new exclusions in `.rubocop.yml`, `eslint.config.js`, `pnpm-workspace.yaml` or `.database_consistency.yml`. Fix the cause.
 5. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The `Guard-Override:` trailer is for humans only.
