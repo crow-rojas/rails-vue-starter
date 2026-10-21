@@ -2,6 +2,8 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+Prosopite.raise = true
+
 require_relative "test_helpers/session_test_helper"
 
 module ActiveSupport
@@ -11,6 +13,9 @@ module ActiveSupport
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
+
+    setup { Prosopite.scan }
+    teardown { Prosopite.finish }
 
     # Add more helper methods to be used by all tests here...
   end
