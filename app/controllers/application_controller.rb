@@ -15,8 +15,12 @@ class ApplicationController < ActionController::Base
   private
 
   def switch_locale(&)
+    I18n.with_locale(current_locale, &)
+  end
+
+  def current_locale
     perform_authentication
-    I18n.with_locale(Current.user&.locale || browser_locale || I18n.default_locale, &)
+    Current.user&.locale || browser_locale || I18n.default_locale
   end
 
   def browser_locale

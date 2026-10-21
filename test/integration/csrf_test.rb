@@ -15,4 +15,15 @@ class CsrfTest < ActionDispatch::IntegrationTest
     assert_equal "The page expired. Please try again", flash[:alert]
     assert_predicate cookies[:session_token], :blank?
   end
+
+  test "the expired-form message uses the user's language" do
+    users(:one).update!(locale: "es")
+    ActionController::Base.allow_forgery_protection = false
+    sign_in users(:one)
+    ActionController::Base.allow_forgery_protection = true
+
+    patch settings_profile_path, params: { name: "X" }, headers: { "HTTP_REFERER" => settings_profile_url }
+
+    assert_equal I18n.t("errors.page_expired", locale: :es), flash[:alert]
+  end
 end

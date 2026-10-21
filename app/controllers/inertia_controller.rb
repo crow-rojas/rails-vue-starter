@@ -12,7 +12,8 @@ class InertiaController < ApplicationController
   end
 
   # Inertia shows a 422 as an error modal; an expired form should just ask the user to retry.
+  # The token check runs before switch_locale, so the message picks its language itself.
   rescue_from ActionController::InvalidAuthenticityToken do
-    redirect_back_or_to root_path, alert: t("errors.page_expired")
+    redirect_back_or_to root_path, alert: t("errors.page_expired", locale: current_locale)
   end
 end
