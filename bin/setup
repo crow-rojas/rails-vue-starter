@@ -24,6 +24,7 @@ FileUtils.chdir APP_ROOT do
   system("bundle check") || system!("bundle install")
   system! "corepack enable pnpm"
   system! "pnpm install"
+  system! "bundle exec lefthook install"
 
   # puts "\n== Copying sample files =="
   # unless File.exist?("config/database.yml")
@@ -32,8 +33,10 @@ FileUtils.chdir APP_ROOT do
 
   unless File.exist?(".env")
     puts "\n== Writing .env =="
-    port = (5432..5532).find { |p| !port_taken?(p) }
-    File.write(".env", File.read(".env.example").sub(/^DB_PORT=.*/, "DB_PORT=#{port}"))
+    db_port = (5432..5532).find { |p| !port_taken?(p) }
+    web_port = (3000..3100).find { |p| !port_taken?(p) }
+    env = File.read(".env.example").sub(/^DB_PORT=.*/, "DB_PORT=#{db_port}").sub(/^PORT=.*/, "PORT=#{web_port}")
+    File.write(".env", env)
   end
 
   puts "\n== Starting Postgres =="
