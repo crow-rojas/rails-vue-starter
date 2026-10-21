@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in the template doesn't work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Remove private data** from logs and screenshots. If you can, reproduce the bug in a fresh copy of the template with the demo account (`demo@example.com`).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      placeholder: Steps to reproduce, what you saw, what you expected to see.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: macOS 26.1 / Ubuntu 24.04 / WSL2
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "`ruby -v`, `node -v` and `pnpm -v`"
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Template version
+      description: The release tag or commit your app started from.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: The relevant lines from `log/development.log`, `bin/ci` or the browser console.
+      render: text
