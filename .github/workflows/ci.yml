@@ -41,6 +41,16 @@ jobs:
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
 
+  image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Build the production image
+        run: docker build .
+
   pr_size:
     if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'large-pr')
     runs-on: ubuntu-latest
