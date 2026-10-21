@@ -8,7 +8,7 @@ class Settings::ProfilesController < InertiaController
 
   def update
     if @user.update(user_params)
-      redirect_to settings_profile_path, notice: "Your profile has been updated"
+      redirect_to settings_profile_path, notice: t("settings.profiles.updated", locale: @user.locale || I18n.locale)
     else
       redirect_to settings_profile_path, inertia: { errors: @user.errors }
     end
@@ -21,6 +21,6 @@ class Settings::ProfilesController < InertiaController
   end
 
   def user_params
-    params.permit(:name)
+    params.permit(:name, :locale)
   end
 end
