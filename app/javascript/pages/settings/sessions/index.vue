@@ -54,7 +54,11 @@ const { auth } = usePage().props
                   </Badge>
                 </p>
                 <p class="text-muted-foreground text-sm">
-                  {{ t("ui.settings.sessions.ip", { ip: session.ip_address }) }}
+                  {{
+                    t("ui.settings.sessions.ip", {
+                      ip: session.ip_address ?? "—",
+                    })
+                  }}
                 </p>
                 <p class="text-muted-foreground text-sm">
                   {{
