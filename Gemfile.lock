@@ -151,8 +151,22 @@ GEM
     google-protobuf (4.36.2-x86_64-linux-musl)
       bigdecimal
       rake (~> 13.3)
+    highline (3.1.2)
+      reline
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
+    i18n-tasks (1.1.2)
+      activesupport (>= 4.0.2)
+      ast (>= 2.1.0)
+      erubi
+      highline (>= 3.0.0)
+      i18n
+      parser (>= 3.2.2.1)
+      prism
+      rails-i18n
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.8, >= 1.8.1)
+      terminal-table (>= 1.5.1)
     inertia_rails (3.23.0)
       railties (>= 6)
     io-console (0.9.4)
@@ -287,6 +301,9 @@ GEM
     rails-html-sanitizer (1.7.1)
       loofah (~> 2.25, >= 2.25.2)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails-i18n (8.1.0)
+      i18n (>= 0.7, < 2)
+      railties (>= 8.0.0, < 9)
     rails_vite (0.3.0)
       railties (>= 7.0)
     railties (8.1.4)
@@ -373,6 +390,8 @@ GEM
       ostruct
     strong_migrations (2.8.0)
       activerecord (>= 7.2)
+    terminal-table (4.0.0)
+      unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
     thruster (0.1.27)
     thruster (0.1.27-aarch64-linux)
@@ -427,6 +446,7 @@ DEPENDENCIES
   database_consistency
   debug
   dotenv
+  i18n-tasks
   inertia_rails (~> 3.21)
   jbuilder
   kamal
@@ -438,6 +458,7 @@ DEPENDENCIES
   prosopite
   puma (>= 5.0)
   rails (~> 8.1.4)
+  rails-i18n
   rails_vite
   rubocop-rails-omakase
   selenium-webdriver
@@ -501,7 +522,9 @@ CHECKSUMS
   google-protobuf (4.36.2-arm64-darwin) sha256=f70d810e6bbab9d8ad9c1d5fd685a21de4c10ad3ad32efb9455e17e5b1286917
   google-protobuf (4.36.2-x86_64-linux-gnu) sha256=d25a820873e423f1d209ae8c672a4a28b019e2429debd0901d26670a0b4e14db
   google-protobuf (4.36.2-x86_64-linux-musl) sha256=0fa17686c896da96a60a705e56ddc7d4ff56413f52787c655bd4c9fb33ffe14f
+  highline (3.1.2) sha256=67cbd34d19f6ef11a7ee1d82ffab5d36dfd5b3be861f450fc1716c7125f4bb4a
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
+  i18n-tasks (1.1.2) sha256=4dcfba49e52a623f30661cb316cb80d84fbba5cb8c6d88ef5e02545fffa3637a
   inertia_rails (3.23.0) sha256=e801e4458669bfac3a08caea6bb691086f171dd3f968372f20306e47cc052c4a
   io-console (0.9.4) sha256=a403304f32928ee85e56d457b4612ca43f2703b561a3258844992bd24085fbb1
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
@@ -562,6 +585,7 @@ CHECKSUMS
   rails (8.1.4) sha256=5f3ecdf9a2a3b79b2e31b8fee3b64a00f7284d76e5631f87d0e58e665911a33b
   rails-dom-testing (2.3.0) sha256=8acc7953a7b911ca44588bf08737bc16719f431a1cc3091a292bca7317925c1d
   rails-html-sanitizer (1.7.1) sha256=e797a7c9b01e567307e317c576b49ab4168017e63eea4dba9ce3cb587e2f22c2
+  rails-i18n (8.1.0) sha256=52d5fd6c0abef28d84223cc05647f6ae0fd552637a1ede92deee9545755b6cf3
   rails_vite (0.3.0) sha256=999fa6d010655eaccd7e30a2802e8c5679046709fca07926b70f1d64d6b97f52
   railties (8.1.4) sha256=b5e7a8e8984e33114d68af62227971960aae1e6c02bd7c9d826ffad97fff583c
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
@@ -584,6 +608,7 @@ CHECKSUMS
   solid_queue (1.7.0) sha256=6566b70b801d1c317c81bba7bcdd5677c019afac584a30374b4164002ca356d3
   sshkit (1.25.1) sha256=be3f10b9d6eb0b44d5eaba3f7cbe41bc6bb894bce4339688ac20124391455b78
   strong_migrations (2.8.0) sha256=cb9c0f8160e60f3e9c0e76098d57a6f61825b9618e8eb41cebbd1c1079874439
+  terminal-table (4.0.0) sha256=f504793203f8251b2ea7c7068333053f0beeea26093ec9962e62ea79f94301d2
   thor (1.5.0) sha256=e3a9e55fe857e44859ce104a84675ab6e8cd59c650a49106a05f55f136425e73
   thruster (0.1.27) sha256=5fd3855192bb4e8d13db69ae5f70d39f2dfd88fe0394fa372104996edf0bb599
   thruster (0.1.27-aarch64-linux) sha256=c50789f2dcd4dfa072c4719f99c38dea5d47ebb60ad0cc1fd1996b2266ecfd22

@@ -50,6 +50,9 @@ gem "typelizer"
 # Catches unsafe migrations before they run [https://github.com/ankane/strong_migrations]
 gem "strong_migrations"
 
+# Framework translations (validation messages, dates) for every locale [https://github.com/svenfuchs/rails-i18n]
+gem "rails-i18n"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -68,6 +71,9 @@ group :development, :test do
 
   # Git hooks [https://github.com/evilmartians/lefthook]
   gem "lefthook", require: false
+
+  # Finds missing and unused translation keys in Ruby and Vue [https://github.com/glebm/i18n-tasks]
+  gem "i18n-tasks", require: false
 
   # Loads .env, written by bin/setup, in development and test [https://github.com/bkeepers/dotenv]
   gem "dotenv"
