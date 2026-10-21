@@ -1,7 +1,9 @@
-# Run using bin/ci
+# Run using bin/ci (everything) or bin/check (the fast subset agents run after each turn).
+
+fast = ENV["CI_FAST"]
 
 CI.run do
-  step "Setup", "bin/setup --skip-server"
+  step "Setup", "bin/setup --skip-server" unless fast
 
   step "Style: Ruby", "bin/rubocop"
 
@@ -10,12 +12,21 @@ CI.run do
   step "JavaScript: types check", "pnpm check"
   step "JavaScript: generated types are fresh", "bin/rails typelizer:generate:refresh && git diff --exit-code -- app/javascript/routes app/javascript/types/serializers && test -z \"$(git ls-files --others --exclude-standard -- app/javascript/routes app/javascript/types/serializers)\""
 
-  step "Security: Gem audit", "bin/bundler-audit"
-  step "Security: pnpm vulnerability audit", "pnpm audit"
-  step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
+  step "Guard: tests and migrations", "bin/guard"
 
   step "Tests: Rails", "bin/rails test"
-  step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+
+  unless fast
+    step "Database: validations match constraints", "bundle exec database_consistency"
+
+    step "Security: Gem audit", "bin/bundler-audit"
+    step "Security: pnpm vulnerability audit", "pnpm audit"
+    step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
+    step "Security: secrets in git history", "docker run --rm -v \"$PWD:/repo\" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --redact --no-banner"
+
+    step "Tests: System", "bin/rails test:system"
+    step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+  end
 
   # Optional: set a green GitHub commit status to unblock PR merge.
   # Requires the `gh` CLI and `gh extension install basecamp/gh-signoff`.
