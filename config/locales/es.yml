@@ -29,6 +29,11 @@ es:
     profiles:
       updated: Tu perfil se actualizó
   ui:
+    a11y:
+      close: Cerrar
+      sidebar: Barra lateral
+      sidebar_description: Muestra la barra lateral en móvil.
+      toggle_sidebar: Mostrar u ocultar la barra lateral
     app_name: Rails Vue Starter
     dashboard:
       title: Panel
@@ -75,11 +80,6 @@ es:
           submit: Enviar enlace para restablecer
           title: Olvidé mi contraseña
     layouts:
-      auth:
-        quote: "“The One Person Framework. Un conjunto de herramientas tan poderoso
-          que permite a una sola persona crear aplicaciones modernas sobre las que
-          podría construir un negocio competitivo.”"
-        quote_author: DHH
       settings:
         appearance: Apariencia
         description: Administra tu perfil y la configuración de tu cuenta
@@ -96,10 +96,8 @@ es:
       documentation: Documentación
       github_repo: Repositorio en GitHub
       log_out: Cerrar sesión
-      navigation_menu: Menú de navegación
       platform: Plataforma
       projects: Proyectos
-      repository: Repositorio
       settings: Configuración
     projects:
       edit:
@@ -145,7 +143,7 @@ es:
         email: Correo electrónico
         resend: Haz clic aquí para reenviar el correo de verificación.
         save: Guardar
-        saved: Guardado
+        saved: Guardado.
         title: Cambiar correo
         unverified: Tu correo no está verificado.
       passwords:

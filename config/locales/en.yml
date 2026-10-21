@@ -29,6 +29,11 @@ en:
     profiles:
       updated: Your profile has been updated
   ui:
+    a11y:
+      close: Close
+      sidebar: Sidebar
+      sidebar_description: Displays the mobile sidebar.
+      toggle_sidebar: Toggle sidebar
     app_name: Rails Vue Starter
     dashboard:
       title: Dashboard
@@ -74,11 +79,6 @@ en:
           submit: Email password reset link
           title: Forgot password
     layouts:
-      auth:
-        quote: "“The One Person Framework. A toolkit so powerful that it allows a
-          single individual to create modern applications upon which they might build
-          a competitive business.”"
-        quote_author: DHH
       settings:
         appearance: Appearance
         description: Manage your profile and account settings
@@ -93,12 +93,10 @@ en:
     nav:
       dashboard: Dashboard
       documentation: Documentation
-      github_repo: Github Repo
+      github_repo: GitHub repository
       log_out: Log out
-      navigation_menu: Navigation Menu
       platform: Platform
       projects: Projects
-      repository: Repository
       settings: Settings
     projects:
       edit:
@@ -144,7 +142,7 @@ en:
         email: Email address
         resend: Click here to resend the verification email.
         save: Save
-        saved: Saved
+        saved: Saved.
         title: Update email
         unverified: Your email address is unverified.
       passwords:
