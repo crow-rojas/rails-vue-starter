@@ -18,6 +18,7 @@ done
 
 # The pre-push hook refuses main; this push is the reviewed, green, fast-forward one.
 LEFTHOOK_EXCLUDE=block-main,ci git push origin "$head:refs/heads/main"
+# Repositories that delete merged branches have already removed it by now.
 [ "$(gh pr view "$pr" --json isCrossRepository --jq .isCrossRepository)" = true ] ||
-  git push -q origin --delete "$(gh pr view "$pr" --json headRefName --jq .headRefName)"
+  git push -q origin --delete "$(gh pr view "$pr" --json headRefName --jq .headRefName)" 2>/dev/null || true
 echo "Merged #$pr into main as a fast-forward."
