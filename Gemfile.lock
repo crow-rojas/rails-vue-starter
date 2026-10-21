@@ -399,6 +399,7 @@ DEPENDENCIES
   capybara
   capybara-lockstep
   debug
+  dotenv
   inertia_rails (~> 3.21)
   jbuilder
   kamal

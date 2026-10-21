@@ -58,6 +58,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Loads .env, written by bin/setup, in development and test [https://github.com/bkeepers/dotenv]
+  gem "dotenv"
 end
 
 group :development do
