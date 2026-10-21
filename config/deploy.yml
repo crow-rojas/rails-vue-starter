@@ -47,9 +47,6 @@ aliases:
   # Destructive: restores the latest backup OVER the live database. Run backup-drill first.
   restore: accessory exec backup --reuse "sh restore.sh"
 
-volumes:
-  - "rails_vue_starter_storage:/rails/storage"
-
 asset_path: /rails/public
 
 builder:
