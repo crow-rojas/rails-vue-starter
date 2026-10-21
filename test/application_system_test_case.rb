@@ -1,7 +1,17 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
+    options.add_option("goog:loggingPrefs", { browser: "ALL" })
+  end
+
+  # A page that logs an error is broken even when the assertions pass. A test that provokes one
+  # sets @expected_console_errors to a pattern for it.
+  teardown do
+    errors = page.driver.browser.logs.get(:browser).select { it.level == "SEVERE" }.map(&:message)
+    errors.reject! { @expected_console_errors&.match?(it) }
+    assert_empty errors, "The browser logged errors:\n  #{errors.join("\n  ")}"
+  end
 
   AXE = Rails.root.join("node_modules/axe-core/axe.min.js").read
   WCAG_TAGS = %w[wcag2a wcag2aa wcag21a wcag21aa wcag22aa].freeze

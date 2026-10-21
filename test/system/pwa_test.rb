@@ -19,6 +19,8 @@ class PwaTest < ApplicationSystemTestCase
   # the page's half: the failed Inertia visit becomes a page load, which the worker answers offline.
   test "an Inertia visit that fails offline reloads the page" do
     sign_in_as users(:one)
+    # Requests made while offline (the visit, the manifest) log this until the network is back.
+    @expected_console_errors = /net::ERR_INTERNET_DISCONNECTED/
     page.execute_script("document.body.dataset.beforeReload = true")
 
     page.driver.browser.network_conditions = { offline: true, latency: 0, throughput: 0 }
