@@ -19,14 +19,14 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <script>
-      <%# Enable dark mode based on localStorage or system preference. Inline to avoid FOUC. %>
+    <%# Enable dark mode based on localStorage or system preference. Inline to avoid FOUC. %>
+    <%= javascript_tag nonce: true do %>
       document.documentElement.classList.toggle(
         "dark",
         localStorage.appearance === "dark" ||
           (!("appearance" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
       );
-    </script>
+    <% end %>
 
     <%= vite_tags "application.css", "inertia.ts" %>
     <%= inertia_ssr_head %>

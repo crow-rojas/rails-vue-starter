@@ -6,6 +6,8 @@ import { defineConfig } from "vite"
 import vueDevTools from "vite-plugin-vue-devtools"
 
 export default defineConfig(({ command }) => ({
+  // CSP source lists cannot name IPv6 hosts, and "localhost" resolves to [::1] on macOS.
+  server: { host: "127.0.0.1" },
   ssr: {
     // Prebuild ssr.js so we can drop node_modules from the container.
     noExternal: command === "build" ? true : undefined,
