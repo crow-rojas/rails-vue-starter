@@ -28,6 +28,13 @@ Rails.application.routes.draw do
 
   root "home#index"
 
+  # Served from the root so the service worker's scope is the whole app (ADR-007).
+  scope format: false, controller: :pwa do
+    get "manifest.json", action: :manifest, as: :pwa_manifest, defaults: { format: :json }
+    get "service-worker.js", action: :service_worker, as: :pwa_service_worker, defaults: { format: :js }
+    get "offline", action: :offline, as: :pwa_offline
+  end
+
   # Errors and jobs dashboards, only for a signed-in user listed in ADMIN_EMAILS; a 404 for anyone else.
   constraints ->(request) { Session.find_by(id: request.cookie_jar.signed[:session_token])&.user&.admin? } do
     mount SolidErrors::Engine, at: "/admin/errors"

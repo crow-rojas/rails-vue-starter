@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title><%= t("ui.pwa.offline.title") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%# Cached by the service worker, so no scripts (a cached page has no fresh nonce) and no Vite assets. %>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-content: center; gap: 0.5rem; padding: 1rem; text-align: center; font-family: system-ui, sans-serif; color: #0a0a0a; background: #ffffff; }
+      h1 { margin: 0; font-size: 1.25rem; }
+      p { margin: 0; color: #737373; }
+      a { color: inherit; }
+      @media (prefers-color-scheme: dark) { body { color: #fafafa; background: #0a0a0a; } p { color: #a1a1a1; } }
+    </style>
+  </head>
+  <body>
+    <h1><%= t("ui.pwa.offline.title") %></h1>
+    <p><%= t("ui.pwa.offline.text") %></p>
+    <p><%= link_to t("ui.pwa.offline.retry"), root_path %></p>
+  </body>
+</html>

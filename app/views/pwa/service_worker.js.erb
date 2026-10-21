@@ -1,0 +1,24 @@
+// Network first for page loads, with a cached offline page when the network fails.
+// Nothing else is intercepted: Inertia requests must reach the server so its version check
+// (409 and a full reload) still works after a deploy, and pages carry per-user props (ADR-007).
+// ponytail: the cache follows the Vite digest, so an edit to only the offline page waits for the next frontend change.
+const CACHE = "offline-<%= RailsVite.digest %>"
+const OFFLINE_URL = "<%= pwa_offline_path %>"
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.add(OFFLINE_URL)))
+  self.skipWaiting()
+})
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
+  )
+  self.clients.claim()
+})
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.mode !== "navigate") return
+
+  event.respondWith(fetch(event.request).catch(() => caches.match(OFFLINE_URL)))
+})

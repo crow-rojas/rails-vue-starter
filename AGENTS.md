@@ -20,6 +20,7 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 - `app/serializers`: Alba resources that define every prop a page receives.
 - `app/controllers/projects_controller.rb` and everything named `projects`: **the reference resource. Copy its shape for a new one** (ADR-005).
 - `config/deploy.yml`, `.kamal/secrets`: Kamal deploy, configured from the environment (ADR-006). Production reads variables, never a credentials file.
+- `app/views/pwa`, `PwaController`: the manifest, service worker and offline page (ADR-007). The worker only answers page loads; never let it cache Inertia responses.
 - `.claude/`: the agent hooks and deny rules (ADR-002).
 - `docs/adr`: decisions. `docs/research/versions.md`: pinned versions and their sources.
 

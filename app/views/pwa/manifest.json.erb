@@ -1,22 +1,18 @@
-{
-  "name": "RailsVueStarter",
-  "icons": [
-    {
-      "src": "/icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    },
-    {
-      "src": "/icon.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
-    }
+<%= {
+  id: "/",
+  start_url: "/",
+  scope: "/",
+  display: "standalone",
+  lang: I18n.locale,
+  name: t("ui.app_name"),
+  short_name: t("ui.app_name"),
+  description: t("ui.pwa.description"),
+  icons: [
+    { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    { src: "/icon.png", type: "image/png", sizes: "512x512" },
+    { src: "/icon-maskable.png", type: "image/png", sizes: "512x512", purpose: "maskable" }
   ],
-  "start_url": "/",
-  "display": "standalone",
-  "scope": "/",
-  "description": "RailsVueStarter.",
-  "theme_color": "red",
-  "background_color": "red"
-}
+  # Light-mode --primary and --background as hex: manifests don't reliably accept oklch.
+  theme_color: "#171717",
+  background_color: "#ffffff"
+}.to_json.html_safe %>

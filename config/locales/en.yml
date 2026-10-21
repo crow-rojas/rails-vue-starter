@@ -117,6 +117,12 @@ en:
         created_at: Created %{date}
         delete: Delete
         edit: Edit
+    pwa:
+      description: A Rails app with an Inertia and Vue frontend
+      offline:
+        retry: Try again
+        text: Check your connection and try again.
+        title: You are offline
     sessions:
       new:
         description: Enter your email and password below to log in

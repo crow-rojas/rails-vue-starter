@@ -118,6 +118,12 @@ es:
         created_at: Creado el %{date}
         delete: Eliminar
         edit: Editar
+    pwa:
+      description: Una app Rails con frontend en Inertia y Vue
+      offline:
+        retry: Reintentar
+        text: Revisa tu conexión e inténtalo de nuevo.
+        title: Estás sin conexión
     sessions:
       new:
         description: Ingresa tu correo y contraseña para iniciar sesión
