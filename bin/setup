@@ -1,10 +1,18 @@
 #!/usr/bin/env ruby
 require "fileutils"
+require "socket"
 
 APP_ROOT = File.expand_path("..", __dir__)
 
 def system!(*args)
   system(*args, exception: true)
+end
+
+def port_taken?(port)
+  TCPSocket.new("127.0.0.1", port).close
+  true
+rescue Errno::ECONNREFUSED
+  false
 end
 
 FileUtils.chdir APP_ROOT do
@@ -21,6 +29,15 @@ FileUtils.chdir APP_ROOT do
   # unless File.exist?("config/database.yml")
   #   FileUtils.cp "config/database.yml.sample", "config/database.yml"
   # end
+
+  unless File.exist?(".env")
+    puts "\n== Writing .env =="
+    port = (5432..5532).find { |p| !port_taken?(p) }
+    File.write(".env", File.read(".env.example").sub(/^DB_PORT=.*/, "DB_PORT=#{port}"))
+  end
+
+  puts "\n== Starting Postgres =="
+  system! "docker compose up --detach --wait db"
 
   puts "\n== Preparing database =="
   system! "bin/rails db:prepare"
