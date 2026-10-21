@@ -1,5 +1,9 @@
 require "active_support/core_ext/integer/time"
 
+# assets:precompile boots this file while the image is built, before any runtime variable exists
+# (Rails marks that step with SECRET_KEY_BASE_DUMMY). Everywhere else a missing variable fails the boot.
+runtime_env = ->(name) { ENV["SECRET_KEY_BASE_DUMMY"] ? ENV.fetch(name, "build.invalid") : ENV.fetch(name) }
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -57,17 +61,19 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # Links in emails point at the public host; config/deploy.yml sets APP_HOST.
+  config.action_mailer.default_url_options = { host: runtime_env.("APP_HOST"), protocol: "https" }
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # Sign-up verification and password reset need real email. SMTP comes from the environment
+  # (config/deploy.yml and .kamal/secrets), so no credentials file is involved.
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: runtime_env.("SMTP_ADDRESS"),
+    port: ENV.fetch("SMTP_PORT", 587).to_i,
+    user_name: runtime_env.("SMTP_USERNAME"),
+    password: runtime_env.("SMTP_PASSWORD"),
+    authentication: :plain
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -80,11 +86,8 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
+  config.hosts = [ runtime_env.("APP_HOST") ]
+
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
