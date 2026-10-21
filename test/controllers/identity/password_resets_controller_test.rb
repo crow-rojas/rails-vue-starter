@@ -17,12 +17,30 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sign_in_path
   end
 
-  test "rejects password reset for unverified user" do
+  test "answers an unverified user like any other email" do
     users(:one).update!(verified: false)
     assert_no_enqueued_emails do
       post identity_password_reset_path, params: { email: users(:one).email }
     end
-    assert_redirected_to new_identity_password_reset_path
+    assert_redirected_to sign_in_path
+    assert_equal "If that email belongs to a verified account, you will get reset instructions", flash[:notice]
+  end
+
+  test "answers an unknown email like a known one" do
+    assert_no_enqueued_emails do
+      post identity_password_reset_path, params: { email: "nobody@example.com" }
+    end
+    assert_redirected_to sign_in_path
+    assert_equal "If that email belongs to a verified account, you will get reset instructions", flash[:notice]
+  end
+
+  test "limits password reset requests" do
+    10.times { post identity_password_reset_path, params: { email: "nobody@example.com" } }
+
+    assert_no_enqueued_emails do
+      post identity_password_reset_path, params: { email: users(:one).email }
+    end
+    assert_equal "Try again later", flash[:alert]
   end
 
   test "renders password reset edit page" do
