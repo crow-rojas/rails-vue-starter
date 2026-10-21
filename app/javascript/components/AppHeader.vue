@@ -33,6 +33,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useI18n } from "@/composables/useI18n"
 import { getInitials } from "@/composables/useInitials"
 import { dashboard } from "@/routes"
 import type { BreadcrumbItem, NavItem } from "@/types"
@@ -44,6 +45,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   breadcrumbs: () => [],
 })
+
+const { t } = useI18n()
 
 const page = usePage()
 const auth = computed(() => page.props.auth)
@@ -57,26 +60,26 @@ const activeItemStyles = computed(
       : "",
 )
 
-const mainNavItems: NavItem[] = [
+const mainNavItems = computed<NavItem[]>(() => [
   {
-    title: "Dashboard",
+    title: t("ui.nav.dashboard"),
     href: "/dashboard",
     icon: LayoutGrid,
   },
-]
+])
 
-const rightNavItems: NavItem[] = [
+const rightNavItems = computed<NavItem[]>(() => [
   {
-    title: "Repository",
+    title: t("ui.nav.repository"),
     href: "https://github.com/inertia-rails/vue-starter-kit",
     icon: Folder,
   },
   {
-    title: "Documentation",
+    title: t("ui.nav.documentation"),
     href: "https://inertia-rails.dev",
     icon: BookOpen,
   },
-]
+])
 </script>
 
 <template>
@@ -92,7 +95,9 @@ const rightNavItems: NavItem[] = [
               </Button>
             </SheetTrigger>
             <SheetContent side="left" class="w-[300px] p-6">
-              <SheetTitle class="sr-only">Navigation Menu</SheetTitle>
+              <SheetTitle class="sr-only">{{
+                t("ui.nav.navigation_menu")
+              }}</SheetTitle>
               <SheetHeader class="flex justify-start text-left">
                 <AppLogoIcon
                   class="size-6 fill-current text-black dark:text-white"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3"
 import { BookOpen, Folder, LayoutGrid } from "@lucide/vue"
+import { computed } from "vue"
 
 import NavFooter from "@/components/NavFooter.vue"
 import NavMain from "@/components/NavMain.vue"
@@ -14,31 +15,34 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useI18n } from "@/composables/useI18n"
 import { dashboard } from "@/routes"
 import { type NavItem } from "@/types"
 
 import AppLogo from "./AppLogo.vue"
 
-const mainNavItems: NavItem[] = [
+const { t } = useI18n()
+
+const mainNavItems = computed<NavItem[]>(() => [
   {
-    title: "Dashboard",
+    title: t("ui.nav.dashboard"),
     href: dashboard.index().url,
     icon: LayoutGrid,
   },
-]
+])
 
-const footerNavItems: NavItem[] = [
+const footerNavItems = computed<NavItem[]>(() => [
   {
-    title: "Github Repo",
+    title: t("ui.nav.github_repo"),
     href: "https://github.com/inertia-rails/vue-starter-kit",
     icon: Folder,
   },
   {
-    title: "Documentation",
+    title: t("ui.nav.documentation"),
     href: "https://inertia-rails.dev",
     icon: BookOpen,
   },
-]
+])
 </script>
 
 <template>

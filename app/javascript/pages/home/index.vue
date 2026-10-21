@@ -1,36 +1,38 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3"
+import { computed } from "vue"
 
 import AppLogoIcon from "@/components/AppLogoIcon.vue"
 import ResourceItem from "@/components/ResourceItem.vue"
+import { useI18n } from "@/composables/useI18n"
 import { dashboard, sessions, users } from "@/routes"
 
-const appName = import.meta.env.VITE_APP_NAME ?? "Vue Starter Kit"
+const { t } = useI18n()
 
-const links = [
+const links = computed(() => [
   [
     {
-      text: "Inertia Rails Docs",
+      text: t("ui.home.links.inertia_docs"),
       href: "https://inertia-rails.dev",
     },
     {
-      text: "shadcn/vue Components",
+      text: t("ui.home.links.shadcn_components"),
       href: "https://shadcn-vue.com",
     },
     {
-      text: "Vue Docs",
+      text: t("ui.home.links.vue_docs"),
       href: "https://vuejs.org",
     },
     {
-      text: "Rails Guides",
+      text: t("ui.home.links.rails_guides"),
       href: "https://guides.rubyonrails.org",
     },
   ],
-]
+])
 </script>
 
 <template>
-  <Head title="Welcome" />
+  <Head :title="t('ui.home.title')" />
   <div
     class="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]"
   >
@@ -43,20 +45,20 @@ const links = [
           :href="dashboard.index()"
           class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
         >
-          Dashboard
+          {{ t("ui.home.dashboard") }}
         </Link>
         <template v-else>
           <Link
             :href="sessions.new()"
             class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
           >
-            Log in
+            {{ t("ui.home.log_in") }}
           </Link>
           <Link
             :href="users.new()"
             class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
           >
-            Register
+            {{ t("ui.home.register") }}
           </Link>
         </template>
       </nav>
@@ -71,12 +73,12 @@ const links = [
           class="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"
         >
           <h1 class="mb-1 font-medium">
-            {{ appName }}
+            {{ t("ui.app_name") }}
           </h1>
           <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-            Rails + Inertia.js + Vue.js + shadcn/vue
+            {{ t("ui.home.stack") }}
             <br />
-            Here are some resources to begin:
+            {{ t("ui.home.resources_intro") }}
           </p>
 
           <ul class="mb-4 flex flex-col lg:mb-6">
@@ -95,7 +97,7 @@ const links = [
                 target="_blank"
                 class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
               >
-                Learn more
+                {{ t("ui.home.learn_more") }}
               </a>
             </li>
           </ul>

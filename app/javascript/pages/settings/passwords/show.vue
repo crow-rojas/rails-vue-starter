@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from "@inertiajs/vue3"
+import { computed } from "vue"
 
 import HeadingSmall from "@/components/HeadingSmall.vue"
 import { Button } from "@/components/ui/button"
@@ -10,17 +11,20 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useI18n } from "@/composables/useI18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 import SettingsLayout from "@/layouts/settings/Layout.vue"
 import { settingsPasswords } from "@/routes"
 import { type BreadcrumbItem } from "@/types"
 
-const breadcrumbs: BreadcrumbItem[] = [
+const { t } = useI18n()
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   {
-    title: "Password settings",
+    title: t("ui.settings.passwords.breadcrumb"),
     href: settingsPasswords.show().url,
   },
-]
+])
 </script>
 
 <template>
@@ -30,8 +34,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     <SettingsLayout>
       <div class="space-y-6">
         <HeadingSmall
-          title="Update password"
-          description="Ensure your account is using a long, random password to stay secure"
+          :title="t('ui.settings.passwords.title')"
+          :description="t('ui.settings.passwords.description')"
         />
 
         <Form
@@ -44,46 +48,52 @@ const breadcrumbs: BreadcrumbItem[] = [
         >
           <FieldGroup>
             <Field>
-              <FieldLabel for="password_challenge">Current password</FieldLabel>
+              <FieldLabel for="password_challenge">{{
+                t("ui.settings.passwords.current_password")
+              }}</FieldLabel>
               <Input
                 id="password_challenge"
                 name="password_challenge"
                 type="password"
                 autocomplete="current-password"
-                placeholder="Current password"
+                :placeholder="t('ui.settings.passwords.current_password')"
               />
               <FieldError :errors="errors.password_challenge" />
             </Field>
 
             <Field>
-              <FieldLabel for="password">New password</FieldLabel>
+              <FieldLabel for="password">{{
+                t("ui.settings.passwords.new_password")
+              }}</FieldLabel>
               <Input
                 id="password"
                 name="password"
                 type="password"
                 autocomplete="new-password"
-                placeholder="New password"
+                :placeholder="t('ui.settings.passwords.new_password')"
               />
               <FieldError :errors="errors.password" />
             </Field>
 
             <Field>
               <FieldLabel for="password_confirmation">
-                Confirm password
+                {{ t("ui.settings.passwords.confirm_password") }}
               </FieldLabel>
               <Input
                 id="password_confirmation"
                 name="password_confirmation"
                 type="password"
                 autocomplete="new-password"
-                placeholder="Confirm password"
+                :placeholder="t('ui.settings.passwords.confirm_password')"
               />
               <FieldError :errors="errors.password_confirmation" />
             </Field>
           </FieldGroup>
 
           <div class="flex items-center gap-4">
-            <Button :disabled="processing">Save password</Button>
+            <Button :disabled="processing">{{
+              t("ui.settings.passwords.save")
+            }}</Button>
 
             <Transition
               enter-active-class="transition ease-in-out"
@@ -92,7 +102,7 @@ const breadcrumbs: BreadcrumbItem[] = [
               leave-to-class="opacity-0"
             >
               <p v-show="recentlySuccessful" class="text-sm text-neutral-600">
-                Saved.
+                {{ t("ui.settings.passwords.saved") }}
               </p>
             </Transition>
           </div>

@@ -2,6 +2,7 @@
 import { Link } from "@inertiajs/vue3"
 
 import AppLogoIcon from "@/components/AppLogoIcon.vue"
+import { useI18n } from "@/composables/useI18n"
 import { home } from "@/routes"
 
 defineProps<{
@@ -9,7 +10,7 @@ defineProps<{
   description?: string
 }>()
 
-const appName = import.meta.env.VITE_APP_NAME ?? "Vue Starter Kit"
+const { t } = useI18n()
 </script>
 
 <template>
@@ -25,16 +26,16 @@ const appName = import.meta.env.VITE_APP_NAME ?? "Vue Starter Kit"
         class="relative z-20 flex items-center text-lg font-medium"
       >
         <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
-        {{ appName }}
+        {{ t("ui.app_name") }}
       </Link>
       <div class="relative z-20 mt-auto">
         <blockquote class="space-y-2">
           <p class="text-lg">
-            &ldquo;The One Person Framework. A toolkit so powerful that it
-            allows a single individual to create modern applications upon which
-            they might build a competitive business.&rdquo;
+            {{ t("ui.layouts.auth.quote") }}
           </p>
-          <footer class="text-sm text-neutral-300">DHH</footer>
+          <footer class="text-sm text-neutral-300">
+            {{ t("ui.layouts.auth.quote_author") }}
+          </footer>
         </blockquote>
       </div>
     </div>
