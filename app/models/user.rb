@@ -17,13 +17,16 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, allow_nil: true, length: { minimum: 12 }
+  # has_secure_password ignores a blank password on update; a password change must not.
+  validates :password, presence: true, on: :password_change
   validates :locale, inclusion: { in: -> { I18n.available_locales.map(&:to_s) } }, allow_nil: true
 
   normalizes :email, with: -> { _1.strip.downcase }
 
   # Admins are configured, not stored: a comma-separated ADMIN_EMAILS in the environment.
+  # Only a verified address counts, or anyone could sign up first with the admin's email.
   def admin?
-    ENV.fetch("ADMIN_EMAILS", "").split(",").map { it.strip.downcase }.include?(email)
+    verified? && ENV.fetch("ADMIN_EMAILS", "").split(",").map { it.strip.downcase }.include?(email)
   end
 
   before_validation if: :email_changed?, on: :update do

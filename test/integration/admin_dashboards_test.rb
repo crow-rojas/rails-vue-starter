@@ -28,4 +28,12 @@ class AdminDashboardsTest < ActionDispatch::IntegrationTest
     get "/admin/errors"
     assert_response :not_found
   end
+
+  test "an admin email that is not verified does not open the dashboards" do
+    users(:one).update!(verified: false)
+    sign_in users(:one)
+
+    get "/admin/errors"
+    assert_response :not_found
+  end
 end
