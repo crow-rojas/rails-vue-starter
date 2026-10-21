@@ -3,7 +3,7 @@ import { createInertiaApp } from "@inertiajs/vue3"
 import { initializeTheme } from "@/composables/useAppearance"
 import PersistentLayout from "@/layouts/PersistentLayout.vue"
 
-const appName = import.meta.env.VITE_APP_NAME ?? "Vue Starter Kit"
+const appName = import.meta.env.VITE_APP_NAME ?? "Rails Vue Starter"
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),
