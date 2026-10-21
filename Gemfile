@@ -66,6 +66,9 @@ group :development, :test do
   # Finds model validations without a matching database constraint [https://github.com/djezzzl/database_consistency]
   gem "database_consistency", require: false
 
+  # Git hooks [https://github.com/evilmartians/lefthook]
+  gem "lefthook", require: false
+
   # Loads .env, written by bin/setup, in development and test [https://github.com/bkeepers/dotenv]
   gem "dotenv"
 end
