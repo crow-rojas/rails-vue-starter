@@ -1,26 +1,38 @@
 #!/usr/bin/env ruby
 # Stop: keep the agent working until bin/check is green (exit 2 sends the failure back).
 # Skips trees that already passed, and lets the agent stop on a second failed attempt.
-require "digest"
+# Any error in this script also exits 2: a hook that crashes must not wave the turn through.
 require "json"
 require "open3"
+require "tmpdir"
 
-Dir.chdir(IO.popen(%w[git rev-parse --show-toplevel], &:read).strip)
+begin
+  exit 0 if JSON.parse($stdin.read)["stop_hook_active"]
 
-exit 0 if JSON.parse($stdin.read)["stop_hook_active"]
+  root, status = Open3.capture2("git", "rev-parse", "--show-toplevel")
+  raise "not inside a git repository" unless status.success?
+  Dir.chdir(root.strip)
 
-marker = "tmp/agent-check-passed"
-untracked = IO.popen(%w[git ls-files --others --exclude-standard], &:read).lines(chomp: true)
-tree = Digest::SHA256.hexdigest(
-  [ IO.popen(%w[git rev-parse HEAD], &:read), IO.popen(%w[git diff HEAD], &:read), *untracked, *untracked.map { File.read(it) } ].join
-)
-exit 0 if File.exist?(marker) && File.read(marker) == tree
+  # The tree the working copy would commit, untracked files included, without touching the real index.
+  tree = Dir.mktmpdir do |dir|
+    env = { "GIT_INDEX_FILE" => File.join(dir, "index") }
+    system(env, "git", "read-tree", "HEAD", exception: true)
+    system(env, "git", "add", "--all", exception: true)
+    Open3.capture2(env, "git", "write-tree").first.strip
+  end
 
-output, status = Open3.capture2e("bin/check")
-if status.success?
-  File.write(marker, tree)
-  exit 0
+  marker = "tmp/agent-check-passed"
+  exit 0 if File.exist?(marker) && File.read(marker) == tree
+
+  output, status = Open3.capture2e("bin/check")
+  if status.success?
+    File.write(marker, tree)
+    exit 0
+  end
+
+  warn "bin/check failed. Fix the cause; do not weaken the check.\n\n#{output.lines.last(60).join}"
+  exit 2
+rescue StandardError => e
+  warn "The stop hook could not run bin/check (#{e.message}). Run bin/check yourself before finishing."
+  exit 2
 end
-
-warn "bin/check failed. Fix the cause; do not weaken the check.\n\n#{output.lines.last(60).join}"
-exit 2

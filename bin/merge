@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Merges a pull request by fast-forwarding main to its head, so its signed commits land unchanged.
+# GitHub's "Rebase and merge" re-creates commits without signatures. Usage: bin/merge <pr-number>
+set -eu
+pr="${1:?usage: bin/merge <pr-number>}"
+
+gh pr checks "$pr" >/dev/null || { echo "The checks of #$pr are not all green."; exit 1; }
+head=$(gh pr view "$pr" --json headRefOid --jq .headRefOid)
+git fetch -q origin main "pull/$pr/head"
+git merge-base --is-ancestor origin/main "$head" ||
+  { echo "#$pr is behind main: rebase it onto origin/main, push, and wait for CI."; exit 1; }
+
+repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
+for sha in $(git rev-list "origin/main..$head"); do
+  [ "$(gh api "repos/$repo/commits/$sha" --jq .commit.verification.verified)" = true ] ||
+    { echo "Commit $sha is not verified by GitHub; sign it and push again."; exit 1; }
+done
+
+# The pre-push hook refuses main; this push is the reviewed, green, fast-forward one.
+LEFTHOOK_EXCLUDE=block-main,ci git push origin "$head:refs/heads/main"
+[ "$(gh pr view "$pr" --json isCrossRepository --jq .isCrossRepository)" = true ] ||
+  git push -q origin --delete "$(gh pr view "$pr" --json headRefName --jq .headRefName)"
+echo "Merged #$pr into main as a fast-forward."

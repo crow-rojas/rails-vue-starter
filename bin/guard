@@ -1,11 +1,20 @@
 #!/usr/bin/env ruby
-# Fails when a change weakens the test suite or rewrites a shipped migration.
-# A human can let one branch through with a commit trailer:
-#   Guard-Override: tests <reason>   or   Guard-Override: migrations <reason>
+# Fails when a change weakens the test suite, rewrites a shipped migration, or edits the harness
+# that enforces both. A human can let one branch through with a commit trailer:
+#   Guard-Override: tests <reason> | migrations <reason> | harness <reason>
+# The test count is a heuristic: it catches deleted and skipped tests, not a gutted test body.
 
-def git(*args) = IO.popen([ "git", *args ], &:read).strip
+def git(*args)
+  output = IO.popen([ "git", *args ], err: File::NULL, &:read)
+  abort "guard: git #{args.first} failed, so nothing was checked" unless $?.success?
+  output.strip
+end
 
-TEST_PATTERN = /^\s*(test\s+["']|def test_)/
+TEST_PATTERN = /^\s*(test[\s(]+["']|def test_|it[\s(]+["'])/
+HARNESS = %w[
+  bin/guard bin/check bin/ci bin/merge config/ci.rb lefthook.yml .claude .github/workflows
+  .rubocop.yml eslint.config.js pnpm-workspace.yaml .database_consistency.yml config/i18n-tasks.yml
+]
 
 def test_count(ref = nil)
   files = ref ? git("ls-tree", "-r", "--name-only", ref, "test").lines(chomp: true) : Dir["test/**/*"]
@@ -18,24 +27,26 @@ end
 base_ref = %w[origin/main main].find { |ref| system("git", "rev-parse", "--verify", "-q", ref, out: File::NULL) }
 abort "guard: no main branch to compare against" unless base_ref
 base = git("merge-base", "HEAD", base_ref)
-overrides = git("log", "--format=%(trailers:key=Guard-Override,valueonly)", "#{base}..HEAD").lines.filter_map { it.split.first }
-allow_tests = overrides.include?("tests")
-allow_migrations = overrides.include?("migrations")
+overrides = git("log", "--format=%(trailers:key=Guard-Override,valueonly)", "#{base}..HEAD").lines.filter_map { it.split.first&.downcase }
+allow_tests, allow_migrations, allow_harness = %w[tests migrations harness].map { overrides.include?(it) }
 failures = []
 
 before, after = test_count(base), test_count
-if after < before && !allow_tests
-  failures << "the number of tests went down (#{before} -> #{after})"
-end
+failures << "the number of tests went down (#{before} -> #{after})" if after < before && !allow_tests
 
-added_skips = git("diff", base, "--unified=0", "--", "test").lines.grep(/^\+\s*skip\b/)
-if added_skips.any? && !allow_tests
-  failures << "new skip calls in tests:\n#{added_skips.join}"
-end
+untracked_tests = git("ls-files", "--others", "--exclude-standard", "--", "test").lines(chomp: true)
+added_lines = git("diff", base, "--unified=0", "--", "test").lines + untracked_tests.flat_map { File.readlines(it).map { |line| "+#{line}" } }
+added_skips = added_lines.grep(/^\+\s*skip\b/)
+failures << "new skip calls in tests:\n#{added_skips.join}" if added_skips.any? && !allow_tests
 
 changed_migrations = git("diff", "--name-only", "--diff-filter=MDR", base, "--", "db/migrate").lines(chomp: true)
 if changed_migrations.any? && !allow_migrations
   failures << "migrations already on main were changed; add a new one instead:\n#{changed_migrations.join("\n")}"
+end
+
+changed_harness = git("diff", "--name-only", base, "--", *HARNESS).lines(chomp: true)
+if changed_harness.any? && !allow_harness
+  failures << "the harness changed, which needs a human's Guard-Override: harness <reason>:\n#{changed_harness.join("\n")}"
 end
 
 if failures.any?

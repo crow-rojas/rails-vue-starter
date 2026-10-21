@@ -9,7 +9,8 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 - `bin/check`: the fast gate (lint, types, generated types, `bin/guard`, Rails tests), about 11 s. The Stop hook runs it after each turn.
 - `bin/ci`: everything CI runs (`config/ci.rb`), about 40 s; `git push` runs it. **You are done only when it is green.**
 - `bin/rails test`, `bin/rails test:system`: Minitest unit, integration and browser tests.
-- `pnpm lint`, `pnpm format`, `pnpm check`: ESLint, Prettier and the Vue type check.
+- `pnpm lint`, `pnpm format`, `pnpm check`, `pnpm test`: ESLint, Prettier, the Vue type check and Vitest unit tests.
+- `bin/merge <pr>`: merge a pull request whose checks are green, as a fast-forward of main that keeps its signed commits. Never use GitHub's merge buttons.
 
 ## Map
 
@@ -28,7 +29,7 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 2. **No literal user-facing copy** (ADR-004). It goes in `config/locales/en.yml` and `es.yml` together; Vue reads it with `useI18n()` and the full key, `t("ui.page.thing")`. `i18n-tasks health`, ESLint and RuboCop fail on a missing key, an unused key or literal copy. Dates and numbers format with the app's `locale` from `useI18n()`, never the browser's.
 3. **Conventional Commits**, one concern each, with no AI co-author trailers (the `commit-msg` hook rejects both).
 4. **Never silence a check.** No `rubocop:disable`, `eslint-disable`, `@ts-ignore` or `@ts-expect-error` (the linters reject them), no `--no-verify`, no new exclusions in `.rubocop.yml`, `eslint.config.js`, `pnpm-workspace.yaml` or `.database_consistency.yml`. Fix the cause.
-5. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The `Guard-Override:` trailer is for humans only.
+5. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The same goes for the harness (`bin/guard`, `config/ci.rb`, `lefthook.yml`, `.claude/`, workflows, linter configs). The `Guard-Override:` trailer is for humans only.
 6. **Write the failing test first** when fixing a bug, and run it to see it fail for the right reason.
 7. **No N+1 queries** (prosopite fails the test) and **no unsafe migrations** (strong_migrations fails the migration).
 8. **Security defaults stay on** (ADR-003): an endpoint that sends email or checks a secret calls `limit_attempts`; an inline script uses `javascript_tag nonce: true`; a new external origin is added to the content security policy on purpose, never by loosening it.

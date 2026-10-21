@@ -10,9 +10,15 @@ CI.run do
   step "JavaScript: lint", "pnpm lint"
   step "JavaScript: format", "pnpm format"
   step "JavaScript: types check", "pnpm check"
-  step "JavaScript: generated types are fresh", "bin/rails typelizer:generate:refresh && git diff --exit-code -- app/javascript/routes app/javascript/types/serializers && test -z \"$(git ls-files --others --exclude-standard -- app/javascript/routes app/javascript/types/serializers)\""
+  step "JavaScript: unit tests", "pnpm test"
+  # Regenerate and compare content hashes, so the step judges the files, not what happens to be staged.
+  generated = "app/javascript/routes app/javascript/types/serializers"
+  digest = "find #{generated} -type f | sort | xargs shasum | shasum"
+  step "JavaScript: generated types are fresh",
+    "before=$(#{digest}) && bin/rails typelizer:generate:refresh && test \"$before\" = \"$(#{digest})\" || " \
+    "{ echo 'Generated types were stale and are regenerated now: commit them.'; exit 1; }"
 
-  step "Guard: tests and migrations", "bin/guard"
+  step "Guard: tests, migrations and harness", "bin/guard"
   step "i18n: missing and unused keys", "bundle exec i18n-tasks health"
 
   step "Tests: Rails", "bin/rails test"

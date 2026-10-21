@@ -3,9 +3,13 @@
 require "json"
 require "open3"
 
-Dir.chdir(IO.popen(%w[git rev-parse --show-toplevel], &:read).strip)
-
-file = JSON.parse($stdin.read).dig("tool_input", "file_path").to_s
+begin
+  Dir.chdir(IO.popen(%w[git rev-parse --show-toplevel], &:read).strip)
+  file = JSON.parse($stdin.read).dig("tool_input", "file_path").to_s
+rescue StandardError => e
+  warn "The lint hook could not run (#{e.message}); run bin/check before finishing."
+  exit 2
+end
 exit 0 unless File.file?(file)
 
 commands =

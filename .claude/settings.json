@@ -4,7 +4,6 @@
       "Read(./.env)",
       "Read(./config/master.key)",
       "Read(./config/credentials/*.key)",
-      "Bash(* --no-verify*)",
       "Bash(git push --force *)",
       "Bash(git push * --force)",
       "Bash(git push * --force *)",
@@ -13,7 +12,16 @@
       "Bash(git push * -f *)",
       "Bash(npm *)",
       "Bash(npx *)",
-      "Bash(yarn *)"
+      "Bash(yarn *)",
+      "Bash(* --no-veri*)",
+      "Bash(git commit -n*)",
+      "Bash(git commit * -n*)",
+      "Bash(*LEFTHOOK=0*)",
+      "Bash(*LEFTHOOK_EXCLUDE*)",
+      "Bash(*core.hooksPath*)",
+      "Bash(*lefthook uninstall*)",
+      "Bash(git push -uf *)",
+      "Bash(git push * +*)"
     ]
   },
   "hooks": {
@@ -23,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/lint-edited-file",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-edited-file",
             "timeout": 60
           }
         ]
@@ -34,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/check-on-stop",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-on-stop",
             "timeout": 300
           }
         ]
