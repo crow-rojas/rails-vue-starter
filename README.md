@@ -37,6 +37,15 @@ You need Ruby and Node at the versions in `.ruby-version` and `.node-version` (a
    bin/setup
    ```
 
+4. Protect `main` the way this repository does (rulesets need a public repository or a paid plan), and turn on private vulnerability reporting, which `SECURITY.md` points to:
+
+   ```sh
+   gh api repos/{owner}/{repo}/rulesets --input .github/rulesets/main.json
+   gh api -X PUT repos/{owner}/{repo}/private-vulnerability-reporting
+   ```
+
+   `main` then accepts only signed commits, so [set up commit signing](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) before your first pull request.
+
 `bin/setup` installs gems, packages and git hooks, writes `.env` with free ports for Postgres and the app (so several checkouts can run at once), starts Postgres in Docker, prepares and seeds the databases and starts the app. Sign in as `demo@example.com` with the password `demo-password-123`. That account exists only in development, and it can open the admin dashboards.
 
 After renaming, replace this README with one for your app and update the copyright line in `LICENSE`.
@@ -52,7 +61,7 @@ After renaming, replace this README with one for your app and update the copyrig
 | When the agent ends its turn | `bin/check`: lint, types, generated types, guards, Rails tests | about 13 s |
 | `git push`, and CI on every pull request | `bin/ci`: everything above plus audits, Brakeman, secret scan of the history, system tests | about 40 s locally |
 
-The hooks give fast feedback, but anyone determined can get past them. The real gate is GitHub: `main` only moves through `bin/merge`, which fast-forwards it to a pull request whose checks passed and whose commits are signed. The design and its limits are in [ADR-002](docs/adr/002-agent-harness.md).
+The hooks give fast feedback, but anyone determined can get past them. The real gate is GitHub, with the ruleset in [`.github/rulesets/main.json`](.github/rulesets/main.json): `main` only moves through `bin/merge`, which fast-forwards it to a pull request whose checks passed and whose commits are signed. The design and its limits are in [ADR-002](docs/adr/002-agent-harness.md).
 
 The hooks are wired for Claude Code (`.claude/settings.json`). Other agents read the same `AGENTS.md` and hit the same git hooks and CI.
 

@@ -10,7 +10,7 @@ Agents write most of the code here, and nobody reads every line. Their typical f
 
 ## Decision
 
-Every rule in `AGENTS.md` points to the tool that enforces it, and each tool runs at the cheapest moment that still catches the failure. The hooks give fast feedback, and anyone determined to can bypass them. The gate is GitHub: `main` is protected (required `ci` and `image` checks that apply to admins too, signed commits, linear history, no force pushes or deletion), which also disables GitHub's own merge buttons, so `bin/merge` is the only way in: a fast-forward of a pull request whose checks passed and whose commits GitHub verifies.
+Every rule in `AGENTS.md` points to the tool that enforces it, and each tool runs at the cheapest moment that still catches the failure. The hooks give fast feedback, and anyone determined to can bypass them. The gate is GitHub: `main` is protected by the ruleset in `.github/rulesets/main.json` (required `ci` and `image` checks that apply to admins too, signed commits, linear history, no force pushes or deletion), which also disables GitHub's own merge buttons, so `bin/merge` is the only way in: a fast-forward of a pull request whose checks passed and whose commits GitHub verifies.
 
 | Moment | What runs | Time |
 |---|---|---|
