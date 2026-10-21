@@ -22,12 +22,13 @@ A starter for Rails apps with an Inertia + Vue frontend, PostgreSQL and Kamal, b
 
 ## Rules
 
-1. **English for everything in the repo**: code, docs, commits, PRs, logs and errors. End-user copy is translated (English default, Spanish second); conversations with agents can be in any language.
-2. **Conventional Commits**, one concern each, with no AI co-author trailers (the `commit-msg` hook rejects both).
-3. **Never silence a check.** No `rubocop:disable`, `eslint-disable`, `@ts-ignore` or `@ts-expect-error` (the linters reject them), no `--no-verify`, no new exclusions in `.rubocop.yml`, `eslint.config.js`, `pnpm-workspace.yaml` or `.database_consistency.yml`. Fix the cause.
-4. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The `Guard-Override:` trailer is for humans only.
-5. **Write the failing test first** when fixing a bug, and run it to see it fail for the right reason.
-6. **No N+1 queries** (prosopite fails the test) and **no unsafe migrations** (strong_migrations fails the migration).
-7. **Security defaults stay on** (ADR-003): an endpoint that sends email or checks a secret calls `limit_attempts`; an inline script uses `javascript_tag nonce: true`; a new external origin is added to the content security policy on purpose, never by loosening it.
-8. **pnpm only**, and new dependencies need a reason in `docs/research/versions.md` with an official source. Gems resolve with a 7-day cooldown and packages with a 1-day minimum age.
-9. **If a rule gets in the way, propose an ADR.** Do not break it, weaken a check, or skip a hook.
+1. **English for everything in the repo**: code, docs, commits, PRs, logs and errors. Conversations with agents can be in any language.
+2. **No literal user-facing copy** (ADR-004). It goes in `config/locales/en.yml` and `es.yml` together; Vue reads it with `useI18n()` and the full key, `t("ui.page.thing")`. `i18n-tasks health` and RuboCop fail on a missing key, an unused key or a literal flash.
+3. **Conventional Commits**, one concern each, with no AI co-author trailers (the `commit-msg` hook rejects both).
+4. **Never silence a check.** No `rubocop:disable`, `eslint-disable`, `@ts-ignore` or `@ts-expect-error` (the linters reject them), no `--no-verify`, no new exclusions in `.rubocop.yml`, `eslint.config.js`, `pnpm-workspace.yaml` or `.database_consistency.yml`. Fix the cause.
+5. **Never delete, skip or loosen a test to get green, and never edit a migration that is on main** (`bin/guard`). The `Guard-Override:` trailer is for humans only.
+6. **Write the failing test first** when fixing a bug, and run it to see it fail for the right reason.
+7. **No N+1 queries** (prosopite fails the test) and **no unsafe migrations** (strong_migrations fails the migration).
+8. **Security defaults stay on** (ADR-003): an endpoint that sends email or checks a secret calls `limit_attempts`; an inline script uses `javascript_tag nonce: true`; a new external origin is added to the content security policy on purpose, never by loosening it.
+9. **pnpm only**, and new dependencies need a reason in `docs/research/versions.md` with an official source. Gems resolve with a 7-day cooldown and packages with a 1-day minimum age.
+10. **If a rule gets in the way, propose an ADR.** Do not break it, weaken a check, or skip a hook.
