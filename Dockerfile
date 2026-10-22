@@ -12,7 +12,7 @@ ARG SSR_ENABLED=false
 
 # Base images are pinned by tag and digest, so a rebuild gets the same bytes; Dependabot bumps both.
 # Keep the versions in step with .node-version and .ruby-version.
-FROM docker.io/library/node:24.22.0-trixie-slim@sha256:a6155384446670e9719bdc4fd0ebe4d4b29fb32a8d6aa523da3547a6cfbcf22c AS node
+FROM docker.io/library/node:26.11.1-trixie-slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS node
 
 FROM docker.io/library/ruby:4.0.7-slim@sha256:6c6b7b8c7d750604178aa60c2fa436890cd17c5695bdbd3213db2e4efbf98eb9 AS base
 
