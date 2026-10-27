@@ -9,13 +9,13 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     get projects_path
 
     assert_response :success
-    assert_equal [ "Product launch", "Website redesign" ], page_props[:projects].pluck("name")
+    assert_equal [ "Product launch", "Website redesign" ], inertia.props[:projects].pluck("name")
   end
 
   test "shows a project" do
     get project_path(projects(:website))
 
-    assert_equal projects(:website).name, page_props[:project]["name"]
+    assert_equal projects(:website).name, inertia.props[:project]["name"]
   end
 
   test "creates a project" do
@@ -61,11 +61,5 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     get projects_path
 
     assert_redirected_to sign_in_path
-  end
-
-  private
-
-  def page_props
-    JSON.parse(css_select("script[data-page]").first.text)["props"].with_indifferent_access
   end
 end

@@ -21,7 +21,7 @@ class ErrorPagesTest < ActionDispatch::IntegrationTest
     get project_path(projects(:others))
 
     assert_response :not_found
-    assert_equal "errors/show", JSON.parse(css_select("script[data-page]").first.text)["component"]
+    assert_equal "errors/show", inertia.component
   end
 
   test "the error page uses the user's language" do
@@ -29,7 +29,7 @@ class ErrorPagesTest < ActionDispatch::IntegrationTest
 
     get project_path(projects(:others))
 
-    assert_equal "es", JSON.parse(css_select("script[data-page]").first.text).dig("props", "locale")
+    assert_equal "es", inertia.props[:locale]
   end
 
   test "development and test keep raising so the trace is visible" do

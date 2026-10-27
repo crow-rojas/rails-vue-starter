@@ -10,7 +10,7 @@ class Settings::ProfilesControllerTest < ActionDispatch::IntegrationTest
   test "offers every language the app supports" do
     get settings_profile_path
 
-    assert_equal I18n.available_locales.map(&:to_s), page_props[:locales]
+    assert_equal I18n.available_locales.map(&:to_s), inertia.props[:locales]
   end
 
   test "saves the chosen language" do
@@ -30,11 +30,5 @@ class Settings::ProfilesControllerTest < ActionDispatch::IntegrationTest
     patch settings_profile_path, params: { name: users(:one).name, locale: "es" }
 
     assert_equal I18n.t("settings.profiles.updated", locale: :es), flash[:notice]
-  end
-
-  private
-
-  def page_props
-    JSON.parse(css_select("script[data-page]").first.text)["props"].with_indifferent_access
   end
 end
