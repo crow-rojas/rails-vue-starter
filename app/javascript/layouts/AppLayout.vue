@@ -1,18 +1,29 @@
 <script setup lang="ts">
-import AppLayout from "@/layouts/app/AppSidebarLayout.vue"
-import type { BreadcrumbItemType } from "@/types"
+import { ref, watch } from "vue"
 
-interface Props {
-  breadcrumbs?: BreadcrumbItemType[]
-}
+import AppSidebar from "@/components/AppSidebar.vue"
+import AppSidebarHeader from "@/components/AppSidebarHeader.vue"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import * as storage from "@/lib/storage"
+import type { BreadcrumbItem } from "@/types"
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<{ breadcrumbs?: BreadcrumbItem[] }>(), {
   breadcrumbs: () => [],
+})
+
+const isOpen = ref(storage.getItem("sidebar") !== "false")
+
+watch(isOpen, (open) => {
+  storage.setItem("sidebar", String(open))
 })
 </script>
 
 <template>
-  <AppLayout :breadcrumbs="breadcrumbs">
-    <slot />
-  </AppLayout>
+  <SidebarProvider :default-open="isOpen" v-model:open="isOpen">
+    <AppSidebar />
+    <SidebarInset class="overflow-x-hidden">
+      <AppSidebarHeader :breadcrumbs="breadcrumbs" />
+      <slot />
+    </SidebarInset>
+  </SidebarProvider>
 </template>
