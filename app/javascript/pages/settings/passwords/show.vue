@@ -44,7 +44,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
           :options="{ preserveScroll: true }"
           resetOnError
           resetOnSuccess
-          #default="{ errors, processing, recentlySuccessful }"
+          #default="{ errors, processing }"
         >
           <FieldGroup>
             <Field>
@@ -94,17 +94,6 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
             <Button :disabled="processing">{{
               t("ui.settings.passwords.save")
             }}</Button>
-
-            <Transition
-              enter-active-class="transition ease-in-out"
-              enter-from-class="opacity-0"
-              leave-active-class="transition ease-in-out"
-              leave-to-class="opacity-0"
-            >
-              <p v-show="recentlySuccessful" class="text-sm text-neutral-600">
-                {{ t("ui.settings.passwords.saved") }}
-              </p>
-            </Transition>
           </div>
         </Form>
       </div>

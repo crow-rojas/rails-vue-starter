@@ -164,7 +164,6 @@ es:
         email: Correo electrónico
         resend: Haz clic aquí para reenviar el correo de verificación.
         save: Guardar
-        saved: Guardado.
         title: Cambiar correo
         unverified: Tu correo no está verificado.
       passwords:
@@ -175,7 +174,6 @@ es:
           segura
         new_password: Nueva contraseña
         save: Guardar contraseña
-        saved: Guardado.
         title: Cambiar contraseña
       profile:
         breadcrumb: Perfil
@@ -184,7 +182,6 @@ es:
         name: Nombre
         name_placeholder: Nombre completo
         save: Guardar
-        saved: Guardado.
         title: Información del perfil
       sessions:
         active_since: 'Activa desde: %{time}'

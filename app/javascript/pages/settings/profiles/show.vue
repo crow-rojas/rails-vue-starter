@@ -47,7 +47,7 @@ const user = computed(() => page.props.auth.user as User)
           :action="settingsProfiles.update()"
           :options="{ preserveScroll: true }"
           class="space-y-6"
-          #default="{ errors, processing, recentlySuccessful }"
+          #default="{ errors, processing }"
         >
           <Field>
             <FieldLabel for="name">{{
@@ -85,17 +85,6 @@ const user = computed(() => page.props.auth.user as User)
             <Button :disabled="processing">{{
               t("ui.settings.profile.save")
             }}</Button>
-
-            <Transition
-              enter-active-class="transition ease-in-out"
-              enter-from-class="opacity-0"
-              leave-active-class="transition ease-in-out"
-              leave-to-class="opacity-0"
-            >
-              <p v-show="recentlySuccessful" class="text-sm text-neutral-600">
-                {{ t("ui.settings.profile.saved") }}
-              </p>
-            </Transition>
           </div>
         </Form>
       </div>

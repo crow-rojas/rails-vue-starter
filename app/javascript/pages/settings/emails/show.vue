@@ -47,7 +47,7 @@ const user = computed(() => page.props.auth.user)
           :resetOnError="['password_challenge']"
           :resetOnSuccess="['password_challenge']"
           class="space-y-6"
-          #default="{ errors, processing, recentlySuccessful }"
+          #default="{ errors, processing }"
         >
           <FieldGroup>
             <Field>
@@ -102,17 +102,6 @@ const user = computed(() => page.props.auth.user)
             <Button :disabled="processing">{{
               t("ui.settings.emails.save")
             }}</Button>
-
-            <Transition
-              enter-active-class="transition ease-in-out"
-              enter-from-class="opacity-0"
-              leave-active-class="transition ease-in-out"
-              leave-to-class="opacity-0"
-            >
-              <p v-show="recentlySuccessful" class="text-sm text-neutral-600">
-                {{ t("ui.settings.emails.saved") }}
-              </p>
-            </Transition>
           </div>
         </Form>
       </div>

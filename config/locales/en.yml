@@ -163,7 +163,6 @@ en:
         email: Email address
         resend: Click here to resend the verification email.
         save: Save
-        saved: Saved.
         title: Update email
         unverified: Your email address is unverified.
       passwords:
@@ -174,7 +173,6 @@ en:
           secure
         new_password: New password
         save: Save password
-        saved: Saved.
         title: Update password
       profile:
         breadcrumb: Profile settings
@@ -183,7 +181,6 @@ en:
         name: Name
         name_placeholder: Full name
         save: Save
-        saved: Saved.
         title: Profile information
       sessions:
         active_since: 'Active since: %{time}'
