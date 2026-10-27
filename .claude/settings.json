@@ -30,7 +30,8 @@
       "Bash(*core.hooksPath*)",
       "Bash(*lefthook uninstall*)",
       "Bash(git push -uf *)",
-      "Bash(git push * +*)"
+      "Bash(git push * +*)",
+      "Bash(*Guard-Override*)"
     ]
   },
   "hooks": {

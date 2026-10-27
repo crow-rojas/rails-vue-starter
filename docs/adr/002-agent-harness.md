@@ -39,6 +39,6 @@ The sensors, grouped by the failure they catch:
 ## Consequences
 
 - An agent cannot finish a turn with `bin/check` red without one visible retry, and cannot push with `bin/ci` red.
-- A legitimate test removal or migration fix needs a human to add a `Guard-Override:` trailer, which stays in the history.
+- A legitimate test removal or migration fix needs a human to add a `Guard-Override:` trailer, which stays in the history. A deny rule keeps Claude Code from typing the trailer; an agent that writes it through a message file is caught only in review.
 - gitleaks falls back to its pinned Docker image when it is not installed.
 - The checks have to stay fast. When `bin/check` passes 30 s, split the slow tests out or reopen this ADR.
