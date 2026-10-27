@@ -1,9 +1,8 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t rails-vue-starter .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name rails-vue-starter rails-vue-starter
+# This Dockerfile is designed for production, not development. Deploy it with `bin/kamal deploy`, which
+# passes the variables in config/deploy.yml and .kamal/secrets; there is no credentials file (ADR-006).
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 

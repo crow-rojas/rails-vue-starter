@@ -17,7 +17,7 @@ module Rename
   FILES = %w[
     config/application.rb config/database.yml config/deploy.yml config/locales/en.yml config/locales/es.yml
     app/views/layouts/application.html.erb app/views/pwa/manifest.json.erb app/javascript/entrypoints/inertia.ts
-    package.json Dockerfile AGENTS.md SECURITY.md .github/ISSUE_TEMPLATE/config.yml
+    package.json AGENTS.md SECURITY.md .github/ISSUE_TEMPLATE/config.yml
     app/javascript/components/AppSidebar.vue
   ].freeze
 
