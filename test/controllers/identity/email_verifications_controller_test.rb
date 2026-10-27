@@ -37,6 +37,6 @@ class Identity::EmailVerificationsControllerTest < ActionDispatch::IntegrationTe
     assert_no_enqueued_emails do
       post identity_email_verification_path
     end
-    assert_equal "Try again later", flash[:alert]
+    assert_equal I18n.t("errors.rate_limited"), flash[:alert]
   end
 end

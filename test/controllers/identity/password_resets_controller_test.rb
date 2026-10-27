@@ -23,7 +23,7 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
       post identity_password_reset_path, params: { email: users(:one).email }
     end
     assert_redirected_to sign_in_path
-    assert_equal "If that email belongs to a verified account, you will get reset instructions", flash[:notice]
+    assert_equal I18n.t("identity.password_resets.requested"), flash[:notice]
   end
 
   test "answers an unknown email like a known one" do
@@ -31,7 +31,7 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
       post identity_password_reset_path, params: { email: "nobody@example.com" }
     end
     assert_redirected_to sign_in_path
-    assert_equal "If that email belongs to a verified account, you will get reset instructions", flash[:notice]
+    assert_equal I18n.t("identity.password_resets.requested"), flash[:notice]
   end
 
   test "limits password reset requests" do
@@ -40,7 +40,7 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
     assert_no_enqueued_emails do
       post identity_password_reset_path, params: { email: users(:one).email }
     end
-    assert_equal "Try again later", flash[:alert]
+    assert_equal I18n.t("errors.rate_limited"), flash[:alert]
   end
 
   test "renders password reset edit page" do

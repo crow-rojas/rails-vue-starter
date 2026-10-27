@@ -12,7 +12,7 @@ class CsrfTest < ActionDispatch::IntegrationTest
     post sign_in_path, params: { email: users(:one).email, password: "Secret1*3*5*" }, headers: { "HTTP_REFERER" => sign_in_url }
 
     assert_redirected_to sign_in_url
-    assert_equal "The page expired. Please try again", flash[:alert]
+    assert_equal I18n.t("errors.page_expired"), flash[:alert]
     assert_predicate cookies[:session_token], :blank?
   end
 

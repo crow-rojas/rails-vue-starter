@@ -49,7 +49,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     10.times { post sign_in_path, params: { email: users(:one).email, password: "wrongpassword" } }
     post sign_in_path, params: { email: users(:one).email, password: "Secret1*3*5*" }
 
-    assert_equal "Try again later", flash[:alert]
+    assert_equal I18n.t("errors.rate_limited"), flash[:alert]
     assert_predicate cookies[:session_token], :blank?
   end
 

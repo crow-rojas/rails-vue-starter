@@ -62,7 +62,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference "User.count" do
       post sign_up_path, params: { name: "Ada", email: "ada@example.com", password: "Secret1*3*5*", password_confirmation: "Secret1*3*5*" }
     end
-    assert_equal "Try again later", flash[:alert]
+    assert_equal I18n.t("errors.rate_limited"), flash[:alert]
   end
 
   test "limits password guesses when deleting the account" do
@@ -72,6 +72,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference "User.count" do
       delete users_path, params: { password_challenge: "Secret1*3*5*" }
     end
-    assert_equal "Try again later", flash[:alert]
+    assert_equal I18n.t("errors.rate_limited"), flash[:alert]
   end
 end
