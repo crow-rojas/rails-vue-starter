@@ -32,6 +32,17 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     session_record = users(:one).sessions.last
     delete session_path(session_record)
     assert_redirected_to settings_sessions_path
+    assert_not Session.exists?(session_record.id)
+  end
+
+  test "cannot destroy another user's session" do
+    sign_in users(:one)
+    other = users(:two).sessions.create!
+
+    delete session_path(other)
+
+    assert_response :not_found
+    assert Session.exists?(other.id)
   end
 
   test "limits sign in attempts" do

@@ -15,12 +15,15 @@ class Settings::EmailsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "updates email with valid password" do
-    patch settings_email_path, params: {
-      email: "updated@example.com",
-      password_challenge: "Secret1*3*5*"
-    }
+    assert_enqueued_emails 1 do
+      patch settings_email_path, params: {
+        email: "updated@example.com",
+        password_challenge: "Secret1*3*5*"
+      }
+    end
     assert_redirected_to settings_email_path
     assert_equal "updated@example.com", users(:one).reload.email
+    assert_not users(:one).verified?
   end
 
   test "rejects email update with wrong password" do

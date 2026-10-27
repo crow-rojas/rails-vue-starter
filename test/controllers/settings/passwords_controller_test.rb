@@ -15,21 +15,29 @@ class Settings::PasswordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "updates password with valid current password" do
+    other = users(:one).sessions.create!
     patch settings_password_path, params: {
       password: "NewPassword1*3*",
       password_confirmation: "NewPassword1*3*",
       password_challenge: "Secret1*3*5*"
     }
     assert_redirected_to settings_password_path
+    assert users(:one).reload.authenticate_password("NewPassword1*3*")
+    assert_not Session.exists?(other.id)
+
+    get settings_password_path
+    assert_response :success
   end
 
   test "rejects password update with wrong current password" do
+    digest = users(:one).password_digest
     patch settings_password_path, params: {
       password: "NewPassword1*3*",
       password_confirmation: "NewPassword1*3*",
       password_challenge: "wrongpassword"
     }
     assert_redirected_to settings_password_path
+    assert_equal digest, users(:one).reload.password_digest
   end
 
   test "limits current password guesses" do
