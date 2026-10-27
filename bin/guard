@@ -40,8 +40,9 @@ failures = []
 before, after = test_count(base), test_count
 failures << "the number of tests went down (#{before} -> #{after})" if after < before && !allow_tests
 
-untracked_tests = git("ls-files", "--others", "--exclude-standard", "--", "test").lines(chomp: true)
-added_lines = git("diff", base, "--unified=0", "--", "test").lines + untracked_tests.flat_map { File.readlines(it).map { |line| "+#{line}" } }
+# Only test files: a binary fixture is not UTF-8 and would crash the grep below.
+untracked_tests = git("ls-files", "--others", "--exclude-standard", "--", "test/*_test.rb").lines(chomp: true)
+added_lines = git("diff", base, "--unified=0", "--", "test/*_test.rb").lines + untracked_tests.flat_map { File.readlines(it).map { |line| "+#{line}" } }
 added_skips = added_lines.grep(/^\+\s*skip\b/)
 failures << "new skip calls in tests:\n#{added_skips.join}" if added_skips.any? && !allow_tests
 
