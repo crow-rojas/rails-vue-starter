@@ -30,6 +30,12 @@ class ProjectsTest < ApplicationSystemTestCase
     assert_no_text "Annual report 2026"
   end
 
+  test "the sidebar marks Projects active on a project's own pages" do
+    visit new_project_path
+
+    assert_selector "[data-sidebar=menu-button][data-active=true]", text: "Projects"
+  end
+
   test "a duplicate name shows the error next to the field" do
     visit new_project_path
     fill_in "Name", with: projects(:website).name

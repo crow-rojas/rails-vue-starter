@@ -17,6 +17,12 @@ defineProps<{
 
 const page = usePage()
 const { t } = useI18n()
+
+// A resource's nav item stays active on its own pages: /projects/1/edit, /projects?page=2.
+const isActive = (href: string) =>
+  page.url === href ||
+  page.url.startsWith(`${href}/`) ||
+  page.url.startsWith(`${href}?`)
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const { t } = useI18n()
       <SidebarMenuItem v-for="item in items" :key="item.title">
         <SidebarMenuButton
           as-child
-          :is-active="item.href === page.url"
+          :is-active="isActive(item.href)"
           :tooltip="item.title"
         >
           <Link :href="item.href">
