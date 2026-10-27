@@ -1,24 +1,18 @@
 # frozen_string_literal: true
 
 class Settings::ProfilesController < InertiaController
-  before_action :set_user
-
   def show
   end
 
   def update
-    if @user.update(user_params)
-      redirect_to settings_profile_path, notice: t("settings.profiles.updated", locale: @user.locale || I18n.locale)
+    if Current.user.update(user_params)
+      redirect_to settings_profile_path, notice: t("settings.profiles.updated", locale: Current.user.locale || I18n.locale)
     else
-      redirect_to settings_profile_path, inertia: { errors: @user.errors }
+      redirect_to settings_profile_path, inertia: { errors: Current.user.errors }
     end
   end
 
   private
-
-  def set_user
-    @user = Current.user
-  end
 
   def user_params
     params.permit(:name, :locale)

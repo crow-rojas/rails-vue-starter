@@ -2,39 +2,24 @@
 
 class Settings::EmailsController < InertiaController
   limit_attempts only: :update
-  before_action :set_user
 
   def show
   end
 
   def update
-    if @user.update(user_params)
-      redirect_to_success
-    else
-      redirect_to settings_email_path, inertia: { errors: @user.errors }
-    end
-  end
-
-  private
-
-  def set_user
-    @user = Current.user
-  end
-
-  def user_params
-    params.permit(:email, :password_challenge).with_defaults(password_challenge: "")
-  end
-
-  def redirect_to_success
-    if @user.email_previously_changed?
-      resend_email_verification
+    if !Current.user.update(user_params)
+      redirect_to settings_email_path, inertia: { errors: Current.user.errors }
+    elsif Current.user.email_previously_changed?
+      UserMailer.with(user: Current.user).email_verification.deliver_later
       redirect_to settings_email_path, notice: t("settings.emails.changed")
     else
       redirect_to settings_email_path
     end
   end
 
-  def resend_email_verification
-    UserMailer.with(user: @user).email_verification.deliver_later
+  private
+
+  def user_params
+    params.permit(:email, :password_challenge).with_defaults(password_challenge: "")
   end
 end
