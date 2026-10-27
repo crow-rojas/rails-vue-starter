@@ -15,8 +15,8 @@ CI.run do
   generated = "app/javascript/routes app/javascript/types/serializers"
   digest = "find #{generated} -type f | sort | xargs shasum | shasum"
   step "JavaScript: generated types are fresh",
-    "before=$(#{digest}) && bin/rails typelizer:generate:refresh && test \"$before\" = \"$(#{digest})\" || " \
-    "{ echo 'Generated types were stale and are regenerated now: commit them.'; exit 1; }"
+    "before=$(#{digest}) && bin/rails typelizer:generate:refresh && { test \"$before\" = \"$(#{digest})\" || " \
+    "{ echo 'Generated types were stale and are regenerated now: commit them.'; exit 1; }; }"
 
   step "Guard: tests, migrations and harness", "bin/guard"
   step "i18n: missing and unused keys", "bundle exec i18n-tasks health"
