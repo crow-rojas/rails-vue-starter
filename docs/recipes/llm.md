@@ -235,7 +235,7 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = Session.find_by(id: cookies.signed[:session_token])&.user || reject_unauthorized_connection
+      self.current_user = Session.find_active(cookies.signed[:session_token])&.user || reject_unauthorized_connection
     end
   end
 end
