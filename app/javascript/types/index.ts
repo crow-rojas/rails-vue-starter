@@ -2,7 +2,7 @@ import type { LucideIcon } from "@lucide/vue"
 
 export interface BreadcrumbItem {
   title: string
-  href: string
+  href?: string
 }
 
 export interface NavItem {
@@ -16,7 +16,5 @@ export interface FlashData {
   alert?: string
   notice?: string
 }
-
-export type BreadcrumbItemType = BreadcrumbItem
 
 export * from "./serializers"

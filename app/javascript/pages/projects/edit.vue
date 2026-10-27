@@ -14,7 +14,7 @@ const { t } = useI18n()
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   { title: t("ui.projects.index.title"), href: projectsRoutes.index().url },
-  { title: t("ui.projects.edit.title"), href: "" },
+  { title: t("ui.projects.edit.title") },
 ])
 </script>
 
