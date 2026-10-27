@@ -1,0 +1,38 @@
+name: PR size
+
+# Its own workflow because it reruns on label changes: in ci.yml, those runs would skip the required
+# jobs, and a skipped job counts as passed.
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, labeled, unlabeled ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-size-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr_size:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'large-pr') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fail on pull requests too large to review
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          MAX_LINES: 800
+        run: |
+          lines=$(git diff --numstat "origin/$BASE_REF...HEAD" -- . ':!Gemfile.lock' ':!pnpm-lock.yaml' ':!app/javascript/routes' ':!app/javascript/types/serializers' | awk '{ total += $1 + $2 } END { print total + 0 }')
+          echo "$lines changed lines (limit $MAX_LINES, lockfiles and generated types excluded)"
+          if [ "$lines" -gt "$MAX_LINES" ]; then
+            echo "Split this pull request, or add the large-pr label when it cannot be split."
+            exit 1
+          fi

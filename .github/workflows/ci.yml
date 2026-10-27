@@ -2,23 +2,19 @@ name: CI
 
 on:
   pull_request:
-    types: [ opened, synchronize, reopened, labeled, unlabeled ]
   push:
     branches: [ main ]
 
 permissions:
   contents: read
 
-# A new push to a pull request cancels its previous run; label runs get their own group so adding
-# a label never cancels the full suite.
+# A new push to a pull request cancels its previous run.
 concurrency:
-  group: ci-${{ github.ref }}-${{ contains(fromJSON('["labeled", "unlabeled"]'), github.event.action) }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   ci:
-    # Labels only matter to pr_size; adding one does not need the whole suite again.
-    if: github.event.action != 'labeled' && github.event.action != 'unlabeled'
     runs-on: ubuntu-latest
 
     steps:
@@ -54,7 +50,6 @@ jobs:
           if-no-files-found: ignore
 
   image:
-    if: github.event.action != 'labeled' && github.event.action != 'unlabeled'
     runs-on: ubuntu-latest
 
     steps:
@@ -65,26 +60,3 @@ jobs:
 
       - name: Build the production image
         run: docker build .
-
-  pr_size:
-    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'large-pr')
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Fail on pull requests too large to review
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          MAX_LINES: 800
-        run: |
-          lines=$(git diff --numstat "origin/$BASE_REF...HEAD" -- . ':!Gemfile.lock' ':!pnpm-lock.yaml' ':!app/javascript/routes' ':!app/javascript/types/serializers' | awk '{ total += $1 + $2 } END { print total + 0 }')
-          echo "$lines changed lines (limit $MAX_LINES, lockfiles and generated types excluded)"
-          if [ "$lines" -gt "$MAX_LINES" ]; then
-            echo "Split this pull request, or add the large-pr label when it cannot be split."
-            exit 1
-          fi
