@@ -115,7 +115,7 @@ GEM
     concurrent-ruby (1.3.8)
     connection_pool (3.0.2)
     crass (1.0.8)
-    database_consistency (3.0.16)
+    database_consistency (3.1.0)
       activerecord (>= 3.2)
     date (3.6.0)
     debug (1.11.1)
@@ -385,7 +385,7 @@ GEM
       activejob (>= 7.2)
       activerecord (>= 7.2)
       railties (>= 7.2)
-    solid_errors (0.8.0)
+    solid_errors (0.9.1)
       actionpack (>= 7.1)
       actionview (>= 7.1)
       activerecord (>= 7.1)
@@ -528,7 +528,7 @@ CHECKSUMS
   concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   crass (1.0.8) sha256=7a0145c7a2c59f8e7923b3a69ce819c444823a00a5127d805298fea13be24efe
-  database_consistency (3.0.16) sha256=80f8de7232f36ef231c178d2f212f038db61258e79abb2a9d03635ea6bc5ab4e
+  database_consistency (3.1.0) sha256=82ed71353cf83368fd2dd9ce229dbe4788f2f9dae73a3ad34fee25e843be4a6c
   date (3.6.0) sha256=18ac945c4e24ebd93534f8eab8c2fd8c5604b3e977105b3798d62a1e8d27b580
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
@@ -629,7 +629,7 @@ CHECKSUMS
   selenium-webdriver (4.51.0) sha256=09edf1b7fc360e0570bac609676f804ed527fe0b2f285e03233561e29b0ec105
   solid_cable (4.1.0) sha256=828e3d509207b82b4f05f4e9c85f696994710679b52d511aa7f97ebd212d3226
   solid_cache (1.0.10) sha256=bc05a2fb3ac78a6f43cbb5946679cf9db67dd30d22939ededc385cb93e120d41
-  solid_errors (0.8.0) sha256=a2628c22bba202c3e4ec950ef2f2bb7759ba05da4f1062930f09b30dabba222c
+  solid_errors (0.9.1) sha256=d557072980813befc9ddceba0c67e6fc058e533f06f1ca181c955a202a639de2
   solid_queue (1.7.0) sha256=6566b70b801d1c317c81bba7bcdd5677c019afac584a30374b4164002ca356d3
   sshkit (1.25.1) sha256=be3f10b9d6eb0b44d5eaba3f7cbe41bc6bb894bce4339688ac20124391455b78
   stimulus-rails (1.3.4) sha256=765676ffa1f33af64ce026d26b48e8ffb2e0b94e0f50e9119e11d6107d67cb06
